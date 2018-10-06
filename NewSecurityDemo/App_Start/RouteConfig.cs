@@ -13,6 +13,16 @@ namespace NewSecurityDemo
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+
+            #region FileDownloading
+            routes.MapRoute(
+              name: "FileDownloadRoute",
+              url: "DownloadFile/{action}/{FileID}",
+              defaults: new { controller = "DownloadFile", action = "DownLoadSelectedFile", FileID = 24 }
+          );
+
+            #endregion
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
@@ -51,7 +61,7 @@ namespace NewSecurityDemo
             url: "{controller}/{action}/{id}",
             defaults: new { controller = "PublicDocs", action = "PublicDocDisplay", id = UrlParameter.Optional });
 
-           
+
             //////This Routes to the default Public Docs Page
             ////routes.MapRoute(
             ////name: "PublicDocs",
