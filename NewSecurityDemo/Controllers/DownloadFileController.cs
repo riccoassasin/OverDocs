@@ -8,7 +8,7 @@ namespace NewSecurityDemo.Controllers
 {
     public class DownloadFileController : Controller
     {
-        private WebDocsEntities db = new WebDocsEntities();
+        private NewSecurityDemo.Models.WebDocsEntities db = new NewSecurityDemo.Models.WebDocsEntities();
         // GET: DownloadFile
 
 
