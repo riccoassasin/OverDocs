@@ -1,0 +1,211 @@
+﻿@model IEnumerable<NewSecurityDemo.Models.View_UserDocs_AllUserCreatedDocs>
+
+
+@{
+    ViewBag.Title = "PublicDocDisplay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading"><h4>Repository - User Documents</h4></div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table-condensed table-hover ">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Label("Ref#")
+                        </th>
+                        <th>
+                            @Html.Label("File Name")
+
+                        </th>
+                        <th>
+                            @Html.Label("Size")
+
+                        </th>
+                        <th>
+                            @Html.Label("File Owner")
+
+                        </th>
+                        <th>
+                            @Html.Label("Last Modified")
+                        </th>
+
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.UserIDOfFileOwner)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserIDOfLastUploaded)
+                            </th>*@
+                        <th>
+                            @Html.Label("File Status")
+
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.FileLookupStatusID)
+                            </th>*@
+                        <th>
+                            @Html.Label("Shared Status")
+
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.FileShareStatusID)
+                            </th>*@
+                        <th>
+                            @Html.Label("File Type")
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.FileName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FileExtension)
+                            </th>*@
+
+
+                        <th>
+                            @Html.Label("Version")
+
+                        </th>
+
+                        <th>
+                            @Html.Label("Updated By")
+                        </th>
+
+                        <th>
+                            <!-- Trigger the modal with a button -->
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#UploadUserFileModal">Upload File</button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="UploadUserFileModal" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Upload User File</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            @using (Html.BeginForm("UploadUserFile", "UserDocs", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                            {
+
+                                                <table>
+                                                    <tr>
+                                                        <td>@Html.Label("Select File:")</td>
+                                                        <td> <input type="file" name="file" id="file" /></td>
+                                                    </tr>
+                                                    <tr><td colspan="2"> <input type="submit" value="Upload Image" /></td></tr>
+                                                </table>
+                                            }
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullFileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileSize)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserThatLastUpdated)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateCreated)
+                            </td>
+
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.UserIDOfFileOwner)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserIDOfLastUploaded)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileStatus)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FileLookupStatusID)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileShareStatus)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FileShareStatusID)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileType)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FileName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FileExtension)
+                                </td>*@
+
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserThatLastUpdated)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+
+        <ul class="pager">
+            <li class="previous"><a href="#">Previous</a></li>
+            <li class="next"><a href="#">Next</a></li>
+        </ul>
+
+
+    </div>
+
+</div>
+<table>
+    <tr>
+        <td>
+            <ul class="pagination">
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+            </ul>
+        </td>
+        <td></td>
+    </tr>
+</table>
