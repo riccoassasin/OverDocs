@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
+using System.Net.Mail;
 
 namespace NewSecurityDemo.Models.Email
 {
     public class MailDetailModel
     {
-        public MailDetailModel()
+        public MailDetailModel(string _ToAddress, string _FromAddress, string _FromName, string _ToName)
         {
-             
+            this.toAddress = new MailAddress(_ToAddress);
+            this.fromAddress = new MailAddress(_FromAddress);
+            this.fromName = _FromName;
+            this.toName = _ToName;
             using (WebDocsEntities db = new WebDocsEntities())
             {
                 CurrentEmailSettings = db.EmailSettings.FirstOrDefault<EmailSetting>();

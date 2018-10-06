@@ -31,6 +31,7 @@
         <EntityTypeShape EntityType="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" Width="2.875" PointX="3.875" PointY="11.75" />
         <EntityTypeShape EntityType="WebDocsModel.View_PrivateDocView_AllSharedPrivateFiles" Width="3.125" PointX="7.125" PointY="11.75" />
         <EntityTypeShape EntityType="WebDocsModel.View_UserDocs_AllUserCreatedDocs" Width="2.375" PointX="1" PointY="11.75" />
+        <EntityTypeShape EntityType="WebDocsModel.EmailSetting" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

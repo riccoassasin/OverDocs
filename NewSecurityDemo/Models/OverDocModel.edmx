@@ -58,6 +58,17 @@
           <Property Name="FirstName" Type="nvarchar(max)" />
           <Property Name="LastName" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="EmailSettings">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="250" />
+          <Property Name="Password" Type="varchar" MaxLength="250" />
+          <Property Name="SmtpHost" Type="varchar" MaxLength="500" />
+          <Property Name="SmtpPort" Type="int" />
+          <Property Name="SslEnabled" Type="bit" />
+        </EntityType>
         <EntityType Name="FileCategories">
           <Key>
             <PropertyRef Name="FileCategoryID" />
@@ -114,14 +125,11 @@
           <Property Name="FileShareStatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FileShareStatus" Type="varchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'WebDocs.dbo.Notifications' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Notifications">
           <Key>
             <PropertyRef Name="NotificationID" />
-            <PropertyRef Name="DateCreated" />
           </Key>
-          <Property Name="NotificationID" Type="int" Nullable="false" />
+          <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -416,18 +424,14 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmailSettings" EntityType="Self.EmailSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileCategories" EntityType="Self.FileCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Files" EntityType="Self.Files" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileSharedWithUsers" EntityType="Self.FileSharedWithUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LookupTable_FileCategories" EntityType="Self.LookupTable_FileCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LookupTable_FileStatuses" EntityType="Self.LookupTable_FileStatuses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LookupTable_ShareStatues" EntityType="Self.LookupTable_ShareStatues" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Notifications" EntityType="Self.Notifications" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Notifications].[NotificationID] AS [NotificationID], 
-    [Notifications].[DateCreated] AS [DateCreated]
-    FROM [dbo].[Notifications] AS [Notifications]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserChats" EntityType="Self.UserChats" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [UserChats].[UserChatID] AS [UserChatID], 
@@ -841,6 +845,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <FunctionImport Name="UserDocs_R_GetAllUserCreatedDocs" EntitySet="View_UserDocs_AllUserCreatedDocs" ReturnType="Collection(WebDocsModel.View_UserDocs_AllUserCreatedDocs)">
           <Parameter Name="UserID" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="EmailSettings" EntityType="WebDocsModel.EmailSetting" />
         </EntityContainer>
         <EntityType Name="FileSharedWithUser">
           <Key>
@@ -1033,6 +1038,17 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Property Type="String" Name="UserThatLastUpdated" Nullable="true" />
           <Property Type="String" Name="FullFileName" Nullable="false" MaxLength="54" />
         </ComplexType>
+        <EntityType Name="EmailSetting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SmtpHost" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SmtpPort" Type="Int16" />
+          <Property Name="SslEnabled" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1259,6 +1275,18 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="UserDocs_R_GetAllUserCreatedDocs" FunctionName="WebDocsModel.Store.UserDocs_R_GetAllUserCreatedDocs">
           </FunctionImportMapping>
+          <EntitySetMapping Name="EmailSettings">
+            <EntityTypeMapping TypeName="WebDocsModel.EmailSetting">
+              <MappingFragment StoreEntitySet="EmailSettings">
+                <ScalarProperty Name="SslEnabled" ColumnName="SslEnabled" />
+                <ScalarProperty Name="SmtpPort" ColumnName="SmtpPort" />
+                <ScalarProperty Name="SmtpHost" ColumnName="SmtpHost" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
