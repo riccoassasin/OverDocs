@@ -29,5 +29,6 @@ namespace NewSecurityDemo.Models
         public string FileShareStatus { get; set; }
         public string UserThatLastUpdated { get; set; }
         public string FullFileName { get; set; }
+        public string FileType { get; set; }
     }
 }

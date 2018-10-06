@@ -30,5 +30,6 @@ namespace NewSecurityDemo.Models
         public string UserThatLastUpdatedFile { get; set; }
         public string RefID { get; set; }
         public string FullFileName { get; set; }
+        public string FileType { get; set; }
     }
 }

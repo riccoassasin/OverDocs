@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Common.Enum.DBLookupEnum;
+using Common.Files;
+using Microsoft.AspNet.Identity;
 using NewSecurityDemo.Models;
-using NewSecurityDemo.Models.Common;
-using NewSecurityDemo.Models.EnumClasses.DBLookupEnum;
+using OverDocsModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -13,7 +14,7 @@ namespace NewSecurityDemo.Controllers
 {
     public class UserDocsController : Controller
     {
-        private NewSecurityDemo.Models.WebDocsEntities db = new NewSecurityDemo.Models.WebDocsEntities();
+        private WebDocsEntities db = new WebDocsEntities();
         // GET: UserDocs
         [Authorize]
         public ActionResult ShowUserDocs()
@@ -52,9 +53,9 @@ namespace NewSecurityDemo.Controllers
                     ///insert into db 
                     ///
 
-                    Models.File newfile = new Models.File();
+                    File newfile = new File();
 
-                    Models.File std = new Models.File()
+                    File std = new File()
                     {
                         ContentType = file.ContentType,
                         CurrentVersionNumber = 1,

@@ -192,7 +192,6 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Common\Email\EmailHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DownloadFileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -215,83 +214,70 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRole.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUser.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserClaim.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserLogin.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Common\FileExtensionHelper.cs" />
     <Compile Include="Models\EmailSetting.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Email\MailDetailModel.cs" />
-    <Compile Include="Models\EnumClasses\DBLookupEnum\EnumFileStatus.cs" />
     <Compile Include="Models\File.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FileCategory.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FileSharedWithUser.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FileUpload\UserFileUploadModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LookupTable_FileCategories.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LookupTable_FileStatuses.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LookupTable_ShareStatues.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\MultiModels\UserDocsModels\UserDocsModel.cs" />
-    <Compile Include="Models\Notification.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OverDocModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OverDocModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OverDocModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OverDocModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OverDocModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OverDocModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\PrivateDocs_R_GetAllPrivateSharedUserFiles_Result.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserChat.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserDocs_R_GetAllUserCreatedDocs_Result.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserNotification.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_PrivateDocView_AllSharedPrivateFiles.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_UserDocs_AllUserCreatedDocs.cs">
-      <DependentUpon>OverDocModel.tt</DependentUpon>
+      <DependentUpon>WebDocs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WebDocs.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebDocs.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WebDocs.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebDocs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WebDocs.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebDocs.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -305,25 +291,18 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\OverDocModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OverDocModel.edmx</DependentUpon>
-      <LastGenOutput>OverDocModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\OverDocModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OverDocModel.edmx</DependentUpon>
-      <LastGenOutput>OverDocModel.cs</LastGenOutput>
-    </Content>
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\OverDocModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OverDocModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\OverDocModel.edmx.diagram">
-      <DependentUpon>OverDocModel.edmx</DependentUpon>
+    <Content Include="Models\WebDocs.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WebDocs.edmx</DependentUpon>
+      <LastGenOutput>WebDocs.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\WebDocs.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WebDocs.edmx</DependentUpon>
+      <LastGenOutput>WebDocs.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -343,6 +322,13 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <EntityDeploy Include="Models\WebDocs.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WebDocs.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\WebDocs.edmx.diagram">
+      <DependentUpon>WebDocs.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -412,6 +398,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\ModelExtensions\" />
+    <Folder Include="Models\MultiModels\UserDocsModels\" />
     <Folder Include="Views\DownloadFile\" />
     <Folder Include="Views\Notifications\" />
   </ItemGroup>
@@ -434,6 +421,16 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{de38bee2-6d34-4ca5-bde1-92e6d8362b1f}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OverDocsModels\OverDocsModels.csproj">
+      <Project>{1563e194-4ce3-47ce-b30e-fe12f2213287}</Project>
+      <Name>OverDocsModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

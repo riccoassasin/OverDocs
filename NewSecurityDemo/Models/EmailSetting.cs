@@ -18,7 +18,7 @@ namespace NewSecurityDemo.Models
         public string UserName { get; set; }
         public string Password { get; set; }
         public string SmtpHost { get; set; }
-        public Nullable<short> SmtpPort { get; set; }
-        public Nullable<bool> SslEnabled { get; set; }
+        public int SmtpPort { get; set; }
+        public bool SslEnabled { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 ﻿
 
+
+using Common.Files;
 using NewSecurityDemo.Models;
-using NewSecurityDemo.Models.Common;
+using OverDocsModels;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace MyOverDocs.Controllers
     public class PublicDocsController : Controller
     {
 
-        private NewSecurityDemo.Models.WebDocsEntities db = new NewSecurityDemo.Models.WebDocsEntities();
+        private WebDocsEntities db = new WebDocsEntities();
         // GET: PublicDocs
 
         [Authorize]

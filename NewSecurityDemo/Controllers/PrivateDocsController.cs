@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Common.Files;
+using Microsoft.AspNet.Identity;
 using NewSecurityDemo.Models;
-using NewSecurityDemo.Models.Common;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace NewSecurityDemo.Controllers
     public class PrivateDocsController : Controller
     {
 
-        private NewSecurityDemo.Models.WebDocsEntities db = new NewSecurityDemo.Models.WebDocsEntities();
+        private WebDocsEntities db = new WebDocsEntities();
         // GET: PrivateDocs
         [Authorize]
         public ActionResult PrivateDocDisplay()

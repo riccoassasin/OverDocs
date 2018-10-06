@@ -1,5 +1,5 @@
-﻿namespace NewSecurityDemo.Models.EnumClasses.DBLookupEnum
-{
+﻿namespace Common.Enum.DBLookupEnum
+{ 
     public enum FileViewStatus
     {
         FileIsLocked = 1,

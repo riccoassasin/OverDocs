@@ -1,4 +1,5 @@
 ﻿using NewSecurityDemo.Models;
+using OverDocsModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,13 @@ namespace NewSecurityDemo.Controllers
 {
     public class DownloadFileController : Controller
     {
-        private NewSecurityDemo.Models.WebDocsEntities db = new NewSecurityDemo.Models.WebDocsEntities();
+        private WebDocsEntities db = new WebDocsEntities();
         // GET: DownloadFile
 
 
         public ActionResult DownLoadSelectedFile(int FileID)
         {
-            Models.File ObjFile = GetFileToDownload(FileID);
+            File ObjFile = GetFileToDownload(FileID);
             if (ObjFile != null)
             {
                 return File(ObjFile.FileImage, ObjFile.ContentType, ObjFile.FileName + "." + ObjFile.FileExtension);
@@ -29,10 +30,10 @@ namespace NewSecurityDemo.Controllers
 
         }
 
-        private Models.File GetFileToDownload(int _FileID)
+        private File GetFileToDownload(int _FileID)
         {
 
-            Models.File fileToDownload;
+            File fileToDownload;
 
             fileToDownload = db.Files.Where(a => a.FileID == _FileID).FirstOrDefault<File>();
             if (fileToDownload != null)

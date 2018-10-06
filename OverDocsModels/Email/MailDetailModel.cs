@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Mail;
 
-namespace NewSecurityDemo.Models.Email
+namespace OverDocsModels.Email
 {
     public class MailDetailModel
     {
@@ -11,10 +11,10 @@ namespace NewSecurityDemo.Models.Email
             this.fromAddress = new MailAddress(_FromAddress);
             this.fromName = _FromName;
             this.toName = _ToName;
-            using (WebDocsEntities db = new WebDocsEntities())
-            {
-                CurrentEmailSettings = db.EmailSettings.FirstOrDefault<EmailSetting>();
-            };
+            //using (WebDocsEntities db = new WebDocsEntities())
+            //{
+            //    CurrentEmailSettings = db.EmailSettings.FirstOrDefault<EmailSetting>();
+            //};
         }
         public string fromName { get; set; }
         public string toName { get; set; }
@@ -23,6 +23,6 @@ namespace NewSecurityDemo.Models.Email
         public string subject { get; set; }
         public string message { get; set; }
 
-        public EmailSetting CurrentEmailSettings { get; set; }
+       // public EmailSetting CurrentEmailSettings { get; set; }
     }
 }

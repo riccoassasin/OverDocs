@@ -1,4 +1,4 @@
-﻿namespace NewSecurityDemo.Models.Common
+﻿namespace Common.Files
 {
     public static class FileExtensionHelper
     {
