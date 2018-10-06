@@ -192,6 +192,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\Email\EmailHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DownloadFileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -226,7 +227,7 @@
       <DependentUpon>OverDocModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\FileExtensionHelper.cs" />
-    <Compile Include="Models\Email\EmailHelper.cs" />
+    <Compile Include="Models\Email\MailDetailModel.cs" />
     <Compile Include="Models\EnumClasses\DBLookupEnum\EnumFileStatus.cs" />
     <Compile Include="Models\File.cs">
       <DependentUpon>OverDocModel.tt</DependentUpon>

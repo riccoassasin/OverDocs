@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace NewSecurityDemo.Models.Email
+namespace NewSecurityDemo.Common.Email
 {
     public class EmailHelper
     {
