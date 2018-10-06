@@ -225,6 +225,7 @@
       <DependentUpon>OverDocModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\FileExtensionHelper.cs" />
+    <Compile Include="Models\Email\EmailHelper.cs" />
     <Compile Include="Models\EnumClasses\DBLookupEnum\EnumFileStatus.cs" />
     <Compile Include="Models\File.cs">
       <DependentUpon>OverDocModel.tt</DependentUpon>
