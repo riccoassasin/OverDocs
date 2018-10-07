@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<NewSecurityDemo.Models.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>
-
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "PublicDocDisplay";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,6 +9,11 @@
         @Html.ActionLink("Create New", "Create")
     </p>*@
 <br />
+@{
+    string AllFileID = "";
+    string UserID_OfUserCurrentlyLoggedIn = User.Identity.GetUserId();
+}
+
 <div class="panel panel-primary">
     <div class="panel-heading"><h4>Repository - Public Documents</h4></div>
     <div class="panel-body">
@@ -55,9 +60,9 @@
                         @*<th>
                                 @Html.DisplayNameFor(model => model.FileShareStatusID)
                             </th>*@
-                        <th>
-                            @Html.Label("File Type")
-                        </th>
+                        @*<th>
+                                @Html.Label("File Type")
+                            </th>*@
                         @*<th>
                                 @Html.DisplayNameFor(model => model.FileName)
                             </th>
@@ -71,9 +76,9 @@
 
                         </th>
 
-                        <th>
-                            @Html.Label("Updated By")
-                        </th>
+                        @*<th>
+                                @Html.Label("Updated By")
+                            </th>*@
                         <th>Options</th>
                     </tr>
                 </thead>
@@ -118,9 +123,9 @@
                             @*<td>
                                     @Html.DisplayFor(modelItem => item.FileShareStatusID)
                                 </td>*@
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FileType)
-                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FileType)
+                                </td>*@
                             @*<td>
                                     @Html.DisplayFor(modelItem => item.FileName)
                                 </td>
@@ -133,13 +138,30 @@
                                 @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
                             </td>
 
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.NameOfUserThatLastUpdatedFile)
+                                </td>*@
                             <td>
-                                @Html.DisplayFor(modelItem => item.NameOfUserThatLastUpdatedFile)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) |
-                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                                @{
+                                    if (item.FileShareStatusID == (int)Common.Enum.DBLookupEnum.FileSharedStatus.Private)
+                                    {
+                                        if (AllFileID.Length > 0)
+                                        {
+                                            AllFileID += "|";
+                                        }
+
+                                        AllFileID += item.FileID;
+                                    }
+
+
+
+
+
+
+                                }
+                                @Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                             </td>
                         </tr>
                     }
@@ -147,6 +169,11 @@
             </table>
         </div>
     </div>
+    <p>@AllFileID</p><br />
+    <p>@UserID_OfUserCurrentlyLoggedIn</p>
+    @{
+        @Html.Hidden("FileID", @AllFileID)
+    }
     <div class="panel-footer">
 
 

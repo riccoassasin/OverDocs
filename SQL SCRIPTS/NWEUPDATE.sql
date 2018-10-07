@@ -1,9 +1,16 @@
-﻿-- =============================================
+USE [WebDocs]
+GO
+/****** Object:  StoredProcedure [dbo].[PublicDocs_R_GetMostRecentFileVersion]    Script Date: 2018/10/07 01:14:48 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE  [dbo].[PublicDocs_R_GetMostRecentFileVersion]
+ALTER PROCEDURE  [dbo].[PublicDocs_R_GetMostRecentFileVersion]
 --DROP Procedure PublicDocs_R_GetMostRecentFileVersion
 	-- Add the parameters for the stored procedure here
 	
@@ -36,6 +43,10 @@ CREATE TABLE #MyTEmpTable
       ,[NameOfUserThatLastUpdatedFile] varchar(500)
 	  ,ComponentLevel int
 );
+
+ Create table #TempOfAllSharedUsersID(
+		UserID Varchar(500)
+ );
 
 ----Start
 DECLARE @FileID int 
@@ -167,6 +178,96 @@ CLOSE vendor_cursor;
 DEALLOCATE vendor_cursor;  
 
 
+-----All new stuff
+Declare @FileIDToDetermineUseredUser int;
+
+Declare @InnerLoop_UserID varchar(500);
+Declare @InnerLoop_ListOfUserID varchar(max);
+
+Declare @LentghtOfUSERIDSet int;
+
+DECLARE UserIDOfTheUsersThatTheFileIsSharedWith_Cursor CURSOR FOR   
+SELECT
+		[FileID]
+	FROM #MyTEmpTable; 
+
+OPEN UserIDOfTheUsersThatTheFileIsSharedWith_Cursor  
+
+FETCH NEXT FROM UserIDOfTheUsersThatTheFileIsSharedWith_Cursor   
+INTO @FileIDToDetermineUseredUser  
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+    ----START OF CURSOR 
+
+	-----New Stuff IOnner Loop
+
+
+			
+
+
+													DECLARE UserIdOfSharedDocs_Cursor CURSOR FOR   
+																		SELECT [UserIDOfSharedDocs]
+																		  FROM [WebDocs].[dbo].[FileSharedWithUsers]
+																		  where FileID = @FileIDToDetermineUseredUser; 
+
+																	OPEN UserIdOfSharedDocs_Cursor  
+
+																	FETCH NEXT FROM UserIdOfSharedDocs_Cursor   
+																	INTO @InnerLoop_UserID  
+
+																	WHILE @@FETCH_STATUS = 0  
+																	BEGIN  
+																	------------start
+																							---------------begin
+
+																							Print 'begningsdfklsdfsf';
+
+																							print 'Value is: ' + Convert(VArchar(100),@InnerLoop_UserID);
+																								
+																								print 'The length is: ' + Convert(VarchaR(1000),Len(@InnerLoop_UserID));
+
+																								select @LentghtOfUSERIDSet = Len(@InnerLoop_UserID);
+
+																								IF @LentghtOfUSERIDSet > 0
+																								BEGIN
+																								SELECT @InnerLoop_ListOfUserID = @InnerLoop_ListOfUserID + '|';
+																										SET @InnerLoop_ListOfUserID = @InnerLoop_ListOfUserID + '|';
+																								END
+
+																									SET @InnerLoop_ListOfUserID = @InnerLoop_ListOfUserID + @InnerLoop_UserID;
+
+																									print @InnerLoop_ListOfUserID;
+																									print'yesy';
+
+																								--END OF COURsOR
+																	-----------End
+																	--END OF COURsOR
+														FETCH NEXT FROM UserIdOfSharedDocs_Cursor 
+														INTO @InnerLoop_UserID  
+													END   
+													CLOSE UserIdOfSharedDocs_Cursor;  
+													DEALLOCATE UserIdOfSharedDocs_Cursor;
+
+
+
+
+
+	---print @FileIDToDetermineUseredUser;
+
+
+	----EndOF New Stuff Inner Loop
+	--END OF COURsOR
+    FETCH NEXT FROM UserIDOfTheUsersThatTheFileIsSharedWith_Cursor 
+	INTO @FileIDToDetermineUseredUser  
+END   
+CLOSE UserIDOfTheUsersThatTheFileIsSharedWith_Cursor;  
+DEALLOCATE UserIDOfTheUsersThatTheFileIsSharedWith_Cursor; 
+
+
+--End of new stuff
+
+
 select [FileID]
       ,[ParentFileID]
       ,[UserIDOfFileOwner]
@@ -185,9 +286,10 @@ select [FileID]
       ,[NameOfFileOwner]
       ,[NameOfUserThatLastUpdatedFile],
 		'' AS FileType
-	   from #MyTEmpTable
-	   where [CurrentFileShareStatus] != 'Hidden';
+	   from #MyTEmpTable;
 ---End
 
 DROP TABLE #MyTEmpTable;
+drop table #TempOfAllSharedUsersID;
 END
+

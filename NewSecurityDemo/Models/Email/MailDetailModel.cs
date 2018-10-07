@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using NewSecurityDemo.Models;
+using System.Linq;
 using System.Net.Mail;
 
-namespace NewSecurityDemo.Models.Email
+namespace OverDocsModels.Email
 {
     public class MailDetailModel
     {

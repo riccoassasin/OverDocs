@@ -192,6 +192,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\EmailHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DownloadFileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Models\EmailSetting.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Email\MailDetailModel.cs" />
     <Compile Include="Models\File.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
