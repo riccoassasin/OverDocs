@@ -34,8 +34,13 @@ CREATE TABLE #MyTEmpTable
       ,[DateCreated] datetime
       ,[NameOfFileOwner] varchar(500)
       ,[NameOfUserThatLastUpdatedFile] varchar(500)
+	  ,[ListOfUserIDThatTheFileISsharedWith] varchar(MAX)
 	  ,ComponentLevel int
 );
+
+ Create table #TempOfAllSharedUsersID(
+		UserID Varchar(500)
+ );
 
 ----Start
 DECLARE @FileID int 
@@ -72,14 +77,11 @@ BEGIN
       ,[CurrentVersionNumber]
       ,[DateCreated]
       ,[NameOfFileOwner]
-      ,[NameOfUserThatLastUpdatedFile],
-	   ComponentLevel) AS
+      ,[NameOfUserThatLastUpdatedFile]
+	  ,[ListOfUserIDThatTheFileISsharedWith] 
+	   ,ComponentLevel) AS
 (
     SELECT
-	
-	 --b.ProductAssemblyID, b.ComponentID, b.PerAssemblyQty,
-       -- b.EndDate, 
-
 		b.[FileID]
       ,b.[ParentFileID]
       ,b.[UserIDOfFileOwner]
@@ -96,9 +98,9 @@ BEGIN
       ,b.[CurrentVersionNumber]
       ,b.[DateCreated]
       ,b.[NameOfFileOwner]
-      ,b.[NameOfUserThatLastUpdatedFile],
-		
-		0 AS ComponentLevel
+      ,b.[NameOfUserThatLastUpdatedFile]
+		,b.[ListOfUserIDThatTheFileISsharedWith] 
+		,0 AS ComponentLevel
     
 	
 	FROM View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile AS b
@@ -125,11 +127,9 @@ BEGIN
       ,bom.[CurrentVersionNumber]
       ,bom.[DateCreated]
       ,bom.[NameOfFileOwner]
-      ,bom.[NameOfUserThatLastUpdatedFile],
-	--bom.ProductAssemblyID, bom.ComponentID, p.PerAssemblyQty,
- --       bom.EndDate, 
-		
-		ComponentLevel + 1
+      ,bom.[NameOfUserThatLastUpdatedFile]
+	  ,bom.[ListOfUserIDThatTheFileISsharedWith]
+		,ComponentLevel + 1
     FROM View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile AS bom 
         INNER JOIN LastFileUpdated AS p
         ON bom.[ParentFileID] = p.[FileID]
@@ -152,8 +152,9 @@ SELECT top 1 [FileID]
       ,[CurrentVersionNumber]
       ,[DateCreated]
       ,[NameOfFileOwner]
-      ,[NameOfUserThatLastUpdatedFile],
-        ComponentLevel 
+      ,[NameOfUserThatLastUpdatedFile]
+	  ,[ListOfUserIDThatTheFileISsharedWith] 
+        ,ComponentLevel 
 FROM LastFileUpdated AS p
     --INNER JOIN Production.Product AS pr
     --ON p.<component_id, sysname, ComponentID> = pr.ProductID
@@ -165,6 +166,99 @@ ORDER BY ComponentLevel desc,[FileID],[ParentFileID]
 END   
 CLOSE vendor_cursor;  
 DEALLOCATE vendor_cursor;  
+
+
+-----All new stuff
+Declare @FileIDToDetermineUseredUser int;
+
+Declare @InnerLoop_UserID varchar(500);
+Declare @InnerLoop_ListOfUserID varchar(max);
+
+
+
+DECLARE UserIDOfTheUsersThatTheFileIsSharedWith_Cursor CURSOR FOR   
+SELECT
+		[FileID]
+	FROM #MyTEmpTable; 
+
+OPEN UserIDOfTheUsersThatTheFileIsSharedWith_Cursor  
+
+FETCH NEXT FROM UserIDOfTheUsersThatTheFileIsSharedWith_Cursor   
+INTO @FileIDToDetermineUseredUser  
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+    ----START OF CURSOR 
+
+	-----New Stuff IOnner Loop
+
+	set @InnerLoop_ListOfUserID = '';
+			
+
+			Declare @LentghtOfUSERIDSet int;
+													DECLARE UserIdOfSharedDocs_Cursor CURSOR FOR   
+																		SELECT [UserIDOfSharedDocs]
+																		  FROM [WebDocs].[dbo].[FileSharedWithUsers]
+																		  where FileID = @FileIDToDetermineUseredUser; 
+
+																	OPEN UserIdOfSharedDocs_Cursor  
+
+																	FETCH NEXT FROM UserIdOfSharedDocs_Cursor   
+																	INTO @InnerLoop_UserID  
+
+																	WHILE @@FETCH_STATUS = 0  
+																	BEGIN  
+																	------------start
+																							---------------begin
+
+																							
+																							--print 'Value is: ' + Convert(VArchar(100),@InnerLoop_UserID);
+																								
+																							--	print 'The length is: ' + Convert(VarchaR(1000),Len(@InnerLoop_UserID));
+
+																								set @LentghtOfUSERIDSet = Convert(int,Len(@InnerLoop_ListOfUserID));
+																								--print 'Length of user id set before entering if statement : ' + convert(varchar(max),@LentghtOfUSERIDSet);
+																								IF @LentghtOfUSERIDSet > 0
+																								BEGIN
+																										--print  'inside of BEGIN  ifstatement : ';
+																										SET @InnerLoop_ListOfUserID = '' + convert(varchar(max),@InnerLoop_ListOfUserID) + '?';
+																										--print  'inside of end  ifstatement : ';
+																								END
+
+																								SET @InnerLoop_ListOfUserID = convert(varchar(max),@InnerLoop_ListOfUserID) + convert(varchar(max), @InnerLoop_UserID);
+																								--print 'before';
+																								--select @InnerLoop_ListOfUserID;
+																								--	print Convert(varchar(max),@InnerLoop_ListOfUserID) + 'finally';
+																								--	print'yesy';
+
+																								--END OF COURsOR
+																	-----------End
+																	--END OF COURsOR
+														FETCH NEXT FROM UserIdOfSharedDocs_Cursor 
+														INTO @InnerLoop_UserID  
+													END   
+													CLOSE UserIdOfSharedDocs_Cursor;  
+													DEALLOCATE UserIdOfSharedDocs_Cursor;
+
+													Update #MyTEmpTable
+													SET ListOfUserIDThatTheFileISsharedWith = @InnerLoop_ListOfUserID
+													where @FileIDToDetermineUseredUser = FileID;
+
+
+
+	---print @FileIDToDetermineUseredUser;
+
+
+	----EndOF New Stuff Inner Loop
+	--END OF COURsOR
+    FETCH NEXT FROM UserIDOfTheUsersThatTheFileIsSharedWith_Cursor 
+	INTO @FileIDToDetermineUseredUser  
+END   
+CLOSE UserIDOfTheUsersThatTheFileIsSharedWith_Cursor;  
+DEALLOCATE UserIDOfTheUsersThatTheFileIsSharedWith_Cursor; 
+
+
+--End of new stuff
 
 
 select [FileID]
@@ -185,9 +279,10 @@ select [FileID]
       ,[NameOfFileOwner]
       ,[NameOfUserThatLastUpdatedFile],
 		'' AS FileType
-	   from #MyTEmpTable
-	   where [CurrentFileShareStatus] != 'Hidden';
+		,[ListOfUserIDThatTheFileISsharedWith]
+	   from #MyTEmpTable;
 ---End
 
 DROP TABLE #MyTEmpTable;
+DROP TABLE #TempOfAllSharedUsersID;
 END

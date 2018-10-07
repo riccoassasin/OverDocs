@@ -181,6 +181,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_PublicDocView_AllFilesWithOwnerAn
             <PropertyRef Name="CurrentVersionNumber" />
             <PropertyRef Name="DateCreated" />
             <PropertyRef Name="FileType" />
+            <PropertyRef Name="ListOfUserIDThatTheFileISsharedWith" />
           </Key>
           <Property Name="FileID" Type="int" Nullable="false" />
           <Property Name="ParentFileID" Type="int" Nullable="false" />
@@ -200,6 +201,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_PublicDocView_AllFilesWithOwnerAn
           <Property Name="NameOfFileOwner" Type="nvarchar(max)" />
           <Property Name="NameOfUserThatLastUpdatedFile" Type="nvarchar(max)" />
           <Property Name="FileType" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="ListOfUserIDThatTheFileISsharedWith" Type="varchar" MaxLength="1" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -439,7 +441,8 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
     [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[DateCreated] AS [DateCreated], 
     [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[NameOfFileOwner] AS [NameOfFileOwner], 
     [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[NameOfUserThatLastUpdatedFile] AS [NameOfUserThatLastUpdatedFile], 
-    [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[FileType] AS [FileType]
+    [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[FileType] AS [FileType], 
+    [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[ListOfUserIDThatTheFileISsharedWith] AS [ListOfUserIDThatTheFileISsharedWith]
     FROM [dbo].[View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile] AS [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_UserDocs_AllUserCreatedDocs" EntityType="Self.View_UserDocs_AllUserCreatedDocs" store:Type="Views" store:Schema="dbo">
@@ -813,15 +816,15 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
           <EntitySet Name="View_PrivateDocView_AllSharedPrivateFiles" EntityType="WebDocsModel.View_PrivateDocView_AllSharedPrivateFiles" />
-          <EntitySet Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" EntityType="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" />
           <EntitySet Name="View_UserDocs_AllUserCreatedDocs" EntityType="WebDocsModel.View_UserDocs_AllUserCreatedDocs" />
           <FunctionImport Name="PrivateDocs_R_GetAllPrivateSharedUserFiles" EntitySet="View_PrivateDocView_AllSharedPrivateFiles" ReturnType="Collection(WebDocsModel.View_PrivateDocView_AllSharedPrivateFiles)">
-            <Parameter Name="CurrentlyLoggedingUserID" Mode="In" Type="String" />
+          <Parameter Name="CurrentlyLoggedingUserID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="PublicDocs_R_GetMostRecentFileVersion" EntitySet="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" ReturnType="Collection(WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile)" />
           <FunctionImport Name="UserDocs_R_GetAllUserCreatedDocs" EntitySet="View_UserDocs_AllUserCreatedDocs" ReturnType="Collection(WebDocsModel.View_UserDocs_AllUserCreatedDocs)">
-            <Parameter Name="UserID" Mode="In" Type="String" />
+          <Parameter Name="UserID" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" EntityType="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" />
         </EntityContainer>
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
           <Key>
@@ -857,42 +860,6 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Property Name="UserThatLastUpdatedFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RefID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="FullFileName" Type="String" Nullable="false" MaxLength="551" FixedLength="false" Unicode="false" />
-          <Property Name="FileType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
-          <Key>
-            <PropertyRef Name="FileID" />
-            <PropertyRef Name="ParentFileID" />
-            <PropertyRef Name="UserIDOfFileOwner" />
-            <PropertyRef Name="UserIDOfLastUploaded" />
-            <PropertyRef Name="FileLookupStatusID" />
-            <PropertyRef Name="FileShareStatusID" />
-            <PropertyRef Name="ContentType" />
-            <PropertyRef Name="FileName" />
-            <PropertyRef Name="FileExtension" />
-            <PropertyRef Name="FullFileName" />
-            <PropertyRef Name="FileSize" />
-            <PropertyRef Name="CurrentVersionNumber" />
-            <PropertyRef Name="DateCreated" />
-            <PropertyRef Name="FileType" />
-          </Key>
-          <Property Name="FileID" Type="Int32" Nullable="false" />
-          <Property Name="ParentFileID" Type="Int32" Nullable="false" />
-          <Property Name="UserIDOfFileOwner" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserIDOfLastUploaded" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CurrentFileStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FileLookupStatusID" Type="Int32" Nullable="false" />
-          <Property Name="CurrentFileShareStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FileShareStatusID" Type="Int32" Nullable="false" />
-          <Property Name="ContentType" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="FileName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="FileExtension" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FullFileName" Type="String" Nullable="false" MaxLength="551" FixedLength="false" Unicode="false" />
-          <Property Name="FileSize" Type="Int32" Nullable="false" />
-          <Property Name="CurrentVersionNumber" Type="Int32" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="NameOfFileOwner" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NameOfUserThatLastUpdatedFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FileType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="View_UserDocs_AllUserCreatedDocs">
@@ -969,6 +936,44 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Property Type="String" Name="FullFileName" Nullable="false" MaxLength="551" />
           <Property Type="String" Name="FileType" Nullable="false" MaxLength="1" />
         </ComplexType>
+        <EntityType Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
+          <Key>
+            <PropertyRef Name="FileID" />
+            <PropertyRef Name="ParentFileID" />
+            <PropertyRef Name="UserIDOfFileOwner" />
+            <PropertyRef Name="UserIDOfLastUploaded" />
+            <PropertyRef Name="FileLookupStatusID" />
+            <PropertyRef Name="FileShareStatusID" />
+            <PropertyRef Name="ContentType" />
+            <PropertyRef Name="FileName" />
+            <PropertyRef Name="FileExtension" />
+            <PropertyRef Name="FullFileName" />
+            <PropertyRef Name="FileSize" />
+            <PropertyRef Name="CurrentVersionNumber" />
+            <PropertyRef Name="DateCreated" />
+            <PropertyRef Name="FileType" />
+            <PropertyRef Name="ListOfUserIDThatTheFileISsharedWith" />
+          </Key>
+          <Property Name="FileID" Type="Int32" Nullable="false" />
+          <Property Name="ParentFileID" Type="Int32" Nullable="false" />
+          <Property Name="UserIDOfFileOwner" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserIDOfLastUploaded" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentFileStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FileLookupStatusID" Type="Int32" Nullable="false" />
+          <Property Name="CurrentFileShareStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FileShareStatusID" Type="Int32" Nullable="false" />
+          <Property Name="ContentType" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FileExtension" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FullFileName" Type="String" Nullable="false" MaxLength="551" FixedLength="false" Unicode="false" />
+          <Property Name="FileSize" Type="Int32" Nullable="false" />
+          <Property Name="CurrentVersionNumber" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NameOfFileOwner" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NameOfUserThatLastUpdatedFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FileType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ListOfUserIDThatTheFileISsharedWith" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1128,30 +1133,6 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
-            <EntityTypeMapping TypeName="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
-              <MappingFragment StoreEntitySet="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
-                <ScalarProperty Name="FileType" ColumnName="FileType" />
-                <ScalarProperty Name="NameOfUserThatLastUpdatedFile" ColumnName="NameOfUserThatLastUpdatedFile" />
-                <ScalarProperty Name="NameOfFileOwner" ColumnName="NameOfFileOwner" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="CurrentVersionNumber" ColumnName="CurrentVersionNumber" />
-                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
-                <ScalarProperty Name="FullFileName" ColumnName="FullFileName" />
-                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
-                <ScalarProperty Name="FileShareStatusID" ColumnName="FileShareStatusID" />
-                <ScalarProperty Name="CurrentFileShareStatus" ColumnName="CurrentFileShareStatus" />
-                <ScalarProperty Name="FileLookupStatusID" ColumnName="FileLookupStatusID" />
-                <ScalarProperty Name="CurrentFileStatus" ColumnName="CurrentFileStatus" />
-                <ScalarProperty Name="UserIDOfLastUploaded" ColumnName="UserIDOfLastUploaded" />
-                <ScalarProperty Name="UserIDOfFileOwner" ColumnName="UserIDOfFileOwner" />
-                <ScalarProperty Name="ParentFileID" ColumnName="ParentFileID" />
-                <ScalarProperty Name="FileID" ColumnName="FileID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="View_UserDocs_AllUserCreatedDocs">
             <EntityTypeMapping TypeName="WebDocsModel.View_UserDocs_AllUserCreatedDocs">
               <MappingFragment StoreEntitySet="View_UserDocs_AllUserCreatedDocs">
@@ -1180,6 +1161,31 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <FunctionImportMapping FunctionImportName="PublicDocs_R_GetMostRecentFileVersion" FunctionName="WebDocsModel.Store.PublicDocs_R_GetMostRecentFileVersion" />
           <FunctionImportMapping FunctionImportName="UserDocs_R_GetAllUserCreatedDocs" FunctionName="WebDocsModel.Store.UserDocs_R_GetAllUserCreatedDocs">
           </FunctionImportMapping>
+          <EntitySetMapping Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
+            <EntityTypeMapping TypeName="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
+              <MappingFragment StoreEntitySet="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
+                <ScalarProperty Name="ListOfUserIDThatTheFileISsharedWith" ColumnName="ListOfUserIDThatTheFileISsharedWith" />
+                <ScalarProperty Name="FileType" ColumnName="FileType" />
+                <ScalarProperty Name="NameOfUserThatLastUpdatedFile" ColumnName="NameOfUserThatLastUpdatedFile" />
+                <ScalarProperty Name="NameOfFileOwner" ColumnName="NameOfFileOwner" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="CurrentVersionNumber" ColumnName="CurrentVersionNumber" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="FullFileName" ColumnName="FullFileName" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="FileShareStatusID" ColumnName="FileShareStatusID" />
+                <ScalarProperty Name="CurrentFileShareStatus" ColumnName="CurrentFileShareStatus" />
+                <ScalarProperty Name="FileLookupStatusID" ColumnName="FileLookupStatusID" />
+                <ScalarProperty Name="CurrentFileStatus" ColumnName="CurrentFileStatus" />
+                <ScalarProperty Name="UserIDOfLastUploaded" ColumnName="UserIDOfLastUploaded" />
+                <ScalarProperty Name="UserIDOfFileOwner" ColumnName="UserIDOfFileOwner" />
+                <ScalarProperty Name="ParentFileID" ColumnName="ParentFileID" />
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

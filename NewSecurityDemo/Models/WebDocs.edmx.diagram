@@ -27,8 +27,8 @@
         <AssociationConnector Association="WebDocsModel.FK_FileSharedWithUsers_Files" ManuallyRouted="false" />
         <AssociationConnector Association="WebDocsModel.AspNetUserRoles" ManuallyRouted="false" />
         <EntityTypeShape EntityType="WebDocsModel.View_PrivateDocView_AllSharedPrivateFiles" Width="1.5" PointX="0.75" PointY="9.75" />
-        <EntityTypeShape EntityType="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" Width="1.5" PointX="2.75" PointY="9.75" />
         <EntityTypeShape EntityType="WebDocsModel.View_UserDocs_AllUserCreatedDocs" Width="1.5" PointX="8.75" PointY="9.75" />
+        <EntityTypeShape EntityType="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" Width="2.25" PointX="2.75" PointY="9.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

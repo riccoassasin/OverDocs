@@ -39,8 +39,8 @@ namespace NewSecurityDemo.Models
         public virtual DbSet<LookupTable_FileStatuses> LookupTable_FileStatuses { get; set; }
         public virtual DbSet<LookupTable_ShareStatues> LookupTable_ShareStatues { get; set; }
         public virtual DbSet<View_PrivateDocView_AllSharedPrivateFiles> View_PrivateDocView_AllSharedPrivateFiles { get; set; }
-        public virtual DbSet<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile { get; set; }
         public virtual DbSet<View_UserDocs_AllUserCreatedDocs> View_UserDocs_AllUserCreatedDocs { get; set; }
+        public virtual DbSet<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile { get; set; }
     
         public virtual ObjectResult<View_PrivateDocView_AllSharedPrivateFiles> PrivateDocs_R_GetAllPrivateSharedUserFiles(string currentlyLoggedingUserID)
         {

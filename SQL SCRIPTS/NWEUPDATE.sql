@@ -184,7 +184,7 @@ Declare @FileIDToDetermineUseredUser int;
 Declare @InnerLoop_UserID varchar(500);
 Declare @InnerLoop_ListOfUserID varchar(max);
 
-Declare @LentghtOfUSERIDSet int;
+
 
 DECLARE UserIDOfTheUsersThatTheFileIsSharedWith_Cursor CURSOR FOR   
 SELECT
@@ -205,7 +205,7 @@ BEGIN
 
 			
 
-
+			Declare @LentghtOfUSERIDSet int;
 													DECLARE UserIdOfSharedDocs_Cursor CURSOR FOR   
 																		SELECT [UserIDOfSharedDocs]
 																		  FROM [WebDocs].[dbo].[FileSharedWithUsers]
@@ -227,16 +227,17 @@ BEGIN
 																								
 																								print 'The length is: ' + Convert(VarchaR(1000),Len(@InnerLoop_UserID));
 
-																								select @LentghtOfUSERIDSet = Len(@InnerLoop_UserID);
-
+																								set @LentghtOfUSERIDSet = Convert(int,Len(@InnerLoop_UserID));
+																								print 'sdjkhfsdkjfhsdkj' + convert(varchar(max),@LentghtOfUSERIDSet);
 																								IF @LentghtOfUSERIDSet > 0
 																								BEGIN
-																								SELECT @InnerLoop_ListOfUserID = @InnerLoop_ListOfUserID + '|';
+																								--sELECT @InnerLoop_ListOfUserID = @InnerLoop_ListOfUserID + '|';
 																										SET @InnerLoop_ListOfUserID = @InnerLoop_ListOfUserID + '|';
 																								END
 
-																									SET @InnerLoop_ListOfUserID = @InnerLoop_ListOfUserID + @InnerLoop_UserID;
-
+																								SET @InnerLoop_ListOfUserID = @InnerLoop_ListOfUserID + @InnerLoop_UserID;
+																								print 'before';
+																								select @InnerLoop_ListOfUserID;
 																									print @InnerLoop_ListOfUserID;
 																									print'yesy';
 
