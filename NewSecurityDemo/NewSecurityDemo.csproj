@@ -200,6 +200,7 @@
     <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\PrivateDocsController.cs" />
     <Compile Include="Controllers\PublicDocsController.cs" />
+    <Compile Include="Controllers\UploadFileController.cs" />
     <Compile Include="Controllers\UserDocsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -403,6 +404,7 @@
     <Folder Include="Models\MultiModels\UserDocsModels\" />
     <Folder Include="Views\DownloadFile\" />
     <Folder Include="Views\Notifications\" />
+    <Folder Include="Views\UploadFile\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -13,7 +13,17 @@
     </p>*@
 
 
+<style>
+    .modal-dialog {
+        width: 500px;
+        height: 600px;
+    }
 
+    .modal-content {
+        /* 80% of window height
+        height: 60%;*/
+    }
+</style>
 <div class="panel panel-primary">
     <div class="panel-heading"><h4>Repository - User Documents</h4></div>
     <div class="panel-body">
@@ -86,24 +96,95 @@
 
                             <!-- Modal -->
                             <div class="modal fade" id="UploadUserFileModal" role="dialog">
-                                <div class="modal-dialog modal-lg">
+                                <div class="modal-dialog modal-sm">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h4 class="modal-title">Upload User File</h4>
                                         </div>
                                         <div class="modal-body">
-                                            @using (Html.BeginForm("UploadUserFile", "UserDocs", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                            {
 
-                                                <table>
-                                                    <tr>
-                                                        <td>@Html.Label("Select File:")</td>
-                                                        <td> <input type="file" name="file" id="file" /></td>
-                                                    </tr>
-                                                    <tr><td colspan="2"> <input type="submit" value="Upload Image" /></td></tr>
-                                                </table>
-                                            }
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">Select Share Status</div>
+                                                <div class="panel-body">
+                                                    <div class="well well-sm">
+                                                        <div class="row text-center">
+                                                            Public:   @Html.RadioButton("radFileShareStatus", "1", true)
+                                                            Private:    @Html.RadioButton("radFileShareStatus", "2")
+                                                            Hidden:   @Html.RadioButton("radFileShareStatus", "6")
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">Select File To Upload</div>
+                                                <div class="panel-body">
+                                                    <div class="well well-sm">
+                                                        <div class="row">
+                                                            <table>
+                                                                <tr>
+                                                                    <td> <input type="file" name="UploadFile" id="Crtl_UploadFile" class="btn" /></td>
+                                                                    <td><input type="button" id="SubmitFileToUpload" class="btn btn-default" onclick="UploadSelectedFile();" value="Upload File" /></td>
+                                                                </tr>
+                                                            </table>
+                                                            <script type="text/javascript">
+                                                                function UploadSelectedFile() {
+
+                                                                    var input = $('#Crtl_UploadFile');
+                                                                    var files = input.prop("files");
+
+                                                                    if (files.length > 0) {
+                                                                        if (window.FormData !== undefined) {
+                                                                            var data = new FormData();
+                                                                            for (var x = 0; x < files.length; x++) {
+                                                                                data.append("file" + x, files[x]);
+                                                                            }
+
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                url: '/UploadFile/UploadHomeReport?_FileShareStatusID=' + $('input[name=radFileShareStatus]:checked').val(),
+                                                                                contentType: false,
+                                                                                processData: false,
+                                                                                data: data,
+                                                                                success: function (result) {
+                                                                                    alert(result);
+                                                                                },
+                                                                                error: function (xhr, status, p3, p4) {
+                                                                                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                                                                                    if (xhr.responseText && xhr.responseText[0] == "{")
+                                                                                        err = JSON.parse(xhr.responseText).Message;
+                                                                                    alert(err);
+                                                                                }
+                                                                            });
+                                                                        } else {
+                                                                            alert("This browser doesn't support HTML5 file uploads!");
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                            </script>
+                                                        </div>
+                                                    </div>
+                                                    <div id="Insert"></div>
+                                                </div>
+                                            </div>
+
+
+
+                                            @*@using (Html.BeginForm("UploadUserFile", "UserDocs", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                                {
+
+
+                                                    <table>
+                                                        <tr>
+                                                            <td>@Html.Label("Select File:")</td>
+                                                            <td> <input type="file" name="file" id="file" /></td>
+                                                        </tr>
+                                                        <tr><td colspan="2"> <input type="submit" value="Upload Image" /></td></tr>
+                                                    </table>
+                                                }*@
+
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -209,3 +290,4 @@
         <td></td>
     </tr>
 </table>
+
