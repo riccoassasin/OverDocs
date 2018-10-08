@@ -1,5 +1,12 @@
 ﻿@model IEnumerable<NewSecurityDemo.Models.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>
 @using Microsoft.AspNet.Identity;
+@using OverDocsModels.DecisionModels.PublicDocuments.IsAvaiable;
+@using SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles;
+@using SystemLogic;
+@using SystemLogic.DescisionClasses.PublicViewedFiles;
+@using Common.Enum.SystemLogicEnum;
+@using SystemLogic.Interfaces;
+@using Common.Enum.DBLookupEnum;
 @{
     ViewBag.Title = "PublicDocDisplay";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -143,16 +150,37 @@
                                     @Html.DisplayFor(modelItem => item.NameOfUserThatLastUpdatedFile)
                                 </td>*@
                             <td>
-                                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                                @{
-                                    if (item.FileShareStatusID == (int)Common.Enum.DBLookupEnum.FileSharedStatus.Private)
-                                    {
-                                        if (AllFileID.Length > 0)
-                                        {
-                                            AllFileID += "|";
-                                        }
 
-                                        AllFileID += item.FileID;
+                                @{
+                                    IDecsions Decision;
+                                    switch (item.FileLookupStatusID)
+                                    {
+                                        case (int)FileViewStatus.FileIsAvailable:
+                                            Decision = new PublicViewAvailableFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsAvailableDataModel()
+                                            {
+                                                FileID = item.FileID,
+                                                FileOwnerID = item.UserIDOfFileOwner,
+                                                FileStatusID = item.FileLookupStatusID,
+                                                FileSharedStautusID = item.FileShareStatusID,
+                                                FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
+                                            });
+                                            break;
+                                        case (int)FileViewStatus.FileIsLocked:
+                                            //@Html.ActionLink("Locked Must Do Still", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                            Decision = new PublicViewAvailableFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsAvailableDataModel()
+                                            {
+                                                FileID = item.FileID,
+                                                FileOwnerID = item.UserIDOfFileOwner,
+                                                FileStatusID = item.FileLookupStatusID,
+                                                FileSharedStautusID = item.FileShareStatusID,
+                                                FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
+                                            });
+                                            break;
+
+
+                                        default:
+                                            Decision = null;
+                                            break;
                                     }
 
 
@@ -160,8 +188,44 @@
 
 
 
+                                    switch (Decision.FinalDecision)
+                                    {
+                                        case ControlTypes.Download:
+                                            @Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;
+                                            break;
+                                        case ControlTypes.UploadFileNotification:
+                                            @Html.ActionLink("Notify to Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                            break;
+                                        case ControlTypes.RequestPermissionNotifications:
+                                            @Html.ActionLink("Request Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                            break;
+                                        default:
+
+                                            break;
+
+                                    }
+
                                 }
-                                @Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                                @{
+                                    //if (item.FileShareStatusID == (int)Common.Enum.DBLookupEnum.FileSharedStatus.Private)
+                                    //{
+                                    //    if (AllFileID.Length > 0)
+                                    //    {
+                                    //        AllFileID += "|";
+                                    //    }
+                                    //    SystemLogic.DescisionClasses.PublicViewAvailableFile x = new SystemLogic.DescisionClasses.PublicViewAvailableFile("",null);
+
+                                    //    AllFileID += item.FileID;
+                                    //}
+
+
+
+
+
+
+                                }
+
                                 @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                             </td>
                         </tr>

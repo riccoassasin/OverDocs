@@ -26,7 +26,7 @@ namespace NewSecurityDemo.Controllers
         }
 
         [HttpPost]
-        public JsonResult UploadHomeReport(int _FileShareStatusID)
+        public JsonResult UserFileUpload(int _FileShareStatusID)
         {
             try
             {

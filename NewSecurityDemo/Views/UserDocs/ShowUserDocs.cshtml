@@ -131,12 +131,7 @@
                                                                 </tr>
                                                             </table>
                                                             <script type="text/javascript">
-                                                                function Filter() {
-                                                                    var value = $('#myInput').val().toLowerCase();
-                                                                    $("#ListToFilterListToFilter tr").filter(function () {
-                                                                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                                                                    });
-                                                                }
+                                                                
 
                                                                 function UploadSelectedFile() {
 
@@ -182,6 +177,13 @@
 
                                                                         $('#Crtl_UploadFile').val(null);
                                                                     }
+                                                                }
+
+                                                                function Filter() {
+                                                                    var value = $('#myInput').val().toLowerCase();
+                                                                    $("#ListToFilterListToFilter tr").filter(function () {
+                                                                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                                                    });
                                                                 }
 
                                                             </script>

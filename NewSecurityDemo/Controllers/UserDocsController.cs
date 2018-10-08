@@ -5,6 +5,7 @@ using NewSecurityDemo.Models;
 using OverDocsModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
@@ -19,15 +20,24 @@ namespace NewSecurityDemo.Controllers
         [Authorize]
         public ActionResult ShowUserDocs()
         {
-            System.Data.Entity.Core.Objects.ObjectResult<View_UserDocs_AllUserCreatedDocs> dd = db.UserDocs_R_GetAllUserCreatedDocs(User.Identity.GetUserId());
+            ObjectResult<View_UserDocs_AllUserCreatedDocs> dd = db.UserDocs_R_GetAllUserCreatedDocs(User.Identity.GetUserId());
 
-            //Generates a list of all files returned from the database.
             List<View_UserDocs_AllUserCreatedDocs> AllUserFiles = dd.ToList<View_UserDocs_AllUserCreatedDocs>();
 
             foreach (View_UserDocs_AllUserCreatedDocs f in AllUserFiles)
             {
                 f.FileType = FileExtensionHelper.GetFileType(f.FileExtension);
             }
+            //EmailSetting ES = db.EmailSettings.FirstOrDefault();
+            //Common.Email.EmailHelper.sendMessage(
+            //    _ToAddress: "Brendanw@mweb.co.za",
+            //    _FromAddress: "Brendanw@mweb.co.za",
+            //    _FromName: "Brednan Wood",
+            //    _ToName: "Ricco",
+            //    _Subject: "Test Message",
+            //    _Message: "This Shows that the System can can send email messages",
+            //     _Credentials_UserName: "Brendanw@mweb.co.za",
+            //     _Credentials_Password: "speedie3");
 
             return View(AllUserFiles);
 
@@ -40,18 +50,11 @@ namespace NewSecurityDemo.Controllers
             {
                 try
                 {
-                    //string path = Path.Combine(Server.MapPath("~/Images"),
-                    //                           Path.GetFileName(file.FileName));
-                    //file.SaveAs(path);
-
-
                     byte[] uploadedFile = new byte[file.InputStream.Length];
                     file.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
 
                     int length = file.FileName.Length;
                     string[] Name = file.FileName.Split('.');
-                    ///insert into db 
-                    ///
 
                     File newfile = new File();
 

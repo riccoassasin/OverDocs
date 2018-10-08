@@ -192,7 +192,6 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Common\EmailHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DownloadFileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -333,6 +332,7 @@
     <Content Include="Models\WebDocs.edmx.diagram">
       <DependentUpon>WebDocs.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -431,6 +431,14 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{de38bee2-6d34-4ca5-bde1-92e6d8362b1f}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OverDocsModels\OverDocsModels.csproj">
+      <Project>{1563e194-4ce3-47ce-b30e-fe12f2213287}</Project>
+      <Name>OverDocsModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemLogic\SystemLogic.csproj">
+      <Project>{2ea4fea6-ad92-4665-9840-94a8a2e3691d}</Project>
+      <Name>SystemLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
