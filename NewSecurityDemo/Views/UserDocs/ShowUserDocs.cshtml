@@ -25,7 +25,10 @@
     }
 </style>
 <div class="panel panel-primary">
-    <div class="panel-heading"><h4>Repository - User Documents</h4></div>
+    <div class="panel-heading">
+        <h4>Repository - User Documents</h4>
+        <input class="form-control" id="myInput" type="text" placeholder="Search.."><input class="btn" value="click" onclick="Filter();" />
+    </div>
     <div class="panel-body">
         <div class="table-responsive">
             <table class="table-condensed table-hover ">
@@ -128,6 +131,13 @@
                                                                 </tr>
                                                             </table>
                                                             <script type="text/javascript">
+                                                                function Filter() {
+                                                                    var value = $('#myInput').val().toLowerCase();
+                                                                    $("#ListToFilterListToFilter tr").filter(function () {
+                                                                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                                                    });
+                                                                }
+
                                                                 function UploadSelectedFile() {
 
                                                                     var input = $('#Crtl_UploadFile');
@@ -142,12 +152,22 @@
 
                                                                             $.ajax({
                                                                                 type: "POST",
-                                                                                url: '/UploadFile/UploadHomeReport?_FileShareStatusID=' + $('input[name=radFileShareStatus]:checked').val(),
+                                                                                url: '/UploadFile/UserFileUpload?_FileShareStatusID=' + $('input[name=radFileShareStatus]:checked').val(),
                                                                                 contentType: false,
                                                                                 processData: false,
                                                                                 data: data,
                                                                                 success: function (result) {
-                                                                                    alert(result);
+                                                                                    $("#UpLoadMessage").hide();
+                                                                                    $('#UpLoadMessage').html(result);
+
+                                                                                    $("#UpLoadMessage").fadeIn("slow", function () {
+                                                                                        // Animation complete.
+
+                                                                                        $(this).fadeOut("slow", function () {
+                                                                                            $('#UpLoadMessage').html('');
+                                                                                        });
+                                                                                    });
+
                                                                                 },
                                                                                 error: function (xhr, status, p3, p4) {
                                                                                     var err = "Error " + " " + status + " " + p3 + " " + p4;
@@ -159,13 +179,15 @@
                                                                         } else {
                                                                             alert("This browser doesn't support HTML5 file uploads!");
                                                                         }
+
+                                                                        $('#Crtl_UploadFile').val(null);
                                                                     }
                                                                 }
 
                                                             </script>
                                                         </div>
                                                     </div>
-                                                    <div id="Insert"></div>
+                                                    <div id="UpLoadMessage"></div>
                                                 </div>
                                             </div>
 
@@ -195,7 +217,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ListToFilterListToFilter">
 
 
                     @foreach (var item in Model)
@@ -276,6 +298,7 @@
     </div>
 
 </div>
+
 <table>
     <tr>
         <td>

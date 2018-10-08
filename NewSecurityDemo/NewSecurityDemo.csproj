@@ -230,6 +230,7 @@
     <Compile Include="Models\EmailSetting.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Email\EmailSetings.cs" />
     <Compile Include="Models\Email\MailDetailModel.cs" />
     <Compile Include="Models\File.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enum\DBLookupEnum\EnumFileStatus.cs" />
+    <Compile Include="Enum\SystemLogicEnum\ControlTypes.cs" />
     <Compile Include="Files\FileExtensionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
