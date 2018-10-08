@@ -153,36 +153,30 @@
 
                                 @{
                                     IDecsions Decision;
-                                    switch (item.FileLookupStatusID)
+                                    //switch (item.FileLookupStatusID)
+                                    //{
+                                    //    case (int)FileViewStatus.FileIsAvailable:
+
+                                    //        break;
+                                    //    //case (int)FileViewStatus.FileIsLocked:
+                                    //    //    //@Html.ActionLink("Locked Must Do Still", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                    //    //    Decision = null;
+                                    //    //    break;
+
+
+                                    //    default:
+                                    //        Decision = null;
+                                    //        break;
+                                    //}
+
+                                    Decision = new PublicViewAvailableFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsAvailableDataModel()
                                     {
-                                        case (int)FileViewStatus.FileIsAvailable:
-                                            Decision = new PublicViewAvailableFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsAvailableDataModel()
-                                            {
-                                                FileID = item.FileID,
-                                                FileOwnerID = item.UserIDOfFileOwner,
-                                                FileStatusID = item.FileLookupStatusID,
-                                                FileSharedStautusID = item.FileShareStatusID,
-                                                FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
-                                            });
-                                            break;
-                                        case (int)FileViewStatus.FileIsLocked:
-                                            //@Html.ActionLink("Locked Must Do Still", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
-                                            Decision = new PublicViewAvailableFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsAvailableDataModel()
-                                            {
-                                                FileID = item.FileID,
-                                                FileOwnerID = item.UserIDOfFileOwner,
-                                                FileStatusID = item.FileLookupStatusID,
-                                                FileSharedStautusID = item.FileShareStatusID,
-                                                FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
-                                            });
-                                            break;
-
-
-                                        default:
-                                            Decision = null;
-                                            break;
-                                    }
-
+                                        FileID = item.FileID,
+                                        FileOwnerID = item.UserIDOfFileOwner,
+                                        FileStatusID = item.FileLookupStatusID,
+                                        FileSharedStautusID = item.FileShareStatusID,
+                                        FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
+                                    });
 
 
 
@@ -197,7 +191,7 @@
                                             @Html.ActionLink("Notify to Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
                                             break;
                                         case ControlTypes.RequestPermissionNotifications:
-                                            @Html.ActionLink("Request Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                            @Html.ActionLink("Request Permission", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
                                             break;
                                         default:
 

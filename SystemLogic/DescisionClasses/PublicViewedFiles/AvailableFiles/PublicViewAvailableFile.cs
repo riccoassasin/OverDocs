@@ -31,7 +31,7 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
         /// <summary>
         /// Constructor accepts tthe id of the currently login in user.
         /// </summary>
-        /// <param name="UserID"></param>
+        /// <param name="UserID">ID Of the Current Person taht is logged on</param>
         public PublicViewAvailableFile(string UserID, PublicDocsAvailableDataModel Model)
         {
             this._ID_OfUserCurrentlyLoggedIn = UserID;
@@ -67,7 +67,6 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
             if (IS_FILE_PUBLIC)
             {
                 this._FinalDecision = ControlTypes.Download;
-
             }
             else
             {
