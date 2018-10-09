@@ -13,29 +13,15 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
 {
     public class PublicViewAvailableFile : AbstractDecision
     {
-        /// <summary>
-        /// USERID of theuser currently logged in.
-        /// </summary>
-        private string _ID_OfUserCurrentlyLoggedIn = "";
-
-        /// <summary>
-        /// Data required to determine the correct link to display.
-        /// </summary>
-        private IFileLinkDecisionModel _Model;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        string ID_OfUserCurrentlyLoggedIn { get; }
 
         /// <summary>
         /// Constructor accepts tthe id of the currently login in user.
         /// </summary>
         /// <param name="UserID">ID Of the Current Person taht is logged on</param>
-        public PublicViewAvailableFile(string UserID, PublicDocsAvailableDataModel Model)
+        public PublicViewAvailableFile(string UserID, IFileLinkDecisionModel Model)
         {
-            this._ID_OfUserCurrentlyLoggedIn = UserID;
-            this._Model = Model;
+            this.ID_OfUserCurrentlyLoggedIn = UserID;
+            this.Model = Model;
             this.IntialiseDecisionVariables();
             this.DetermineCorrectButton();
 
@@ -90,7 +76,7 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
 
         protected override void Determine_IS_FILE_PUBLIC_OR_PRIVATE()
         {
-            switch (_Model.FileSharedStautusID)
+            switch (Model.FileSharedStautusID)
             {
                 case (int)FileSharedStatus.Public:
                     this.IS_FILE_PUBLIC = true;
@@ -106,7 +92,7 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
 
         protected override void Determine_IS_FILE_OWNER_AND_USER_LOGGED_IN_THE_SAME_PERSON()
         {
-            if (this._ID_OfUserCurrentlyLoggedIn == this._Model.FileOwnerID)
+            if (this.ID_OfUserCurrentlyLoggedIn == this.Model.FileOwnerID)
             {
                 this.IS_FILE_OWNER_AND_USER_LOGGED_IN_THE_SAME_PERSON = true;
             }
@@ -114,9 +100,9 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
 
         protected override void Determine_IS_THE_CURRENT_FILE_SHARED_WITH_USER_CURRENTLY_LOGGED_IN()
         {
-            if (((PublicDocsAvailableDataModel)_Model).FileID_FilesSharedWithUser.Length > 0)
+            if (((PublicDocsAvailableDataModel)Model).FileID_FilesSharedWithUser.Length > 0)
             {
-                string[] AllFilesSharedWithUser = ((PublicDocsAvailableDataModel)_Model).FileID_FilesSharedWithUser.Split('?');
+                string[] AllFilesSharedWithUser = ((PublicDocsAvailableDataModel)Model).FileID_FilesSharedWithUser.Split('?');
                 foreach (string SharedFileID in AllFilesSharedWithUser)
                 {
                     if (SharedFileID.Equals(SharedFileID))

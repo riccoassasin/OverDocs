@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Common.Enum.SystemLogicEnum;
+﻿using Common.Enum.SystemLogicEnum;
+using OverDocsModels.Interfaces;
+using System;
 using SystemLogic.Interfaces;
+
 
 namespace SystemLogic.AbstractClasses
 {
-    public abstract class AbstractDecision : IDecsions
+    public abstract class AbstractDecision : IDecsions 
     {
         protected ControlTypes _FinalDecision = ControlTypes.Download;
         public abstract ControlTypes FinalDecision { get; }
+        protected string ID_OfUserCurrentlyLoggedIn { get; set; }
+        /// <summary>
+        /// Data required to determine the correct link to display.
+        /// </summary>
+        protected IFileLinkDecisionModel Model;
 
         protected Boolean IS_FILE_PUBLIC = false;
         protected Boolean IS_FILE_PRIVATE = false;

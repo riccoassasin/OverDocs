@@ -44,6 +44,7 @@
     <Compile Include="AbstractClasses\AbstractDecision.cs" />
     <Compile Include="DescisionClasses\PublicViewedFiles\AvailableFiles\PublicViewAvailableFile.cs" />
     <Compile Include="DescisionClasses\DetermineLockedControls.cs" />
+    <Compile Include="DescisionClasses\PublicViewedFiles\LockedFiles\PublicViewLockedFile.cs" />
     <Compile Include="Interfaces\IDecsions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,7 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DescisionClasses\PrivateViewedFiles\" />
-    <Folder Include="DescisionClasses\PublicViewedFiles\LockedFiles\" />
     <Folder Include="DescisionClasses\UserViewedFiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

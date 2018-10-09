@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DecisionModels\AvailableDescisionModel.cs" />
     <Compile Include="DecisionModels\PublicDocuments\IsAvailable\PublicDocsAvailableDataModel.cs" />
+    <Compile Include="DecisionModels\PublicDocuments\IsLocked\PublicDocsLockedDataModel.cs" />
     <Compile Include="Email\MailDetailModel.cs" />
     <Compile Include="Interfaces\IFileLinkDecisionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,7 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DecisionModels\PrivateDocuments\" />
-    <Folder Include="DecisionModels\PublicDocuments\IsLocked\" />
     <Folder Include="DecisionModels\UserDocuments\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
