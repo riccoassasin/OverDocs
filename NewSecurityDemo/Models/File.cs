@@ -19,6 +19,7 @@ namespace NewSecurityDemo.Models
         {
             this.FileCategories = new HashSet<FileCategory>();
             this.FileSharedWithUsers = new HashSet<FileSharedWithUser>();
+            this.Notifications = new HashSet<Notification>();
         }
     
         public int FileID { get; set; }
@@ -42,5 +43,7 @@ namespace NewSecurityDemo.Models
         public virtual LookupTable_ShareStatues LookupTable_ShareStatues { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileSharedWithUser> FileSharedWithUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

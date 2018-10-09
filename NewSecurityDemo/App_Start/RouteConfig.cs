@@ -14,6 +14,15 @@ namespace NewSecurityDemo
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
 
+            #region Notifications
+
+
+            routes.MapRoute(
+           name: "User Notifications",
+           url: "{controller}/{action}",
+           defaults: new { controller = "Notifications", action = "ShowNotifications" });
+            #endregion
+
             #region FileDownloading
             routes.MapRoute(
               name: "FileDownloadRoute",

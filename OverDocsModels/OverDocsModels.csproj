@@ -56,7 +56,6 @@
     <Compile Include="Email\MailDetailModel.cs" />
     <Compile Include="Interfaces\IFileLinkDecisionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="test123.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

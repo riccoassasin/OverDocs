@@ -15,6 +15,16 @@ namespace NewSecurityDemo.Models
     public partial class Notification
     {
         public int NotificationID { get; set; }
+        public int FileID { get; set; }
+        public int NotificationTypeID { get; set; }
         public System.DateTime DateCreated { get; set; }
+        public string UserIDOfNotificationSender { get; set; }
+        public string UserIDOfNotificationRecipient { get; set; }
+        public bool UserHasAcknowledgement { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        public virtual File File { get; set; }
+        public virtual LookupTableNotificationType LookupTableNotificationType { get; set; }
     }
 }

@@ -125,6 +125,25 @@
           <Property Name="FileShareStatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FileShareStatus" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="LookupTableNotificationTypes">
+          <Key>
+            <PropertyRef Name="NotificationTypeID" />
+          </Key>
+          <Property Name="NotificationTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NotificationType" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileID" Type="int" Nullable="false" />
+          <Property Name="NotificationTypeID" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="UserIDOfNotificationSender" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserIDOfNotificationRecipient" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserHasAcknowledgement" Type="bit" Nullable="false" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'WebDocs.dbo.View_PrivateDocView_AllSharedPrivateFiles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
@@ -380,6 +399,54 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Notifications_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="UserIDOfNotificationSender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="UserIDOfNotificationRecipient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Files">
+          <End Role="Files" Type="Self.Files" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Files">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_LookupTableNotificationTypes">
+          <End Role="LookupTableNotificationTypes" Type="Self.LookupTableNotificationTypes" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LookupTableNotificationTypes">
+              <PropertyRef Name="NotificationTypeID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="NotificationTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="PrivateDocs_R_GetAllPrivateSharedUserFiles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CurrentlyLoggedingUserID" Type="nvarchar" Mode="In" />
         </Function>
@@ -400,6 +467,8 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <EntitySet Name="LookupTable_FileCategories" EntityType="Self.LookupTable_FileCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LookupTable_FileStatuses" EntityType="Self.LookupTable_FileStatuses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LookupTable_ShareStatues" EntityType="Self.LookupTable_ShareStatues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LookupTableNotificationTypes" EntityType="Self.LookupTableNotificationTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="View_PrivateDocView_AllSharedPrivateFiles" EntityType="Self.View_PrivateDocView_AllSharedPrivateFiles" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [View_PrivateDocView_AllSharedPrivateFiles].[FileID] AS [FileID], 
@@ -510,6 +579,22 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             <End Role="Files" EntitySet="Files" />
             <End Role="FileSharedWithUsers" EntitySet="FileSharedWithUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_Notifications_AspNetUsers" Association="Self.FK_Notifications_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_AspNetUsers1" Association="Self.FK_Notifications_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Files" Association="Self.FK_Notifications_Files">
+            <End Role="Files" EntitySet="Files" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_LookupTableNotificationTypes" Association="Self.FK_Notifications_LookupTableNotificationTypes">
+            <End Role="LookupTableNotificationTypes" EntitySet="LookupTableNotificationTypes" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -567,6 +652,8 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <NavigationProperty Name="Files" Relationship="Self.FK_Files_AspNetUsers" FromRole="AspNetUsers" ToRole="Files" />
           <NavigationProperty Name="FileSharedWithUsers" Relationship="Self.FK_FileSharedWithUsers_AspNetUsers" FromRole="AspNetUsers" ToRole="FileSharedWithUsers" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Notifications" Relationship="WebDocsModel.FK_Notifications_AspNetUsers" FromRole="AspNetUser" ToRole="Notification" />
+          <NavigationProperty Name="Notifications1" Relationship="WebDocsModel.FK_Notifications_AspNetUsers1" FromRole="AspNetUser" ToRole="Notification" />
         </EntityType>
         <EntityType Name="EmailSetting">
           <Key>
@@ -611,6 +698,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <NavigationProperty Name="LookupTable_FileStatuses" Relationship="Self.FK_Files_LookupTable_FileStatuses" FromRole="Files" ToRole="LookupTable_FileStatuses" />
           <NavigationProperty Name="LookupTable_ShareStatues" Relationship="Self.FK_Files_LookupTable_ShareStatues" FromRole="Files" ToRole="LookupTable_ShareStatues" />
           <NavigationProperty Name="FileSharedWithUsers" Relationship="Self.FK_FileSharedWithUsers_Files" FromRole="Files" ToRole="FileSharedWithUsers" />
+          <NavigationProperty Name="Notifications" Relationship="WebDocsModel.FK_Notifications_Files" FromRole="File" ToRole="Notification" />
         </EntityType>
         <EntityType Name="FileSharedWithUser">
           <Key>
@@ -825,6 +913,24 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Parameter Name="UserID" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" EntityType="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" />
+          <EntitySet Name="LookupTableNotificationTypes" EntityType="WebDocsModel.LookupTableNotificationType" />
+          <EntitySet Name="Notifications" EntityType="WebDocsModel.Notification" />
+          <AssociationSet Name="FK_Notifications_AspNetUsers" Association="WebDocsModel.FK_Notifications_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_AspNetUsers1" Association="WebDocsModel.FK_Notifications_AspNetUsers1">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Files" Association="WebDocsModel.FK_Notifications_Files">
+            <End Role="File" EntitySet="Files" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_LookupTableNotificationTypes" Association="WebDocsModel.FK_Notifications_LookupTableNotificationTypes">
+            <End Role="LookupTableNotificationType" EntitySet="LookupTableNotificationTypes" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
           <Key>
@@ -974,6 +1080,78 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Property Name="FileType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="ListOfUserIDThatTheFileISsharedWith" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="LookupTableNotificationType">
+          <Key>
+            <PropertyRef Name="NotificationTypeID" />
+          </Key>
+          <Property Name="NotificationTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotificationType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Notifications" Relationship="WebDocsModel.FK_Notifications_LookupTableNotificationTypes" FromRole="LookupTableNotificationType" ToRole="Notification" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileID" Type="Int32" Nullable="false" />
+          <Property Name="NotificationTypeID" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserIDOfNotificationSender" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserIDOfNotificationRecipient" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserHasAcknowledgement" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="WebDocsModel.FK_Notifications_AspNetUsers" FromRole="Notification" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="WebDocsModel.FK_Notifications_AspNetUsers1" FromRole="Notification" ToRole="AspNetUser" />
+          <NavigationProperty Name="File" Relationship="WebDocsModel.FK_Notifications_Files" FromRole="Notification" ToRole="File" />
+          <NavigationProperty Name="LookupTableNotificationType" Relationship="WebDocsModel.FK_Notifications_LookupTableNotificationTypes" FromRole="Notification" ToRole="LookupTableNotificationType" />
+        </EntityType>
+        <Association Name="FK_Notifications_AspNetUsers">
+          <End Type="WebDocsModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="WebDocsModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="UserIDOfNotificationSender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_AspNetUsers1">
+          <End Type="WebDocsModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="WebDocsModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="UserIDOfNotificationRecipient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Files">
+          <End Type="WebDocsModel.File" Role="File" Multiplicity="1" />
+          <End Type="WebDocsModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_LookupTableNotificationTypes">
+          <End Type="WebDocsModel.LookupTableNotificationType" Role="LookupTableNotificationType" Multiplicity="1" />
+          <End Type="WebDocsModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LookupTableNotificationType">
+              <PropertyRef Name="NotificationTypeID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="NotificationTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1183,6 +1361,27 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
                 <ScalarProperty Name="UserIDOfFileOwner" ColumnName="UserIDOfFileOwner" />
                 <ScalarProperty Name="ParentFileID" ColumnName="ParentFileID" />
                 <ScalarProperty Name="FileID" ColumnName="FileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LookupTableNotificationTypes">
+            <EntityTypeMapping TypeName="WebDocsModel.LookupTableNotificationType">
+              <MappingFragment StoreEntitySet="LookupTableNotificationTypes">
+                <ScalarProperty Name="NotificationType" ColumnName="NotificationType" />
+                <ScalarProperty Name="NotificationTypeID" ColumnName="NotificationTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="WebDocsModel.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="UserHasAcknowledgement" ColumnName="UserHasAcknowledgement" />
+                <ScalarProperty Name="UserIDOfNotificationRecipient" ColumnName="UserIDOfNotificationRecipient" />
+                <ScalarProperty Name="UserIDOfNotificationSender" ColumnName="UserIDOfNotificationSender" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="NotificationTypeID" ColumnName="NotificationTypeID" />
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

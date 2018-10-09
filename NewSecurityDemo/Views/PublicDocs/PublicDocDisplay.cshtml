@@ -155,6 +155,7 @@
                             <td>
 
                                 @{
+
                                     IDecsions Decision;
 
                                     switch (item.FileLookupStatusID)
@@ -170,7 +171,7 @@
                                             });
                                             break;
                                         case (int)FileViewStatus.FileIsLocked:
-                                            Decision = new PublicViewLockedFile (UserID_OfUserCurrentlyLoggedIn, new PublicDocsLockedDataModel()
+                                            Decision = new PublicViewLockedFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsLockedDataModel()
                                             {
 
                                                 FileID = item.FileID,
@@ -190,28 +191,42 @@
 
 
 
+                                    <table style=" border: none;">
+                                        <tr>
+                                            <td >
+                                                @Html.ActionLink("History", "Edit", new { /* id=item.PrimaryKey */ })
+                                            </td>
+                                            <td>|</td>
+                                            <td>
+                                                @{
+
+                                                    switch (Decision.FinalDecision)
+                                                    {
+                                                        case ControlTypes.Download:
+
+                                                            @Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;
+                                                            break;
+                                                        case ControlTypes.UploadFileNotification:
+                                                            @Html.ActionLink("Notify to Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                                            break;
+                                                        case ControlTypes.RequestPermissionNotifications:
+                                                            @Html.ActionLink("Request Permission", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                                            break;
+                                                        default:
+
+                                                            break;
+
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    </table>
 
 
 
-                                    switch (Decision.FinalDecision)
-                                    {
-                                        case ControlTypes.Download:
-                                            @Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;
-                                            break;
-                                        case ControlTypes.UploadFileNotification:
-                                            @Html.ActionLink("Notify to Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
-                                            break;
-                                        case ControlTypes.RequestPermissionNotifications:
-                                            @Html.ActionLink("Request Permission", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
-                                            break;
-                                        default:
-
-                                            break;
-
-                                    }
 
                                 }
-                                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+
                                 @{
                                     //if (item.FileShareStatusID == (int)Common.Enum.DBLookupEnum.FileSharedStatus.Private)
                                     //{
@@ -239,11 +254,6 @@
             </table>
         </div>
     </div>
-    <p>@AllFileID</p><br />
-    <p>@UserID_OfUserCurrentlyLoggedIn</p>
-    @{
-        @Html.Hidden("FileID", @AllFileID)
-    }
     <div class="panel-footer">
         <!---->
 

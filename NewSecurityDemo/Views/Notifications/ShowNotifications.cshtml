@@ -1,0 +1,152 @@
+﻿@model IEnumerable<NewSecurityDemo.Models.Notification>
+
+@{
+    ViewBag.Title = "ShowNotifications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ShowNotifications</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>Repository - User Documents</h4>
+
+
+    </div>
+    <ul class="nav nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">New User Notifications</a></li>
+
+        <li><a data-toggle="tab" href="#menuItemArchiveNotifcations">Archived Notifications</a></li>
+    </ul>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FileID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NotificationTypeID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateCreated)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserIDOfNotificationSender)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserIDOfNotificationRecipient)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserHasAcknowledgement)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FileID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NotificationTypeID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserIDOfNotificationSender)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserIDOfNotificationRecipient)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserHasAcknowledgement)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.NotificationID }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+
+                <div id="menuItemArchiveNotifcations" class="tab-pane fade">
+                    
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FileID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NotificationTypeID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateCreated)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserIDOfNotificationSender)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserIDOfNotificationRecipient)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserHasAcknowledgement)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FileID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NotificationTypeID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserIDOfNotificationSender)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserIDOfNotificationRecipient)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserHasAcknowledgement)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.NotificationID }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+

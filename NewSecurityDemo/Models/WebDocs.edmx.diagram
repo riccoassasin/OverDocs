@@ -29,6 +29,12 @@
         <EntityTypeShape EntityType="WebDocsModel.View_PrivateDocView_AllSharedPrivateFiles" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="WebDocsModel.View_UserDocs_AllUserCreatedDocs" Width="1.5" PointX="8.75" PointY="9.75" />
         <EntityTypeShape EntityType="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" Width="2.25" PointX="2.75" PointY="9.625" />
+        <EntityTypeShape EntityType="WebDocsModel.LookupTableNotificationType" Width="1.5" PointX="9.25" PointY="14.875" />
+        <EntityTypeShape EntityType="WebDocsModel.Notification" Width="1.5" PointX="11.5" PointY="8.125" />
+        <AssociationConnector Association="WebDocsModel.FK_Notifications_AspNetUsers" />
+        <AssociationConnector Association="WebDocsModel.FK_Notifications_AspNetUsers1" />
+        <AssociationConnector Association="WebDocsModel.FK_Notifications_Files" />
+        <AssociationConnector Association="WebDocsModel.FK_Notifications_LookupTableNotificationTypes" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

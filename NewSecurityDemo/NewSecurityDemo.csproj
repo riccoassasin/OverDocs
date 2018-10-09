@@ -194,6 +194,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DownloadFileController.cs" />
+    <Compile Include="Controllers\FileReturnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
@@ -242,6 +243,9 @@
     </Compile>
     <Compile Include="Models\FileUpload\UserFileUploadModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LookupTableNotificationType.cs">
+      <DependentUpon>WebDocs.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LookupTable_FileCategories.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
@@ -252,6 +256,9 @@
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Notification.cs">
+      <DependentUpon>WebDocs.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PrivateDocs_R_GetAllPrivateSharedUserFiles_Result.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
@@ -398,13 +405,14 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Notifications\ShowNotifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\ModelExtensions\" />
     <Folder Include="Models\MultiModels\UserDocsModels\" />
     <Folder Include="Views\DownloadFile\" />
-    <Folder Include="Views\Notifications\" />
+    <Folder Include="Views\FileReturn\" />
     <Folder Include="Views\UploadFile\" />
   </ItemGroup>
   <ItemGroup>
