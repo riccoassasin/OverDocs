@@ -200,7 +200,7 @@
                                             <td>
                                                 @{
 
-                                                    switch (Decision.FinalDecision)
+                                                    switch (Decision.FinalDecision) 
                                                     {
                                                         case ControlTypes.Download:
 
@@ -213,7 +213,6 @@
                                                             @Html.ActionLink("Request Permission", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
                                                             break;
                                                         default:
-
                                                             break;
 
                                                     }
