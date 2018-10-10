@@ -265,6 +265,9 @@
     <Compile Include="Models\UserDocs_R_GetAllUserCreatedDocs_Result.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserThatDownloadedFile.cs">
+      <DependentUpon>WebDocs.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\View_PrivateDocView_AllSharedPrivateFiles.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
@@ -409,6 +412,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
     <Folder Include="Models\ModelExtensions\" />
     <Folder Include="Models\MultiModels\UserDocsModels\" />
     <Folder Include="Views\DownloadFile\" />

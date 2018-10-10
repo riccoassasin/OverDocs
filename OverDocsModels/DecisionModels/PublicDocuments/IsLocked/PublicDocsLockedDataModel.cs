@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace OverDocsModels.DecisionModels.PublicDocuments.IsLocked
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PublicDocsLockedDataModel : IFileLinkDecisionModel
     {
         public int FileID { get; set; }
@@ -14,5 +17,6 @@ namespace OverDocsModels.DecisionModels.PublicDocuments.IsLocked
         public int FileSharedStautusID { get; set; }
         public int FileStatusID { get; set; }
         public String FileID_FilesSharedWithUser { get; set; }
+        public string UserIDOfthePersonThatDownloadedTheFile { get; set; }
     }
 }

@@ -35,6 +35,7 @@ CREATE TABLE #MyTEmpTable
       ,[NameOfFileOwner] varchar(500)
       ,[NameOfUserThatLastUpdatedFile] varchar(500)
 	  ,[ListOfUserIDThatTheFileISsharedWith] varchar(MAX)
+	  ,[IdOfUserThatDownloadedTheFile] varchar(500)
 	  ,ComponentLevel int
 );
 
@@ -79,6 +80,7 @@ BEGIN
       ,[NameOfFileOwner]
       ,[NameOfUserThatLastUpdatedFile]
 	  ,[ListOfUserIDThatTheFileISsharedWith] 
+	  ,[IdOfUserThatDownloadedTheFile]
 	   ,ComponentLevel) AS
 (
     SELECT
@@ -100,8 +102,9 @@ BEGIN
       ,b.[NameOfFileOwner]
       ,b.[NameOfUserThatLastUpdatedFile]
 		,b.[ListOfUserIDThatTheFileISsharedWith] 
+		,b.[IdOfUserThatDownloadedTheFile]
 		,0 AS ComponentLevel
-    
+		
 	
 	FROM View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile AS b
 	--Change to where PArentid = 0 just now
@@ -115,7 +118,6 @@ BEGIN
       ,bom.[UserIDOfFileOwner]
       ,bom.[UserIDOfLastUploaded]
       ,bom.[CurrentFileStatus]
-
       ,bom.[FileLookupStatusID]
       ,bom.[CurrentFileShareStatus]
       ,bom.[FileShareStatusID]
@@ -129,6 +131,7 @@ BEGIN
       ,bom.[NameOfFileOwner]
       ,bom.[NameOfUserThatLastUpdatedFile]
 	  ,bom.[ListOfUserIDThatTheFileISsharedWith]
+	  ,bom.[IdOfUserThatDownloadedTheFile]
 		,ComponentLevel + 1
     FROM View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile AS bom 
         INNER JOIN LastFileUpdated AS p
@@ -154,11 +157,13 @@ SELECT top 1 [FileID]
       ,[NameOfFileOwner]
       ,[NameOfUserThatLastUpdatedFile]
 	  ,[ListOfUserIDThatTheFileISsharedWith] 
+	  ,[IdOfUserThatDownloadedTheFile]
         ,ComponentLevel 
 FROM LastFileUpdated AS p
     --INNER JOIN Production.Product AS pr
     --ON p.<component_id, sysname, ComponentID> = pr.ProductID
-ORDER BY ComponentLevel desc,[FileID],[ParentFileID];
+ORDER BY ComponentLevel desc,[FileID],[ParentFileID]
+
 --END OF COURsOR
     FETCH NEXT FROM vendor_cursor 
 	INTO @FileID  
@@ -279,9 +284,9 @@ select [FileID]
       ,[NameOfUserThatLastUpdatedFile],
 		'' AS FileType
 		,[ListOfUserIDThatTheFileISsharedWith]
+		,[IdOfUserThatDownloadedTheFile]
 	   from #MyTEmpTable
 	   where [FileShareStatusID] != 6;
-
 ---End
 
 DROP TABLE #MyTEmpTable;

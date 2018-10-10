@@ -10,6 +10,7 @@
 @using Common.Enum.DBLookupEnum;
 @using OverDocsModels.DecisionModels.PublicDocuments.IsLocked;
 @using SystemLogic.DescisionClasses.PublicViewedFiles.LockedFiles;
+@using Common.Enum.DBLookupEnum;
 @{
     ViewBag.Title = "PublicDocDisplay";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -49,56 +50,24 @@
                         <th>
                             @Html.Label("Last Modified")
                         </th>
-
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.UserIDOfFileOwner)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UserIDOfLastUploaded)
-                            </th>*@
                         <th>
                             @Html.Label("File Status")
 
                         </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileLookupStatusID)
-                            </th>*@
                         <th>
                             @Html.Label("Shared Status")
 
                         </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileShareStatusID)
-                            </th>*@
-                        @*<th>
-                                @Html.Label("File Type")
-                            </th>*@
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FileExtension)
-                            </th>*@
-
-
                         <th>
                             @Html.Label("Version")
 
                         </th>
-
-                        @*<th>
-                                @Html.Label("Updated By")
-                            </th>*@
                         <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
-
-
-
                     @foreach (var item in Model)
                     {
-
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.FileID)
@@ -115,43 +84,15 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.DateCreated)
                             </td>
-
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.UserIDOfFileOwner)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserIDOfLastUploaded)
-                                </td>*@
-                            <td>
+                            <td id="lblFileStatus_@item.FileID">
                                 @Html.DisplayFor(modelItem => item.CurrentFileStatus)
                             </td>
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.FileLookupStatusID)
-                                </td>*@
                             <td>
                                 @Html.DisplayFor(modelItem => item.CurrentFileShareStatus)
                             </td>
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.FileShareStatusID)
-                                </td>*@
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.FileType)
-                                </td>*@
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.FileName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FileExtension)
-                                </td>*@
-
-
                             <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
                             </td>
-
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.NameOfUserThatLastUpdatedFile)
-                                </td>*@
                             <td>
 
                                 @{
@@ -178,7 +119,8 @@
                                                 FileOwnerID = item.UserIDOfFileOwner,
                                                 FileStatusID = item.FileLookupStatusID,
                                                 FileSharedStautusID = item.FileShareStatusID,
-                                                FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
+                                                FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith,
+                                                UserIDOfthePersonThatDownloadedTheFile = item.IdOfUserThatDownloadedTheFile
                                             });
                                             break;
 
@@ -188,35 +130,40 @@
                                             break;
                                     }
 
-
-
-
                                     <table style=" border: none;">
                                         <tr>
-                                            <td >
+                                            <td>
                                                 @Html.ActionLink("History", "Edit", new { /* id=item.PrimaryKey */ })
                                             </td>
                                             <td>|</td>
                                             <td>
-                                                @{
-
-                                                    switch (Decision.FinalDecision) 
+                                                @if (Decision != null)
+                                                {
+                                                    switch (Decision.FinalDecision)
                                                     {
                                                         case ControlTypes.Download:
 
-                                                            @Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;
+                                                            <a href="#" onclick="showModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
+                                                            @*@Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;*@
                                                             break;
                                                         case ControlTypes.UploadFileNotification:
                                                             @Html.ActionLink("Notify to Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+
                                                             break;
                                                         case ControlTypes.RequestPermissionNotifications:
-                                                            @Html.ActionLink("Request Permission", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                                            @*@Html.ActionLink("Request Permission", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)*@
+                                                            <a href="#" onclick="sendRequestNotification(@item.FileID,@Convert.ToInt32(NotificationTypes.FileRequest),'@UserID_OfUserCurrentlyLoggedIn','@item.UserIDOfFileOwner')">Request Permission</a>
                                                             break;
                                                         default:
                                                             break;
 
                                                     }
                                                 }
+                                                else
+                                                {
+                                                    @Html.Label("No Links Avaiable!")
+                                                }
+
                                             </td>
                                         </tr>
                                     </table>
@@ -225,27 +172,6 @@
 
 
                                 }
-
-                                @{
-                                    //if (item.FileShareStatusID == (int)Common.Enum.DBLookupEnum.FileSharedStatus.Private)
-                                    //{
-                                    //    if (AllFileID.Length > 0)
-                                    //    {
-                                    //        AllFileID += "|";
-                                    //    }
-                                    //    SystemLogic.DescisionClasses.PublicViewAvailableFile x = new SystemLogic.DescisionClasses.PublicViewAvailableFile("",null);
-
-                                    //    AllFileID += item.FileID;
-                                    //}
-
-
-
-
-
-
-                                }
-
-                                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                             </td>
                         </tr>
                     }
@@ -279,6 +205,91 @@
         <td></td>
     </tr>
 </table>
+
+
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Download_Notification_Modal">Open Modal</button>
+
+<div id="Download_Notification_Modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">File Download</h4>
+            </div>
+            <div class="modal-body">
+                <p>You Are about to download <u><b><span id="FileNameToReplace"></span></b></u>.</p>
+                <p>NB! A notification will be sent to all users that this file is shared with. </p>
+                <P>Once the file has been downloaded please NOTE, the file will be locked for all users untill the new version of this file is uploaded by you.  </P>
+                <p>
+                    <b>
+                        Click download to proceed <b>
+                            <a href="#" class="btn btn-warning" onclick="DownloadFile()">
+                                Download
+                            </a> Else Click Close to cancel.
+
+
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<input type="button" class="btn" value="Teste Buttoin" onclick="test();" />
+@using (Html.BeginForm("DownLoadSelectedFile", "DownLoadFile", FormMethod.Post))
+{
+    <input type="hidden" id="FileID" name="FileID" />
+    <input type="hidden" id="UserIDOfPersonThatDownloadedTheFile" name="UserIDOfPersonThatDownloadedTheFile" />
+    <input type="submit" id="btnDownload" value="Download" style="display:none" />
+}
+@using (Html.BeginForm("PublicDocDisplay", "PublicDocs", FormMethod.Get))
+{
+    <input type="submit" id="btnRefreshPage" value="" style="display:none" />
+}
+<script type="text/javascript">
+
+    function showModal(FileID, FileName, UserIDOfPersonThatDownloadedTheFile) {
+        
+        $("#FileNameToReplace").html(FileName)
+        $("#FileID").val(FileID);
+        $("#UserIDOfPersonThatDownloadedTheFile").val(UserIDOfPersonThatDownloadedTheFile);
+        $("#Download_Notification_Modal").modal("show");
+    }
+
+    function DownloadFile() {
+
+        $("#btnDownload")[0].click();
+        $("#Download_Notification_Modal").modal("hide");
+        //$("#btnRefreshPage")[0].click();
+    }
+
+    function sendRequestNotification(FileID, NotificationTypeID, IDOFPersonLoggedOn, IDOfTheFileOwner) {
+
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SendRequestNotification", "Notifications")',
+            data: '{ FileID: "' + FileID + '", NotificationTypeID: "' + NotificationTypeID + '", IDOFPersonLoggedOn: "' + IDOFPersonLoggedOn + '",IDOfTheFileOwner: "' + IDOfTheFileOwner + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: successFunc,
+            error: function (xhr, textStatus, error) {
+                alert('Unable to send request - error: ' + error); 
+
+            }
+        });
+
+        function successFunc(data, status) {
+            alert(data);
+        }
+
+
+    }
+</script>
 
 
 

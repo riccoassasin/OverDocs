@@ -37,8 +37,6 @@ namespace NewSecurityDemo.Controllers
                     {
                         try
                         {
-
-
                             byte[] uploadedFile = new byte[fileContent.InputStream.Length];
                             fileContent.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
                             string xddd = Path.GetFileName(fileContent.FileName);
@@ -60,7 +58,7 @@ namespace NewSecurityDemo.Controllers
                                 UserIDOfLastUploaded = User.Identity.GetUserId(),
                                 FileLookupStatusID = (int)FileViewStatus.FileIsAvailable,
                                 FileShareStatusID = _FileShareStatusID,
-                                FileExtension = Path.GetExtension(fileContent.FileName)
+                                FileExtension = Path.GetExtension(fileContent.FileName).Replace(".", "")
 
 
                             };

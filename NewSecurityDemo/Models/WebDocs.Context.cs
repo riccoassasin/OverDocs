@@ -43,6 +43,7 @@ namespace NewSecurityDemo.Models
         public virtual DbSet<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile { get; set; }
         public virtual DbSet<LookupTableNotificationType> LookupTableNotificationTypes { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<UserThatDownloadedFile> UserThatDownloadedFiles { get; set; }
     
         public virtual ObjectResult<View_PrivateDocView_AllSharedPrivateFiles> PrivateDocs_R_GetAllPrivateSharedUserFiles(string currentlyLoggedingUserID)
         {

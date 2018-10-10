@@ -113,5 +113,10 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
             }
             
         }
+
+        protected override void Determine_IS_THE_CURRENT_USER_LOGGED_IN_THE_SAME_PERSON_THAT_DOWNLOADED_THE_FILE()
+        {
+            
+        }
     }
 }

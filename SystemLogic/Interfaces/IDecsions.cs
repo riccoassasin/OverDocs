@@ -7,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace SystemLogic.Interfaces
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IDecsions
     {
-        //void DetermineCorrectButton();
+       /// <summary>
+       /// 
+       /// </summary>
         ControlTypes FinalDecision { get; }
 
     }

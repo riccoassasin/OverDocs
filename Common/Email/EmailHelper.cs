@@ -5,20 +5,40 @@ using System.Threading;
 
 namespace Common.Email
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class EmailHelper
     {
-        public  static void sendMessage(
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="_ToAddress"></param>
+        /// <param name="_FromAddress"></param>
+        /// <param name="_FromName"></param>
+        /// <param name="_ToName"></param>
+        /// <param name="_Subject"></param>
+        /// <param name="_Message"></param>
+        /// <param name="_Credentials_UserName"></param>
+        /// <param name="_Credentials_Password"></param>
+        /// <param name="_SMTP_HOST"></param>
+        /// <param name="_IsSsl"></param>
+        /// <param name="_SMTP_PORT"></param>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        public static async System.Threading.Tasks.Task sendMessageAsync(
             string _ToAddress,
             string _FromAddress,
             string _FromName,
             string _ToName,
             string _Subject,
             string _Message,
-            string _Credentials_UserName = "",
-            string _Credentials_Password = "",
-            string _SMTP_HOST = "smtp.mweb.co.za",
-            Boolean _IsSsl = false,
-            int _SMTP_PORT = 25)
+            string _Credentials_UserName,
+            string _Credentials_Password,
+            string _SMTP_HOST,
+            Boolean _IsSsl,
+            int _SMTP_PORT)
         {
             string body = "<p>Email From: {0} ({1})</p><p>Message:</p><p>{2}</p>";
             MailMessage message = new System.Net.Mail.MailMessage();
@@ -42,7 +62,7 @@ namespace Common.Email
                     smtp.Host = _SMTP_HOST; //smtp.mweb.co.za
                     smtp.Port = Convert.ToInt16(_SMTP_PORT); // default port numnber is 25
                     smtp.EnableSsl = Convert.ToBoolean(_IsSsl);
-                     smtp.Send(message);
+                   await smtp.SendMailAsync(message);
                 }
                 catch (SmtpFailedRecipientException ex)
                 {

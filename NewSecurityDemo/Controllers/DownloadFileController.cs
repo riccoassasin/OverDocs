@@ -13,10 +13,25 @@ namespace NewSecurityDemo.Controllers
         private WebDocsEntities db = new WebDocsEntities();
         // GET: DownloadFile
 
-
-        public ActionResult DownLoadSelectedFile(int FileID)
+        [HttpPost]
+        public ActionResult DownLoadSelectedFile(int FileID, string UserIDOfPersonThatDownloadedTheFile)
         {
             File ObjFile = GetFileToDownload(FileID);
+            ObjFile.FileLookupStatusID = (int)Common.Enum.DBLookupEnum.FileViewStatus.FileIsLocked;
+            ObjFile.UserThatDownloadedFile = new UserThatDownloadedFile
+            {
+                FileID = FileID,
+                UserIDThatDownloadedFIle = UserIDOfPersonThatDownloadedTheFile,
+                DateDownloaded = DateTime.Now
+            };
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string err = ex.Message;
+            }
             if (ObjFile != null)
             {
                 return File(ObjFile.FileImage, ObjFile.ContentType, ObjFile.FileName + "." + ObjFile.FileExtension);
@@ -29,6 +44,7 @@ namespace NewSecurityDemo.Controllers
 
 
         }
+
 
         private File GetFileToDownload(int _FileID)
         {

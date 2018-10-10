@@ -20,18 +20,7 @@ namespace MyOverDocs.Controllers
         [Authorize]
         public ActionResult PublicDocDisplay()
         {
-            //-  then populate the list with the data from the database.
-            //List<PublicDocsModel> AllFilesToDisplay = new List<PublicDocsModel>();
-
-            
-            //This Quesies the database and get all Files for the Files [Table]
-
             var dd = db.PublicDocs_R_GetMostRecentFileVersion();
-            /*
-            IQueryable<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> File_Query = from f in db.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile
-                                          //.Include("User")
-                                     select f;*/
-
             //Generates a list of all files returned from the database.
             List<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> AllPublicFiles = dd.ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
 
@@ -43,25 +32,6 @@ namespace MyOverDocs.Controllers
             //Pass the list to the view so that it can display the data in the web page.
             return View(AllPublicFiles);
         }
-
-        //[NonAction]
-        //public User GetFileOwnerDetails(int _UserID)
-        //{
-        //    IQueryable<User> User_Query = from u in db.Users
-        //                                 where u.UserID == _UserID
-        //                                  select u;
-
-        //    User CurrentOwner = User_Query.FirstOrDefault<User>();
-
-        //    if (!(CurrentOwner is null))
-        //    {
-        //        return CurrentOwner;
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
-        //}
 
         // GET: PublicDocs/Details/5
         public ActionResult Details(int id)

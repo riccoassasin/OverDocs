@@ -32,10 +32,20 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.LockedFiles
         {
             if (IS_FILE_PUBLIC)
             {
-                this._FinalDecision = ControlTypes.UploadFileNotification;
+                if (this.IS_THE_CURRENT_USER_LOGGED_IN_THE_SAME_PERSON_THAT_DOWNLOADED_THE_FILE)
+                {
+
+                    this._FinalDecision = ControlTypes.Download;
+                }
+                else
+                {
+                    this._FinalDecision = ControlTypes.UploadFileNotification;
+                }
+
             }
             else
             {
+                ///her if therfisdf
                 if (IS_FILE_OWNER_AND_USER_LOGGED_IN_THE_SAME_PERSON)
                 {
                     this._FinalDecision = ControlTypes.UploadFileNotification;
@@ -54,7 +64,7 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.LockedFiles
             }
         }
 
-        
+
 
         protected override void Determine_IS_FILE_OWNER_AND_USER_LOGGED_IN_THE_SAME_PERSON()
         {
@@ -94,11 +104,20 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.LockedFiles
             }
         }
 
+        protected override void Determine_IS_THE_CURRENT_USER_LOGGED_IN_THE_SAME_PERSON_THAT_DOWNLOADED_THE_FILE()
+        {
+            if (((PublicDocsLockedDataModel)Model).UserIDOfthePersonThatDownloadedTheFile == this.ID_OfUserCurrentlyLoggedIn)
+            {
+                this.IS_THE_CURRENT_USER_LOGGED_IN_THE_SAME_PERSON_THAT_DOWNLOADED_THE_FILE = true;
+            }
+        }
+
         protected override void IntialiseDecisionVariables()
         {
             this.Determine_IS_FILE_PUBLIC_OR_PRIVATE();
             this.Determine_IS_FILE_OWNER_AND_USER_LOGGED_IN_THE_SAME_PERSON();
             this.Determine_IS_THE_CURRENT_FILE_SHARED_WITH_USER_CURRENTLY_LOGGED_IN();
+            this.Determine_IS_THE_CURRENT_USER_LOGGED_IN_THE_SAME_PERSON_THAT_DOWNLOADED_THE_FILE();
         }
     }
 }

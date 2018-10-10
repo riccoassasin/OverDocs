@@ -35,6 +35,9 @@
         <AssociationConnector Association="WebDocsModel.FK_Notifications_AspNetUsers1" />
         <AssociationConnector Association="WebDocsModel.FK_Notifications_Files" />
         <AssociationConnector Association="WebDocsModel.FK_Notifications_LookupTableNotificationTypes" />
+        <EntityTypeShape EntityType="WebDocsModel.UserThatDownloadedFile" Width="2.5" PointX="14.125" PointY="3.75" />
+        <AssociationConnector Association="WebDocsModel.FK_UserThatDownloadedFile_AspNetUsers" />
+        <AssociationConnector Association="WebDocsModel.FK_UserThatDownloadedFile_Files" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

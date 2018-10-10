@@ -28,8 +28,8 @@ namespace NewSecurityDemo.Controllers
             {
                 f.FileType = FileExtensionHelper.GetFileType(f.FileExtension);
             }
-            //EmailSetting ES = db.EmailSettings.FirstOrDefault();
-            //Common.Email.EmailHelper.sendMessage(
+            EmailSetting ES = db.EmailSettings.FirstOrDefault();
+            //Common.Email.EmailHelper.sendMessageAsync(
             //    _ToAddress: "Brendanw@mweb.co.za",
             //    _FromAddress: "Brendanw@mweb.co.za",
             //    _FromName: "Brednan Wood",
@@ -37,7 +37,10 @@ namespace NewSecurityDemo.Controllers
             //    _Subject: "Test Message",
             //    _Message: "This Shows that the System can can send email messages",
             //     _Credentials_UserName: "Brendanw@mweb.co.za",
-            //     _Credentials_Password: "speedie3");
+            //     _Credentials_Password: "speedie3",
+            //      _SMTP_HOST: "smtp.mweb.co.za",
+            //      _SMTP_PORT: 25,
+            //      _IsSsl: false);
 
             return View(AllUserFiles);
 

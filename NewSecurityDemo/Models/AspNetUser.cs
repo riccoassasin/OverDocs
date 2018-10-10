@@ -24,6 +24,7 @@ namespace NewSecurityDemo.Models
             this.AspNetRoles = new HashSet<AspNetRole>();
             this.Notifications = new HashSet<Notification>();
             this.Notifications1 = new HashSet<Notification>();
+            this.UserThatDownloadedFiles = new HashSet<UserThatDownloadedFile>();
         }
     
         public string Id { get; set; }
@@ -55,5 +56,7 @@ namespace NewSecurityDemo.Models
         public virtual ICollection<Notification> Notifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notification> Notifications1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserThatDownloadedFile> UserThatDownloadedFiles { get; set; }
     }
 }

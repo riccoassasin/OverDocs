@@ -144,6 +144,14 @@
           <Property Name="UserIDOfNotificationRecipient" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="UserHasAcknowledgement" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserThatDownloadedFile">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Name="FileID" Type="int" Nullable="false" />
+          <Property Name="UserIDThatDownloadedFIle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="DateDownloaded" Type="datetime" Nullable="false" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'WebDocs.dbo.View_PrivateDocView_AllSharedPrivateFiles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
@@ -201,6 +209,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_PublicDocView_AllFilesWithOwnerAn
             <PropertyRef Name="DateCreated" />
             <PropertyRef Name="FileType" />
             <PropertyRef Name="ListOfUserIDThatTheFileISsharedWith" />
+            <PropertyRef Name="IdOfUserThatDownloadedTheFile" />
           </Key>
           <Property Name="FileID" Type="int" Nullable="false" />
           <Property Name="ParentFileID" Type="int" Nullable="false" />
@@ -221,6 +230,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_PublicDocView_AllFilesWithOwnerAn
           <Property Name="NameOfUserThatLastUpdatedFile" Type="nvarchar(max)" />
           <Property Name="FileType" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="ListOfUserIDThatTheFileISsharedWith" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IdOfUserThatDownloadedTheFile" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -447,6 +457,30 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserThatDownloadedFile_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="UserThatDownloadedFile" Type="Self.UserThatDownloadedFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserThatDownloadedFile">
+              <PropertyRef Name="UserIDThatDownloadedFIle" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserThatDownloadedFile_Files">
+          <End Role="Files" Type="Self.Files" Multiplicity="1" />
+          <End Role="UserThatDownloadedFile" Type="Self.UserThatDownloadedFile" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Files">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="UserThatDownloadedFile">
+              <PropertyRef Name="FileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="PrivateDocs_R_GetAllPrivateSharedUserFiles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CurrentlyLoggedingUserID" Type="nvarchar" Mode="In" />
         </Function>
@@ -469,6 +503,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <EntitySet Name="LookupTable_ShareStatues" EntityType="Self.LookupTable_ShareStatues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LookupTableNotificationTypes" EntityType="Self.LookupTableNotificationTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserThatDownloadedFile" EntityType="Self.UserThatDownloadedFile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="View_PrivateDocView_AllSharedPrivateFiles" EntityType="Self.View_PrivateDocView_AllSharedPrivateFiles" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [View_PrivateDocView_AllSharedPrivateFiles].[FileID] AS [FileID], 
@@ -511,7 +546,8 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
     [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[NameOfFileOwner] AS [NameOfFileOwner], 
     [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[NameOfUserThatLastUpdatedFile] AS [NameOfUserThatLastUpdatedFile], 
     [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[FileType] AS [FileType], 
-    [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[ListOfUserIDThatTheFileISsharedWith] AS [ListOfUserIDThatTheFileISsharedWith]
+    [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[ListOfUserIDThatTheFileISsharedWith] AS [ListOfUserIDThatTheFileISsharedWith], 
+    [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[IdOfUserThatDownloadedTheFile] AS [IdOfUserThatDownloadedTheFile]
     FROM [dbo].[View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile] AS [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_UserDocs_AllUserCreatedDocs" EntityType="Self.View_UserDocs_AllUserCreatedDocs" store:Type="Views" store:Schema="dbo">
@@ -595,6 +631,14 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             <End Role="LookupTableNotificationTypes" EntitySet="LookupTableNotificationTypes" />
             <End Role="Notifications" EntitySet="Notifications" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserThatDownloadedFile_AspNetUsers" Association="Self.FK_UserThatDownloadedFile_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserThatDownloadedFile" EntitySet="UserThatDownloadedFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserThatDownloadedFile_Files" Association="Self.FK_UserThatDownloadedFile_Files">
+            <End Role="Files" EntitySet="Files" />
+            <End Role="UserThatDownloadedFile" EntitySet="UserThatDownloadedFile" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -654,6 +698,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
           <NavigationProperty Name="Notifications" Relationship="WebDocsModel.FK_Notifications_AspNetUsers" FromRole="AspNetUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="WebDocsModel.FK_Notifications_AspNetUsers1" FromRole="AspNetUser" ToRole="Notification" />
+          <NavigationProperty Name="UserThatDownloadedFiles" Relationship="WebDocsModel.FK_UserThatDownloadedFile_AspNetUsers" FromRole="AspNetUser" ToRole="UserThatDownloadedFile" />
         </EntityType>
         <EntityType Name="EmailSetting">
           <Key>
@@ -699,6 +744,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <NavigationProperty Name="LookupTable_ShareStatues" Relationship="Self.FK_Files_LookupTable_ShareStatues" FromRole="Files" ToRole="LookupTable_ShareStatues" />
           <NavigationProperty Name="FileSharedWithUsers" Relationship="Self.FK_FileSharedWithUsers_Files" FromRole="Files" ToRole="FileSharedWithUsers" />
           <NavigationProperty Name="Notifications" Relationship="WebDocsModel.FK_Notifications_Files" FromRole="File" ToRole="Notification" />
+          <NavigationProperty Name="UserThatDownloadedFile" Relationship="WebDocsModel.FK_UserThatDownloadedFile_Files" FromRole="File" ToRole="UserThatDownloadedFile" />
         </EntityType>
         <EntityType Name="FileSharedWithUser">
           <Key>
@@ -931,6 +977,15 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             <End Role="LookupTableNotificationType" EntitySet="LookupTableNotificationTypes" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
+          <EntitySet Name="UserThatDownloadedFiles" EntityType="WebDocsModel.UserThatDownloadedFile" />
+          <AssociationSet Name="FK_UserThatDownloadedFile_AspNetUsers" Association="WebDocsModel.FK_UserThatDownloadedFile_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="UserThatDownloadedFile" EntitySet="UserThatDownloadedFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserThatDownloadedFile_Files" Association="WebDocsModel.FK_UserThatDownloadedFile_Files">
+            <End Role="File" EntitySet="Files" />
+            <End Role="UserThatDownloadedFile" EntitySet="UserThatDownloadedFiles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
           <Key>
@@ -1059,6 +1114,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             <PropertyRef Name="DateCreated" />
             <PropertyRef Name="FileType" />
             <PropertyRef Name="ListOfUserIDThatTheFileISsharedWith" />
+            <PropertyRef Name="IdOfUserThatDownloadedTheFile" />
           </Key>
           <Property Name="FileID" Type="Int32" Nullable="false" />
           <Property Name="ParentFileID" Type="Int32" Nullable="false" />
@@ -1079,6 +1135,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Property Name="NameOfUserThatLastUpdatedFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FileType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="ListOfUserIDThatTheFileISsharedWith" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IdOfUserThatDownloadedTheFile" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LookupTableNotificationType">
           <Key>
@@ -1149,6 +1206,40 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             </Principal>
             <Dependent Role="Notification">
               <PropertyRef Name="NotificationTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserThatDownloadedFile">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Name="FileID" Type="Int32" Nullable="false" />
+          <Property Name="UserIDThatDownloadedFIle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DateDownloaded" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="WebDocsModel.FK_UserThatDownloadedFile_AspNetUsers" FromRole="UserThatDownloadedFile" ToRole="AspNetUser" />
+          <NavigationProperty Name="File" Relationship="WebDocsModel.FK_UserThatDownloadedFile_Files" FromRole="UserThatDownloadedFile" ToRole="File" />
+        </EntityType>
+        <Association Name="FK_UserThatDownloadedFile_AspNetUsers">
+          <End Type="WebDocsModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="WebDocsModel.UserThatDownloadedFile" Role="UserThatDownloadedFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserThatDownloadedFile">
+              <PropertyRef Name="UserIDThatDownloadedFIle" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserThatDownloadedFile_Files">
+          <End Type="WebDocsModel.File" Role="File" Multiplicity="1" />
+          <End Type="WebDocsModel.UserThatDownloadedFile" Role="UserThatDownloadedFile" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="File">
+              <PropertyRef Name="FileID" />
+            </Principal>
+            <Dependent Role="UserThatDownloadedFile">
+              <PropertyRef Name="FileID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1342,6 +1433,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <EntitySetMapping Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
             <EntityTypeMapping TypeName="WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
               <MappingFragment StoreEntitySet="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile">
+                <ScalarProperty Name="IdOfUserThatDownloadedTheFile" ColumnName="IdOfUserThatDownloadedTheFile" />
                 <ScalarProperty Name="ListOfUserIDThatTheFileISsharedWith" ColumnName="ListOfUserIDThatTheFileISsharedWith" />
                 <ScalarProperty Name="FileType" ColumnName="FileType" />
                 <ScalarProperty Name="NameOfUserThatLastUpdatedFile" ColumnName="NameOfUserThatLastUpdatedFile" />
@@ -1382,6 +1474,15 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
                 <ScalarProperty Name="NotificationTypeID" ColumnName="NotificationTypeID" />
                 <ScalarProperty Name="FileID" ColumnName="FileID" />
                 <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserThatDownloadedFiles">
+            <EntityTypeMapping TypeName="WebDocsModel.UserThatDownloadedFile">
+              <MappingFragment StoreEntitySet="UserThatDownloadedFile">
+                <ScalarProperty Name="DateDownloaded" ColumnName="DateDownloaded" />
+                <ScalarProperty Name="UserIDThatDownloadedFIle" ColumnName="UserIDThatDownloadedFIle" />
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -33,5 +33,6 @@ namespace NewSecurityDemo.Models
         public string NameOfUserThatLastUpdatedFile { get; set; }
         public string FileType { get; set; }
         public string ListOfUserIDThatTheFileISsharedWith { get; set; }
+        public string IdOfUserThatDownloadedTheFile { get; set; }
     }
 }
