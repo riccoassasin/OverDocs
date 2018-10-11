@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE PublicDocs_R_GetSelectedFileHistory
+CREATE PROCEDURE [dbo].[PublicDocs_R_GetSelectedFileHistory]
 --DROP PROCEDURE PublicDocs_R_GetSelectedFileHistory
 	@FileID int
 AS
@@ -96,9 +96,9 @@ SELECT p.[FileID]
       ,p.[DateCreated]
       ,p.[NameOfFileOwner]
       ,p.[NameOfUserThatLastUpdatedFile]
+	  ,'' AS FileType
 	  ,p.[ListOfUserIDThatTheFileISsharedWith] 
 	  ,p.[IdOfUserThatDownloadedTheFile]
-	   ,ComponentLevel
 FROM LastFileUpdated AS p
 where p.FileID != @FileID
 order by ComponentLevel desc
