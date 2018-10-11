@@ -59,8 +59,6 @@ namespace NewSecurityDemo.Controllers
                                 FileLookupStatusID = (int)FileViewStatus.FileIsAvailable,
                                 FileShareStatusID = _FileShareStatusID,
                                 FileExtension = Path.GetExtension(fileContent.FileName).Replace(".", "")
-
-
                             };
                             db.Files.Add(std);
                             try

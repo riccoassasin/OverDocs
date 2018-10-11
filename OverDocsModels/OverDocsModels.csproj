@@ -73,6 +73,7 @@
   <ItemGroup>
     <Folder Include="DecisionModels\PrivateDocuments\" />
     <Folder Include="DecisionModels\UserDocuments\" />
+    <Folder Include="Notifications\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

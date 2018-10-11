@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NewSecurityDemo.Models.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>
+﻿@*@model IEnumerable<NewSecurityDemo.Models.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>*@
 @using Microsoft.AspNet.Identity;
 @using OverDocsModels.DecisionModels.PublicDocuments.IsAvaiable;
 @using SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles;
@@ -11,203 +11,247 @@
 @using OverDocsModels.DecisionModels.PublicDocuments.IsLocked;
 @using SystemLogic.DescisionClasses.PublicViewedFiles.LockedFiles;
 @using Common.Enum.DBLookupEnum;
+@model PagedList.IPagedList<NewSecurityDemo.Models.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>
+@using PagedList.Mvc;
+@using Common.Formatters;
+
+
 @{
     ViewBag.Title = "PublicDocDisplay";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@*<p>
-        @Html.ActionLink("Create New", "Create")
-    </p>*@
-<br />
 @{
-    string AllFileID = "";
     string UserID_OfUserCurrentlyLoggedIn = User.Identity.GetUserId();
 }
-
+<br />
 <div class="panel panel-primary">
-    <div class="panel-heading"><h4>Repository - Public Documents</h4></div>
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-3"><h4>Repository - Public Documents</h4></div>
+            <div class="col-lg-7">
+
+                @using (Html.BeginForm("PublicDocDisplay", "PublicDocs", FormMethod.Get, new { @class = "form-group" }))
+                {
+                    <div class="=row">
+                        <div class="col-lg-3">
+                            <h4>Find by name:</h4>
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.TextBox("SearchString", "", new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-3 "><input type="submit" id="btnSearchFileName" class="btn btn-default" value="Search File Name" /></div>
+                        <div class="col-lg-1">
+                            <a href="#" class="btn btn-default">
+                                <span class="glyphicon glyphicon-refresh" onclick="ClearSearch();"></span>
+                            </a>
+                        </div>
+
+                    </div>
+
+
+                }
+
+                <script type="text/javascript">
+                    function ClearSearch() {
+
+
+                        $("#SearchString").val("");
+                        $("#btnSearchFileName")[0].click();
+                    }
+                </script>
+            </div>
+        </div>
+
+
+    </div>
     <div class="panel-body">
         <div class="table-responsive">
-            <table class="table-condensed table-hover ">
+            <table class="table-condensed table-hover table-striped">
                 <thead>
                     <tr>
-                        <th>
-                            @Html.Label("Ref#")
-                        </th>
-                        <th>
-                            @Html.Label("File Name")
+                        <th class="text-nowrap">
 
+                            @Html.ActionLink("Ref#", "PublicDocDisplay", new { sortOrder = ViewBag.FileIDSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
-                            @Html.Label("Size(kb)")
+                        <th class="text-nowrap">
 
+                            @Html.ActionLink("File Name", "PublicDocDisplay", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
-                            @Html.Label("File Owner")
-
+                        <th class="text-nowrap">
+                            @Html.ActionLink("File Size", "PublicDocDisplay", new { sortOrder = ViewBag.FileSizeSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
-                            @Html.Label("Last Modified")
+                        <th class="text-nowrap">
+                            @Html.ActionLink("File Owner", "PublicDocDisplay", new { sortOrder = ViewBag.NameOfFileOwnerSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
-                            @Html.Label("File Status")
-
+                        <th class="text-nowrap">
+                            @Html.Label("Updated By")
                         </th>
-                        <th>
-                            @Html.Label("Shared Status")
-
+                        <th class="text-nowrap">
+                            @Html.ActionLink("Last Modified", "PublicDocDisplay", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
-                            @Html.Label("Version")
-
+                        <th class="text-nowrap">
+                            @Html.ActionLink("File Status", "PublicDocDisplay", new { sortOrder = ViewBag.CurrentFileStatusSortParm, currentFilter = ViewBag.CurrentFilter })
+                        </th>
+                        <th class="text-nowrap">
+                            @Html.ActionLink("Shared Status", "PublicDocDisplay", new { sortOrder = ViewBag.CurrentFileShareStatusSortParm, currentFilter = ViewBag.CurrentFilter })
+                        </th>
+                        <th class="text-nowrap">
+                            @Html.ActionLink("Version", "PublicDocDisplay", new { sortOrder = ViewBag.CurrentVersionNumberSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
                         <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FileID)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FullFileName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FileSize)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NameOfFileOwner)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DateCreated)
-                            </td>
-                            <td id="lblFileStatus_@item.FileID">
-                                @Html.DisplayFor(modelItem => item.CurrentFileStatus)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CurrentFileShareStatus)
-                            </td>
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
-                            </td>
-                            <td>
+                    @{
+                        if (Model.Count() > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FileID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullFileName)
+                                    </td>
+                                    <td>
+                                        <div class="text-nowrap">
+                                            @FileSize.ToFileSize(@item.FileSize)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-nowrap">
+                                            @Html.DisplayFor(modelItem => item.NameOfFileOwner)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-nowrap">
+                                            @Html.DisplayFor(modelItem => item.NameOfUserThatLastUpdatedFile)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-nowrap">
+                                            @Html.DisplayFor(modelItem => item.DateCreated)
+                                        </div>
+                                    </td>
+                                    <td class="text-center" id="lblFileStatus_@item.FileID">
+                                        @Html.DisplayFor(modelItem => item.CurrentFileStatus)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.CurrentFileShareStatus)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
+                                    </td>
+                                    <td>
 
-                                @{
+                                        @{
 
-                                    IDecsions Decision;
+                                            IDecsions Decision;
 
-                                    switch (item.FileLookupStatusID)
-                                    {
-                                        case (int)FileViewStatus.FileIsAvailable:
-                                            Decision = new PublicViewAvailableFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsAvailableDataModel()
+                                            switch (item.FileLookupStatusID)
                                             {
-                                                FileID = item.FileID,
-                                                FileOwnerID = item.UserIDOfFileOwner,
-                                                FileStatusID = item.FileLookupStatusID,
-                                                FileSharedStautusID = item.FileShareStatusID,
-                                                FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
-                                            });
-                                            break;
-                                        case (int)FileViewStatus.FileIsLocked:
-                                            Decision = new PublicViewLockedFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsLockedDataModel()
-                                            {
-
-                                                FileID = item.FileID,
-                                                FileOwnerID = item.UserIDOfFileOwner,
-                                                FileStatusID = item.FileLookupStatusID,
-                                                FileSharedStautusID = item.FileShareStatusID,
-                                                FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith,
-                                                UserIDOfthePersonThatDownloadedTheFile = item.IdOfUserThatDownloadedTheFile
-                                            });
-                                            break;
-
-
-                                        default:
-                                            Decision = null;
-                                            break;
-                                    }
-
-                                    <table style=" border: none;">
-                                        <tr>
-                                            <td>
-                                                @Html.ActionLink("History", "Edit", new { /* id=item.PrimaryKey */ })
-                                            </td>
-                                            <td>|</td>
-                                            <td>
-                                                @if (Decision != null)
-                                                {
-                                                    switch (Decision.FinalDecision)
+                                                case (int)FileViewStatus.FileIsAvailable:
+                                                    Decision = new PublicViewAvailableFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsAvailableDataModel()
                                                     {
-                                                        case ControlTypes.Download:
+                                                        FileID = item.FileID,
+                                                        FileOwnerID = item.UserIDOfFileOwner,
+                                                        FileStatusID = item.FileLookupStatusID,
+                                                        FileSharedStautusID = item.FileShareStatusID,
+                                                        FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
+                                                    });
+                                                    break;
+                                                case (int)FileViewStatus.FileIsLocked:
+                                                    Decision = new PublicViewLockedFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsLockedDataModel()
+                                                    {
 
-                                                            <a href="#" onclick="showModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
-                                                            @*@Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;*@
-                                                            break;
-                                                        case ControlTypes.UploadFileNotification:
-                                                            @Html.ActionLink("Notify to Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
-
-                                                            break;
-                                                        case ControlTypes.RequestPermissionNotifications:
-                                                            @*@Html.ActionLink("Request Permission", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)*@
-                                                            <a href="#" onclick="sendRequestNotification(@item.FileID,@Convert.ToInt32(NotificationTypes.FileRequest),'@UserID_OfUserCurrentlyLoggedIn','@item.UserIDOfFileOwner')">Request Permission</a>
-                                                            break;
-                                                        default:
-                                                            break;
-
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    @Html.Label("No Links Avaiable!")
-                                                }
-
-                                            </td>
-                                        </tr>
-                                    </table>
+                                                        FileID = item.FileID,
+                                                        FileOwnerID = item.UserIDOfFileOwner,
+                                                        FileStatusID = item.FileLookupStatusID,
+                                                        FileSharedStautusID = item.FileShareStatusID,
+                                                        FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith,
+                                                        UserIDOfthePersonThatDownloadedTheFile = item.IdOfUserThatDownloadedTheFile
+                                                    });
+                                                    break;
 
 
+                                                default:
+                                                    Decision = null;
+                                                    break;
+                                            }
 
+                                            <table style=" border: none;">
+                                                <tr>
+                                                    <td>
+                                                        @Html.ActionLink("History", "Edit", new { /* id=item.PrimaryKey */ })
+                                                    </td>
+                                                    <td>|</td>
+                                                    <td>
+                                                        <div class="text-nowrap">
+                                                            @if (Decision != null)
+                                                            {
+                                                                switch (Decision.FinalDecision)
+                                                                {
+                                                                    case ControlTypes.Download:
 
-                                }
-                            </td>
-                        </tr>
+                                                                        <a href="#" onclick="showModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
+                                                                        @*@Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;*@
+                                                                        break;
+                                                                    case ControlTypes.UploadFileNotification:
+                                                                        @Html.ActionLink("Notify to Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+
+                                                                        break;
+                                                                    case ControlTypes.RequestPermissionNotifications:
+                                                                        @*@Html.ActionLink("Request Permission", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)*@
+                                                                        <a href="#" onclick="sendRequestNotification(@item.FileID,@Convert.ToInt32(NotificationTypes.FileRequest),'@UserID_OfUserCurrentlyLoggedIn','@item.UserIDOfFileOwner')">Request Permission</a>
+                                                                        break;
+                                                                    default:
+                                                                        break;
+
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.Label("No Links Avaiable!")
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="9"><div class="well text-center text-warning">No Files Found!!</div></td></tr>
+                        }
                     }
+
                 </tbody>
             </table>
         </div>
     </div>
     <div class="panel-footer">
-        <!---->
 
-        <ul class="pager">
-            <li class="previous"><a href="#">Previous</a></li>
-            <li class="next"><a href="#">Next</a></li>
-        </ul>
-
+        <table class="">
+            <tr>
+                <td>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</td>
+                <td>&nbsp;</td>
+                <td>
+                    @Html.PagedListPager(Model, page => Url.Action("PublicDocDisplay", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                </td>
+            </tr>
+        </table>
 
     </div>
 
 </div>
-<table>
-    <tr>
-        <td>
-            <ul class="pagination">
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-            </ul>
-        </td>
-        <td></td>
-    </tr>
-</table>
 
 
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Download_Notification_Modal">Open Modal</button>
+
+<button type="button" class="btn btn-info btn-lg hidden" data-toggle="modal" data-target="#Download_Notification_Modal">Open Modal</button>
 
 <div id="Download_Notification_Modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -239,7 +283,7 @@
     </div>
 </div>
 
-<input type="button" class="btn" value="Teste Buttoin" onclick="test();" />
+
 @using (Html.BeginForm("DownLoadSelectedFile", "DownLoadFile", FormMethod.Post))
 {
     <input type="hidden" id="FileID" name="FileID" />
@@ -253,7 +297,7 @@
 <script type="text/javascript">
 
     function showModal(FileID, FileName, UserIDOfPersonThatDownloadedTheFile) {
-        
+
         $("#FileNameToReplace").html(FileName)
         $("#FileID").val(FileID);
         $("#UserIDOfPersonThatDownloadedTheFile").val(UserIDOfPersonThatDownloadedTheFile);
@@ -278,7 +322,7 @@
             dataType: "json",
             success: successFunc,
             error: function (xhr, textStatus, error) {
-                alert('Unable to send request - error: ' + error); 
+                alert('Unable to send request - error: ' + error);
 
             }
         });
