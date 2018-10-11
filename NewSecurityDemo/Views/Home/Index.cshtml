@@ -1,67 +1,506 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    //ViewBag.Title = "Home Page";
 }
 
+
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <h1>OVERDOCS</h1>
+
+    <p class="lead">Manage Your Documents With Ease.</p>
     <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
-<div class="row">
-    <button data-toggle="collapse" data-target="#demo1">Collapsible</button>
-    <div class="row">
-        <div id="demo1" class="collapse">
-            <div class="panel panel-default">
-                <div class="panel-heading">Panel Heading</div>
-                <div class="panel-body">
-                    Psascsahkgakhcasglkshaw;<br />
-                    Psascsahkgakhcasglkshaw;<br />
-                    Psascsahkgakhcasglkshaw;<br />
+@*<div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            Dropdown Example
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+        </ul>
+    </div>
+    <div class="dropdown">*@
+@*<div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
 
-                    Psascsahkgakhcasglkshaw;<br />Psascsahkgakhcasglkshaw;<br />
-                    Psascsahkgakhcasglkshaw;<br />
-                    Psascsahkgakhcasglkshaw;<br />Psascsahkgakhcasglkshaw;<br />
-                    v
-                    vent
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="la.jpg" alt="Los Angeles">
+            </div>
+
+            <div class="item">
+                <img src="chicago.jpg" alt="Chicago">
+            </div>
+
+            <div class="item">
+                <img src="ny.jpg" alt="New York">
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>*@
+
+
+
+@*<div class="container">
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
+        <div id="demo" class="collapse">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+    </div>*@
+
+
+
+<div class="row">
+    <button data-toggle="collapse" data-target="#demo2"><b>Data Dictionary</b></button>
+
+    <div id="demo2" class="collapse">
+        <div class="panel panel-default">
+            <div class="panel-heading">Database tables that is currently used</div>
+            <!--Name Based Model-->
+            <button data-toggle="collapse" data-target="#demo24"><b>Name Based Model</b></button>
+            <div id="demo24" class="collapse">
+
+                <div style="height:400px;width:1100px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;">
+                    <p style="width:450px;">
+                        <img src="~/Images/NameBased.png" class="img-rounded" alt="Cinque Terre">
+                    </p>
+                </div>
+            </div>
+
+            <!--Key Based Model-->
+            <button data-toggle="collapse" data-target="#demo22"><b>Key Based Model</b></button>
+            <div id="demo22" class="collapse">
+                <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+                    </p>
+                    <img src="~/Images/Keybasedmodel.png" class="img-rounded" alt="Cinque Terre">
+                    <p>
+                </div>
+            </div>
+
+            <!--Coulom Based Model-->
+            <button data-toggle="collapse" data-target="#demo23"><b>Coulom Based Structure</b></button>
+            <div id="demo23" class="collapse">
+                <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+
+                    </p>
+                    <img src="~/Images/CoulomBased.PNG" class="img-rounded" alt="Cinque Terre">
+                    <p>
+                </div>
+            </div>
+
+            <!--Full ERD Diagram-->
+            <button data-toggle="collapse" data-target="#demo21"><b>Full ERD Diagram</b></button>
+            <div id="demo21" class="collapse">
+                <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+
+
+                    </p>
+                    <img src="~/Images/FULLERD.PNG" class="img-rounded" alt="Cinque Terre">
+                    <p>
+
+                </div>
+
+            </div>
+            <!---->
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <button data-toggle="collapse" data-target="#demo4"><b>Flow Diagrams</b></button>
+
+    <div id="demo4" class="collapse">
+        <div class="panel panel-default">
+            <div class="panel panel-default">
+                <div class="panel-heading">Flow diagram to describe the entire system</div>
+                <div class="panel-body">
+                    <p>
+                        We used a Flow Diagram to describe the total flow op the program in graphical format
+                    </p>
+                    <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+                        <p>
+                        </p>
+                        <img src="~/Images/SystemFlow.png" class="img-rounded" alt="Cinque Terre">
+                        <p>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <button data-toggle="collapse" data-target="#demo2">flow di</button>
+    <!---->
 
-        <div id="demo2" class="collapse">
-            Lorem ipsum dolor text....
+
+
+
+
+
+    <button data-toggle="collapse" data-target="#demo6"><b>System Registration</b></button>
+
+    <div id="demo6" class="collapse">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Instructions How The System Works</b></div>
+            <!--System Regestration-->
+            <button data-toggle="collapse" data-target="#demo64"><b>System Regestration</b></button>
+            <div id="demo64" class="collapse">
+                How to regester
+                <div style="height:400px;width:1100px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+                    <p style="width:450px;">
+                        <img src="~/Images/Register.png" class="img-rounded" alt="Cinque Terre">
+                    </p>
+                </div>
+            </div>
+            <!--System Login-->
+            <button data-toggle="collapse" data-target="#demo63"><b>System Login</b></button>
+            <div id="demo63" class="collapse">
+                <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+                    How to Log In
+                    </p>
+                    <img src="~/Images/LogIn.PNG" class="img-rounded" alt="Cinque Terre">
+                    <p>
+                </div>
+            </div>
+            <!--Public Model-->
+            <button data-toggle="collapse" data-target="#demo62"><b>Public View Model</b></button>
+            <div id="demo62" class="collapse">
+                <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>Function :</b> The function of the Public docs is to show
+                            all Files Except For Hidden Files. The user can Follow the instructions how to download a file.
+                            <p>
+                                <b>Download File:</b> If the Download Option is available click on download.<b> If not</b>
+                                scroll down to view further instructions
+                            </p>
+                        </div>
+                    </div>
+
+                    <img src="~/Images/PublicD.png" class="img-rounded" alt="Cinque Terre">
+                    <p>
+                        <div class="panel panel-default">
+                            <div class="panel-heading2">
+                                <b>Request Upload:</b>
+                    <p>
+                        When the File is Loked the user can notify the
+                        other user that has downloaded the file to upload
+                        the file, so that it can become <b>available</b> again.
+                    </p>
+                    <p>If the file does not have the request button.Scroll Down to view Further instructions</p>
+                </div>
+            </div>
+
+            <img src="~/Images/PublicN.png" class="img-rounded" alt="Cinque Terre">
+            <p>
+                <div class="panel panel-default">
+                    <div class="panel-heading2">
+                        <b>Request Permition to File :</b>
+            <p>
+                When the File does not belong to the user, the user can't
+                request for the other user to upload the file.
+            </p>
+            <p>The user must first <b>request</b> permition to upload</p>
         </div>
     </div>
-    <button data-toggle="collapse" data-target="#demo3">Collapsible</button>
 
-    <div id="demo3" class="collapse">
-        Lorem ipsum dolor text....
-    </div>
-    <button data-toggle="collapse" data-target="#demo4">Collapsible</button>
+    <img src="~/Images/PublicR.png" class="img-rounded" alt="Cinque Terre">
+         <p>
+            <div class="panel panel-default">
+               <div class="panel-heading2">
+                <b>VIEW HISTORY:</b>
+                     <p>
+                        By presssing on the history button the user can view a
+                        log file off all the users that has downloaded the file, including dates.
+                    </p>
+              </div>
+          </div>
 
-    <div id="demo4" class="collapse">
-        Lorem ipsum dolor text....
+               <img src="~/Images/PublicHistory.png" class="img-rounded" alt="Cinque Terre">
+               <p>
+    
+                 <button data-toggle="collapse" data-target="#demo71"><b>User Docs Model</b></button>
+                <div id="demo71" class="collapse">
+                 <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+
+
+                      </p>
+                         <img src="~/Images/UserDocs.PNG" class="img-rounded" alt="Cinque Terre">
+                       <p>
+
+                 </div>
+              </div>
     </div>
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    <!--User Model-->
+
+    <button data-toggle="collapse" data-target="#demo262"><b>User View Model</b></button>
+    <div id="demo262" class="collapse">
+        <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Function :</b> The function of the User docs is to show
+                    all Files that the user has uploaded to the system
+                        <p>
+                            <b>Upload File:</b>The User Can click on the upload button.
+                        </p>
+              </div>
+         </div>
+
+<img src="~/Images/UploadB.png" class="img-rounded" alt="Cinque Terre">
+<p>
+    <div class="panel panel-default">
+        <div class="panel-heading2">
+            <b>Select The Shared Status:</b>
+<p>
+    When the User Press <b> Public</b> The file is uploaded For All to View and to Download
+</p>
+<p>
+    When the User Press <b> Private</b> The file is uploaded For All to View and to Download <b>(if they have permition)</b>
+</p>
+<p>
+    When the User Press <b> Hidden</b> The file is uploaded For Only the User to View and to Download 
+</p>
+
+
+                </div>
+            </div>
+
+<img src="~/Images/UploadST.png" class="img-rounded" alt="Cinque Terre">
+<p>
+    <div class="panel panel-default">
+        <div class="panel-heading2">
+            <b>Select or brows for a file to be uploaded</b>
+<p>
+   When the user has selected the shared statud He/she can brows for the file that needs to be uploaded
+</p>
+<p>
+    Then the user can pres upload to upload the file
+    </p>
+
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+
+<img src="~/Images/UploadF.png" class="img-rounded" alt="Cinque Terre">
+<p>
+    <div class="panel panel-default">
+        <div class="panel-heading2">
+            <b>Search File Name</b>
+<p>
+    By clicking in the search tab the user can type the name of the 
+    file and press the search button to test if the program consists of sutch a file
+</p>
+</div>
+           </div>
+
+<img src="~/Images/SearchClick.png" class="img-rounded" alt="Cinque Terre">
+<p>
+    </div>
+    </div>
+ 
+    </div>
+    </div>
+    <!---->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <button data-toggle="collapse" data-target="#demo8"><b>Overall System Components</b></button>
+
+    <div id="demo8" class="collapse">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>The project is Broken Up into the following Compositions</b></div>
+
+            <!--SOLUTION NEWSECURITYDEMO BUTTON-->
+            <button data-toggle="collapse" data-target="#demo184"><b>Solution NewSecurityDemo</b></button>
+            <div id="demo184" class="collapse">
+                View All the common components witch are Reusable sections of code And is Shared
+                <div style="height:400px;width:1100px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+<p style="width:450px;"><img src="~/Images/Solution.png" class="img-rounded" alt="Cinque Terre"></p>
     </div>
 </div>
+
+
+<!--COMMON BUTTON-->
+<button data-toggle="collapse" data-target="#demo84"><b>Common</b></button>
+<div id="demo84" class="collapse">
+    View All the common components witch are Reusable sections of code And is Shared
+    <div style="height:400px;width:1100px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+        <p style="width:450px;"><img src="~/Images/Common.png" class="img-rounded" alt="Cinque Terre"></p>
+    </div>
+</div>
+
+
+<!--NewSecurityDemo-->
+<button data-toggle="collapse" data-target="#demo83"><b>NewSecurityDemo </b></button>
+
+<div id="demo83" class="collapse">
+    <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+        This section houses the Model the View and the Controller
+        </p>
+        <img src="~/Images/MainProject.PNG" class="img-rounded" alt="Cinque Terre">
+        <p>
+    </div>
+
+    <!--Model of Newsecurity-->
+    <button data-toggle="collapse" data-target="#demo182"><b>Entity class Framework generated by the model</b></button>
+    <div id="demo182" class="collapse">
+        <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b> The Model :</b>
+                    <p>This model is used to connect to the database to send and retrieve data</p>
+                </div>
+            </div>
+
+
+            <!---->
+            </p>
+            <img src="~/Images/Models.png" class="img-rounded" alt="Cinque Terre">
+            <p>
+                <div class="panel panel-default">
+                    <div class="panel-heading2">
+                        <b> The Controller :</b>
+            <p>
+                This is the controllers that is used for the system
+            </p>
+        </div>
+    </div>
+    </p>
+    <img src="~/Images/Controlers.png" class="img-rounded" alt="Cinque Terre">
+    <p>
+        <!---->
+
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading2">
+                <b>The View</b>
+    <p>
+        This Section describes all the Views of the system
+
+    </p>
+</div>
+ </div>
+
+<img src="~/Images/Views.png" class="img-rounded" alt="Cinque Terre">
+</div>
+<!---->
+</div>
+
+
+</div>
+<!--OverDocsDatabase-->
+<button data-toggle="collapse" data-target="#demo996"><b>OverDocsDatabase </b></button>
+<div id="demo996" class="collapse">
+    <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+        This section houses the Logic of the system
+        </p>
+        <img src="~/Images/OverDocsDatabaseCode.PNG" class="img-rounded" alt="Cinque Terre">
+        <p>
+    </div>
+</div>
+
+
+</div>
+<!--OverDocsModels-->
+<button data-toggle="collapse" data-target="#demo96"><b>OverDocsModels </b></button>
+<div id="demo96" class="collapse">
+    <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+        This section houses the Logic of the system
+        </p>
+        <img src="~/Images/OverDocsModels.PNG" class="img-rounded" alt="Cinque Terre">
+        <p>
+    </div>
+</div>
+
+<!--System Logic button-->
+<button data-toggle="collapse" data-target="#demo86"><b>System Logic </b></button>
+<div id="demo86" class="collapse">
+    <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+        This sectionControls and manages desision making and the overall flow of the application,
+        Such that if the user does certian thing the program is always in the right state.
+
+        <p>This is thus the layout of the program design with the desission classes ext.(Logig of the program instruction)</p>
+        </p>
+        <img src="~/Images/SystemLogic.PNG" class="img-rounded" alt="Cinque Terre">
+        <p>
+    </div>
+
+</div>
+<button data-toggle="collapse" data-target="#demo196"><b>Data Transport Moddel </b></button>
+<div id="demo196" class="collapse">
+    <div style="height:400px;width:1150px;overflow:scroll;border:solid 2px orange;overflow-y:hidden;overflow-x:scroll;overflow-y:scroll;">
+
+        </p>
+        <img src="~/Images/DataTransport.PNG" class="img-rounded" alt="Cinque Terre">
+        <p>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!---->
+<!---->
+@*<div class="col-md-4">
+                <h2>Getting started</h2>
+                <p>
+                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                    enables a clean separation of concerns and gives you full control over markup
+                    for enjoyable, agile development.
+                </p>
+                <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>Get more libraries</h2>
+                <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+                <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>Web Hosting</h2>
+                <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+                <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+            </div>
+    </div>*@
