@@ -68,6 +68,7 @@ namespace NewSecurityDemo.Controllers
                 }
                 catch (DbEntityValidationException dbEx)
                 {
+
                     foreach (DbEntityValidationResult entityErr in dbEx.EntityValidationErrors)
                     {
                         foreach (DbValidationError error in entityErr.ValidationErrors)
@@ -76,6 +77,9 @@ namespace NewSecurityDemo.Controllers
                                                 error.PropertyName, error.ErrorMessage);
                         }
                     }
+                }catch(Exception ex)
+                {
+                    ex.Message.ToString();
                 }
 
                 string FromName = CurrentUser.FirstName + " " + CurrentUser.LastName;
