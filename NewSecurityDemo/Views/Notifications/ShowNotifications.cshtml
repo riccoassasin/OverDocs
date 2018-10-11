@@ -1,9 +1,11 @@
-﻿@model IEnumerable<NewSecurityDemo.Models.Notification>
+﻿@model NewSecurityDemo.Models.Notifications.NotificationsModel
 
 @{
     ViewBag.Title = "ShowNotifications";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@*@Scripts.Render("~/bundles/jquery")*@
 
 @*<h2>ShowNotifications</h2>*@
 
@@ -20,9 +22,14 @@
 
     </div>
     <ul class="nav nav nav-tabs">
+
+
         <li class="active"><a data-toggle="tab" href="#home">New User Notifications</a></li>
 
         <li><a data-toggle="tab" href="#menuItemArchiveNotifcations">Archived Notifications</a></li>
+
+
+
     </ul>
     <div class="panel-body">
         <div class="table-responsive">
@@ -32,53 +39,53 @@
                     <table class="table">
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.FileID)
+                                @Html.Label("Ref#")
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.NotificationTypeID)
+                                @Html.Label("Notification Type")
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.DateCreated)
+                                @Html.Label("Created")
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UserIDOfNotificationSender)
+                                @Html.Label("Sender")
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UserIDOfNotificationRecipient)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UserHasAcknowledgement)
-                            </th>
-                            <th></th>
+                            
+                            <th>Options</th>
                         </tr>
 
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.UserNotifications)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FileID)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NotificationTypeID)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DateCreated)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserIDOfNotificationSender)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserIDOfNotificationRecipient)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserHasAcknowledgement)
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.NotificationID }) |
-                                    @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
-                                </td>
-                            </tr>
+
+                            if (!(item.UserHasAcknowledgement))
+                            {
+                                <tr>
+                                    <td>
+                                        @item.FileID
+
+                                    </td>
+                                    <td>
+                                        @item.LookupTableNotificationType.NotificationType
+                                    </td>
+                                    <td>
+                                        @item.DateCreated
+                                    </td>
+                                    <td>
+                                        @item.AspNetUser.FirstName
+                                    </td>
+
+
+                                    <td>
+                                        @Html.ActionLink("ShowNotifications", "ShowNotifications", new { TabIndex = 0 }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                                    </td>
+                                </tr>
+                            }
+
+
+
+
                         }
 
                     </table>
@@ -89,55 +96,49 @@
                     <table class="table">
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.FileID)
+                                @Html.Label("Ref#")
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.NotificationTypeID)
+                                @Html.Label("Notification Type")
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.DateCreated)
+                                @Html.Label("Created")
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UserIDOfNotificationSender)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UserIDOfNotificationRecipient)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UserHasAcknowledgement)
+                                @Html.Label("Sender")
                             </th>
                             <th></th>
                         </tr>
 
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.UserNotifications)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FileID)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NotificationTypeID)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DateCreated)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserIDOfNotificationSender)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserIDOfNotificationRecipient)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserHasAcknowledgement)
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.NotificationID }) |
-                                    @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
-                                </td>
-                            </tr>
-                        }
+                            if (item.UserHasAcknowledgement)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.FileID
 
+                                    </td>
+                                    <td>
+                                        @item.LookupTableNotificationType.NotificationType
+                                    </td>
+                                    <td>
+                                        @item.DateCreated
+                                    </td>
+                                    <td>
+                                        @item.AspNetUser.FirstName
+                                    </td>
+
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.NotificationID }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                        @Html.ActionLink("ShowNotifications", "ShowNotifications", new { TabIndex = 1 }) |
                     </table>
                 </div>
             </div>
@@ -146,6 +147,50 @@
 
 
 </div>
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p><div id="partial"></div></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        //script goes here
+        $('.nav-tabs li:eq('+ @Model.CurrentTabIndex +') a').tab('show');
+    };
+    //or if you prefer jQuery
+
+</script>
+<script type="text/javascript">
+
+                //
+
+                //$('.nav-tabs a').on('shown.bs.tab', function (event) {
+                //    var x = $(event.target).text();         // active tab
+                //    alert(x);
+                //    var y = $(event.relatedTarget).text();  // previous tab
+                //});
+</script>
+
+
 
 
 

@@ -4,6 +4,8 @@
 using Common.Files;
 using NewSecurityDemo.Models;
 using OverDocsModels;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -18,91 +20,111 @@ namespace MyOverDocs.Controllers
         // GET: PublicDocs
 
         [Authorize]
-        public ActionResult PublicDocDisplay()
+        public ActionResult PublicDocDisplay(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.FileIDSortParm = sortOrder == "FileID" ? "FileID_desc" : "FileID";
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "FullFileName_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "DateCreated" ? "DateCreated_desc" : "DateCreated";
+            ViewBag.NameOfFileOwnerSortParm = sortOrder == "NameOfFileOwner" ? "NameOfFileOwner_desc" : "NameOfFileOwner";
+            ViewBag.CurrentFileStatusSortParm = sortOrder == "CurrentFileStatus" ? "CurrentFileStatus_desc" : "CurrentFileStatus";
+            ViewBag.CurrentFileShareStatusSortParm = sortOrder == "CurrentFileShareStatus" ? "CurrentFileShareStatus_desc" : "CurrentFileShareStatus";
+            ViewBag.CurrentVersionNumberSortParm = sortOrder == "CurrentVersionNumber" ? "CurrentVersionNumber_desc" : "CurrentVersionNumber";
+            ViewBag.FileSizeSortParm = sortOrder == "FileSize" ? "FileSize_desc" : "FileSize";
+
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+
+            List<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> AllPublicFiles = (from a in db.PublicDocs_R_GetMostRecentFileVersion()
+                                  select a).ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                AllPublicFiles = AllPublicFiles.Where(s => s.FullFileName.Contains(searchString)).ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
+            }
+
             var dd = db.PublicDocs_R_GetMostRecentFileVersion();
-            //Generates a list of all files returned from the database.
-            List<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> AllPublicFiles = dd.ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
 
-            foreach (View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile f in AllPublicFiles)
+            //foreach (View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile f in AllPublicFiles)
+            //{
+            //    f.FileType = FileExtensionHelper.GetFileType(f.FileExtension);
+            //}
+
+            switch (sortOrder)
             {
-                f.FileType = FileExtensionHelper.GetFileType(f.FileExtension);
-            }
+                case "FullFileName_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.FullFileName).ToList();
+                    break;
 
+                case "DateCreated":
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.DateCreated).ToList();
+                    break;
+                case "DateCreated_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.DateCreated).ToList();
+                    break;
+
+                case "FileID":
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.FileID).ToList();
+                    break;
+                case "FileID_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.FileID).ToList();
+                    break;
+
+
+                case "FileSize":
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.FileSize).ToList();
+                    break;
+                case "FileSize_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.FileSize).ToList();
+                    break;
+
+                case "CurrentFileStatus":
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.CurrentFileStatus).ToList();
+                    break;
+                case "CurrentFileStatus_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.CurrentFileStatus).ToList();
+                    break;
+
+                case "CurrentFileShareStatus":
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.CurrentFileShareStatus).ToList();
+                    break;
+                case "CurrentFileShareStatus_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.CurrentFileShareStatus).ToList();
+                    break;
+
+                case "CurrentVersionNumber":
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.CurrentVersionNumber).ToList();
+                    break;
+                case "CurrentVersionNumber_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.CurrentVersionNumber).ToList();
+                    break;
+                default:  // Name ascending 
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.FullFileName).ToList();
+                    break;
+            };
+
+            //ViewBag.CurrentFilter = "";
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
             //Pass the list to the view so that it can display the data in the web page.
-            return View(AllPublicFiles);
+            return View(AllPublicFiles.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: PublicDocs/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: PublicDocs/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PublicDocs/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: PublicDocs/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: PublicDocs/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: PublicDocs/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: PublicDocs/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //public ActionResult PublicDocHistoryPartialView()
+        //{
+        //    List<Emp_Information> model = db..ToList();
+        //    return PartialView("_EmpPartial", model);
+        //}
     }
 }

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.Data.Entity.Validation;
@@ -23,10 +22,25 @@ namespace NewSecurityDemo.Controllers
             {
                 string UserIDOfPersonCurrentlyLogged = User.Identity.GetUserId();
                 ListOfUserNotifications = (from a in db.Notifications
+                                           .Include("LookupTableNotificationType")
+                                           .Include("AspNetUser")
+                                           .Include("AspNetUser1")
+                                           .Include("File")
                                            where a.UserIDOfNotificationRecipient == UserIDOfPersonCurrentlyLogged
                                            select a).ToList<Notification>();
             }
-            return View(ListOfUserNotifications);
+            return View(new Models.Notifications.NotificationsModel()
+            {
+
+                CurrentTabIndex = TabIndex,
+                UserNotifications = ListOfUserNotifications
+            });
+        }
+
+        public ActionResult FileRequestNontification_ConfirmationView(int id)
+        {
+            //Write your logic here 
+            return PartialView("_FileRequestNontification_ConfirmationView");
         }
 
         [HttpPost]
