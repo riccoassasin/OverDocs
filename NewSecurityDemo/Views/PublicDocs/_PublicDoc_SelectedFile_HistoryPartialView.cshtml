@@ -1,0 +1,82 @@
+﻿@model IEnumerable<NewSecurityDemo.Models.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>
+
+@using Microsoft.AspNet.Identity;
+@using Common.Formatters;
+
+
+@{
+    string UserID_OfUserCurrentlyLoggedIn = User.Identity.GetUserId();
+}
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        File History
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table-condensed table-hover table-striped">
+                <tr>
+                    <th class="text-nowrap">
+                        @Html.Label("Ref#")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("File Name")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("Size")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("Version")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("Date Modified")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("File Owner")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("Modified By")
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.FileID)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.FullFileName)
+                        </td>
+                        <td class="text-nowrap">
+                            @FileSize.ToFileSize(@item.FileSize)
+                        </td>
+                        <td class="text-nowrap text-center">
+                            @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.DateCreated)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.NameOfFileOwner)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.NameOfUserThatLastUpdatedFile)
+                        </td>
+                        <td class="text-nowrap">
+                            <a href="#" onclick="showModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
+                            @*@Html.ActionLink("Download", "Edit", new { /* id=item.PrimaryKey */ })*@
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+

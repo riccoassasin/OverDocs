@@ -183,17 +183,16 @@
                                             <table style=" border: none;">
                                                 <tr>
                                                     <td>
-                                                        @Html.ActionLink("History", "Edit", new { /* id=item.PrimaryKey */ })
+                                                        [<a href="javascript:void(0);" onclick="showHistory(@item.FileID,'@item.FullFileName');" class="showHistory">History</a>]
                                                     </td>
-                                                    <td>|</td>
+                                                    <td>&nbsp;</td>
                                                     <td>
                                                         <div class="text-nowrap">
-                                                            @if (Decision != null)
+                                                            [@if (Decision != null)
                                                             {
                                                                 switch (Decision.FinalDecision)
                                                                 {
                                                                     case ControlTypes.Download:
-
                                                                         <a href="#" onclick="showModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
                                                                         @*@Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;*@
                                                                         break;
@@ -213,7 +212,7 @@
                                                             else
                                                             {
                                                                 @Html.Label("No Links Avaiable!")
-                                                            }
+                                                            }]
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -249,6 +248,29 @@
 
 </div>
 
+<!-- Modal Sections-->
+<div class="modal fade" id="ShowFileHistoryModal" role="dialog">
+    <div class="modal-dialog modal-lg panel-primary">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">File History for: [<span id="HistoryForFile_FileFullName"></span>]</h4>
+            </div>
+            <div class="modal-body">
+                <div id="ShowFileHistory"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeFileHistory" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
 
 
 <button type="button" class="btn btn-info btn-lg hidden" data-toggle="modal" data-target="#Download_Notification_Modal">Open Modal</button>
@@ -259,7 +281,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">File Download</h4>
+                <h4 class="modal-title">History For - <span id="CurrentFileHistoryFileName"></span></h4>
             </div>
             <div class="modal-body">
                 <p>You Are about to download <u><b><span id="FileNameToReplace"></span></b></u>.</p>
@@ -284,6 +306,52 @@
 </div>
 
 
+@section scripts {
+
+    <script>
+
+        function showHistory(FileID, FileFullName) {
+
+            $("#HistoryForFile_FileFullName").html(FileFullName);
+            var ajaxCallURL = '@Url.Action("PublicDoc_SelectedFile_HistoryPartialView", "PublicDocs")';
+            var options = {
+                "backdrop": "static",
+                keyboard: true
+            };
+            $.ajax({
+                type: "POST",
+                url: ajaxCallURL,
+                contentType: "application/json; charset=utf-8",
+                data: '{FileID: ' + FileID + '}',
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    $('#ShowFileHistory').html(data);
+                    $('#ShowFileHistoryModal').modal(options);
+                    $('#ShowFileHistoryModal').modal('show');
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
+            });
+
+        }
+
+
+        $(function () {
+            $("#closeFileHistory").click(function () {
+                //debugger;
+                $('#ShowFileHistoryModal').modal('hide');
+            });
+        });
+
+        $("#Download_Notification_Modal").on('hidden.bs.modal', function () {
+            
+            $("#btnRefreshPage")[0].click();
+        });
+    </script>
+}
+
 @using (Html.BeginForm("DownLoadSelectedFile", "DownLoadFile", FormMethod.Post))
 {
     <input type="hidden" id="FileID" name="FileID" />
@@ -306,14 +374,12 @@
 
     function DownloadFile() {
 
-        $("#btnDownload")[0].click();
-        $("#Download_Notification_Modal").modal("hide");
+               $("#btnDownload")[0].click();
+        //$("#Download_Notification_Modal").modal("hide");
         //$("#btnRefreshPage")[0].click();
     }
 
     function sendRequestNotification(FileID, NotificationTypeID, IDOFPersonLoggedOn, IDOfTheFileOwner) {
-
-
         $.ajax({
             type: "POST",
             url: '@Url.Action("SendRequestNotification", "Notifications")',

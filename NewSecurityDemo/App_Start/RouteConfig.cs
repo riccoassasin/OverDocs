@@ -27,7 +27,7 @@ namespace NewSecurityDemo
             routes.MapRoute(
               name: "FileDownloadRoute",
               url: "DownloadFile/{action}/{FileID}",
-              defaults: new { controller = "DownloadFile", action = "DownLoadSelectedFile", FileID = 24 }
+              defaults: new { controller = "DownloadFile", action = "DownLoadSelectedFile", FileID = UrlParameter.Optional }
           );
 
             #endregion
@@ -70,6 +70,12 @@ namespace NewSecurityDemo
             url: "{controller}/{action}/{id}",
             defaults: new { controller = "PublicDocs", action = "PublicDocDisplay", id = UrlParameter.Optional });
 
+
+            //PublicDocDisplay
+            //routes.MapRoute(
+            //name: "PublicDocs",
+            //url: "PublicDocs/PublicDoc_SelectedFile_HistoryPartialView/{id}",
+            //defaults: new { controller = "PublicDocs", action = "PublicDoc_SelectedFile_HistoryPartialView", id = UrlParameter.Optional });
 
             //////This Routes to the default Public Docs Page
             ////routes.MapRoute(

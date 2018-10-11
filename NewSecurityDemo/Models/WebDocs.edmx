@@ -485,6 +485,9 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Parameter Name="CurrentlyLoggedingUserID" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="PublicDocs_R_GetMostRecentFileVersion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="PublicDocs_R_GetSelectedFileHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FileID" Type="int" Mode="In" />
+        </Function>
         <Function Name="UserDocs_R_GetAllUserCreatedDocs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="nvarchar" Mode="In" />
         </Function>
@@ -986,6 +989,9 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             <End Role="File" EntitySet="Files" />
             <End Role="UserThatDownloadedFile" EntitySet="UserThatDownloadedFiles" />
           </AssociationSet>
+          <FunctionImport Name="PublicDocs_R_GetSelectedFileHistory" EntitySet="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" ReturnType="Collection(WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile)">
+          <Parameter Name="FileID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
           <Key>
@@ -1243,6 +1249,28 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="PublicDocs_R_GetSelectedFileHistory_Result">
+          <Property Type="Int32" Name="FileID" Nullable="true" />
+          <Property Type="Int32" Name="ParentFileID" Nullable="true" />
+          <Property Type="String" Name="UserIDOfFileOwner" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="UserIDOfLastUploaded" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="CurrentFileStatus" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="FileLookupStatusID" Nullable="true" />
+          <Property Type="String" Name="CurrentFileShareStatus" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="FileShareStatusID" Nullable="true" />
+          <Property Type="String" Name="ContentType" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="FileName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="FileExtension" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="FullFileName" Nullable="true" MaxLength="551" />
+          <Property Type="Int32" Name="FileSize" Nullable="true" />
+          <Property Type="Int32" Name="CurrentVersionNumber" Nullable="true" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="true" Precision="23" />
+          <Property Type="String" Name="NameOfFileOwner" Nullable="true" />
+          <Property Type="String" Name="NameOfUserThatLastUpdatedFile" Nullable="true" />
+          <Property Type="String" Name="ListOfUserIDThatTheFileISsharedWith" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="IdOfUserThatDownloadedTheFile" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="ComponentLevel" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1486,6 +1514,8 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="PublicDocs_R_GetSelectedFileHistory" FunctionName="WebDocsModel.Store.PublicDocs_R_GetSelectedFileHistory">
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

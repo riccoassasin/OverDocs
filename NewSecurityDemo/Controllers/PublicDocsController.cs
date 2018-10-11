@@ -6,6 +6,7 @@ using NewSecurityDemo.Models;
 using OverDocsModels;
 using PagedList;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -46,12 +47,12 @@ namespace MyOverDocs.Controllers
 
 
             List<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> AllPublicFiles = (from a in db.PublicDocs_R_GetMostRecentFileVersion()
-                                  select a).ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
+                                                                                                   select a).ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
 
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                AllPublicFiles = AllPublicFiles.Where(s => s.FullFileName.Contains(searchString)).ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
+                AllPublicFiles = AllPublicFiles.Where(s => s.FullFileName.ToLower().Contains(searchString.ToLower())).ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
             }
 
             var dd = db.PublicDocs_R_GetMostRecentFileVersion();
@@ -121,10 +122,12 @@ namespace MyOverDocs.Controllers
             return View(AllPublicFiles.ToPagedList(pageNumber, pageSize));
         }
 
-        //public ActionResult PublicDocHistoryPartialView()
-        //{
-        //    List<Emp_Information> model = db...ToList();
-        //    return PartialView("_EmpPartial", model);
-        //}
+        public ActionResult PublicDoc_SelectedFile_HistoryPartialView(int FileID = 0)
+        {
+            List<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> model = db.PublicDocs_R_GetSelectedFileHistory(FileID).ToList();
+            return PartialView("_PublicDoc_SelectedFile_HistoryPartialView", (from a in model
+                                                                              orderby a.DateCreated
+                                                                              select a).ToList());
+        }
     }
 }

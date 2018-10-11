@@ -17,21 +17,35 @@ namespace NewSecurityDemo.Controllers
         public ActionResult DownLoadSelectedFile(int FileID, string UserIDOfPersonThatDownloadedTheFile)
         {
             File ObjFile = GetFileToDownload(FileID);
-            ObjFile.FileLookupStatusID = (int)Common.Enum.DBLookupEnum.FileViewStatus.FileIsLocked;
-            ObjFile.UserThatDownloadedFile = new UserThatDownloadedFile
+
+            string errorMessage = "";
+
+            //Check To verify that the file has not been downloaded and locked 
+            //If it has been locked it means that it is iether being downloaded by the same user again or is a download from the file history.
+            if ((from a in db.UserThatDownloadedFiles
+                 where a.FileID == FileID
+                 select a).Count() == 0)
             {
-                FileID = FileID,
-                UserIDThatDownloadedFIle = UserIDOfPersonThatDownloadedTheFile,
-                DateDownloaded = DateTime.Now
-            };
+                ObjFile.FileLookupStatusID = (int)Common.Enum.DBLookupEnum.FileViewStatus.FileIsLocked;
+                ObjFile.UserThatDownloadedFile = new UserThatDownloadedFile
+                {
+                    FileID = FileID,
+                    UserIDThatDownloadedFIle = UserIDOfPersonThatDownloadedTheFile,
+                    DateDownloaded = DateTime.Now
+                };
+            }
+
             try
             {
                 db.SaveChanges();
             }
             catch (Exception ex)
             {
-                string err = ex.Message;
+                errorMessage = ex.Message;
+                throw;
+                
             }
+
             if (ObjFile != null)
             {
                 return File(ObjFile.FileImage, ObjFile.ContentType, ObjFile.FileName + "." + ObjFile.FileExtension);

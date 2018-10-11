@@ -90,5 +90,23 @@ namespace NewSecurityDemo.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<View_UserDocs_AllUserCreatedDocs>("UserDocs_R_GetAllUserCreatedDocs", mergeOption, userIDParameter);
         }
+    
+        public virtual ObjectResult<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> PublicDocs_R_GetSelectedFileHistory(Nullable<int> fileID)
+        {
+            var fileIDParameter = fileID.HasValue ?
+                new ObjectParameter("FileID", fileID) :
+                new ObjectParameter("FileID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>("PublicDocs_R_GetSelectedFileHistory", fileIDParameter);
+        }
+    
+        public virtual ObjectResult<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile> PublicDocs_R_GetSelectedFileHistory(Nullable<int> fileID, MergeOption mergeOption)
+        {
+            var fileIDParameter = fileID.HasValue ?
+                new ObjectParameter("FileID", fileID) :
+                new ObjectParameter("FileID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>("PublicDocs_R_GetSelectedFileHistory", mergeOption, fileIDParameter);
+        }
     }
 }
