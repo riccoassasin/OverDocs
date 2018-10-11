@@ -70,8 +70,6 @@
     <Build Include="dbo\Tables\LookupTable_FileCategories.sql" />
     <Build Include="dbo\Tables\FileSharedWithUsers.sql" />
     <Build Include="dbo\Tables\Files.sql" />
-    <Build Include="dbo\Tables\FileRevokedNotifications.sql" />
-    <Build Include="dbo\Tables\FileRequestNotifications.sql" />
     <Build Include="dbo\Tables\FileCategories.sql" />
     <Build Include="dbo\Tables\EmailSettings.sql" />
     <Build Include="dbo\Tables\Chats.sql" />
@@ -88,7 +86,7 @@
     <Build Include="dbo\Stored Procedures\PublicDocs_R_GetMostRecentFileVersion.sql" />
     <Build Include="dbo\Stored Procedures\PrivateDocs_R_GetAllPrivateSharedUserFiles.sql" />
     <Build Include="dbo\Tables\LookupTableNotificationTypes.sql" />
-    <Build Include="dbo\Tables\FileUploadNotifications.sql" />
     <Build Include="dbo\Tables\UserThatDownloadedFile.sql" />
+    <Build Include="dbo\Stored Procedures\PublicDocs_R_GetSelectedFileHistory.sql" />
   </ItemGroup>
 </Project>

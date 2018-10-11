@@ -69,33 +69,33 @@
             <table class="table-condensed table-hover table-striped">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="text-nowrap">
 
                             @Html.ActionLink("Ref#", "PublicDocDisplay", new { sortOrder = ViewBag.FileIDSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
+                        <th class="text-nowrap">
 
                             @Html.ActionLink("File Name", "PublicDocDisplay", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
+                        <th class="text-nowrap">
                             @Html.ActionLink("File Size", "PublicDocDisplay", new { sortOrder = ViewBag.FileSizeSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
+                        <th class="text-nowrap">
                             @Html.ActionLink("File Owner", "PublicDocDisplay", new { sortOrder = ViewBag.NameOfFileOwnerSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
+                        <th class="text-nowrap">
                             @Html.Label("Updated By")
                         </th>
-                        <th>
+                        <th class="text-nowrap">
                             @Html.ActionLink("Last Modified", "PublicDocDisplay", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
+                        <th class="text-nowrap">
                             @Html.ActionLink("File Status", "PublicDocDisplay", new { sortOrder = ViewBag.CurrentFileStatusSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
+                        <th class="text-nowrap">
                             @Html.ActionLink("Shared Status", "PublicDocDisplay", new { sortOrder = ViewBag.CurrentFileShareStatusSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
-                        <th>
+                        <th class="text-nowrap">
                             @Html.ActionLink("Version", "PublicDocDisplay", new { sortOrder = ViewBag.CurrentVersionNumberSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
                         <th>Options</th>

@@ -123,7 +123,7 @@ namespace MyOverDocs.Controllers
 
         //public ActionResult PublicDocHistoryPartialView()
         //{
-        //    List<Emp_Information> model = db..ToList();
+        //    List<Emp_Information> model = db...ToList();
         //    return PartialView("_EmpPartial", model);
         //}
     }

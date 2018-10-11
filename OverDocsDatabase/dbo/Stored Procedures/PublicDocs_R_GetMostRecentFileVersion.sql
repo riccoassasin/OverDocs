@@ -11,7 +11,7 @@ AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+	SET NOCOUNT OFF;
 
     -- Insert statements for procedure here
 	
@@ -215,11 +215,6 @@ BEGIN
 																	------------start
 																							---------------begin
 
-																							
-																							--print 'Value is: ' + Convert(VArchar(100),@InnerLoop_UserID);
-																								
-																							--	print 'The length is: ' + Convert(VarchaR(1000),Len(@InnerLoop_UserID));
-
 																								set @LentghtOfUSERIDSet = Convert(int,Len(@InnerLoop_ListOfUserID));
 																								--print 'Length of user id set before entering if statement : ' + convert(varchar(max),@LentghtOfUSERIDSet);
 																								IF @LentghtOfUSERIDSet > 0
@@ -230,11 +225,6 @@ BEGIN
 																								END
 
 																								SET @InnerLoop_ListOfUserID = convert(varchar(max),@InnerLoop_ListOfUserID) + convert(varchar(max), @InnerLoop_UserID);
-																								--print 'before';
-																								--select @InnerLoop_ListOfUserID;
-																								--	print Convert(varchar(max),@InnerLoop_ListOfUserID) + 'finally';
-																								--	print'yesy';
-
 																								--END OF COURsOR
 																	-----------End
 																	--END OF COURsOR
@@ -247,12 +237,6 @@ BEGIN
 													Update #MyTEmpTable
 													SET ListOfUserIDThatTheFileISsharedWith = @InnerLoop_ListOfUserID
 													where @FileIDToDetermineUseredUser = FileID;
-
-
-
-	---print @FileIDToDetermineUseredUser;
-
-
 	----EndOF New Stuff Inner Loop
 	--END OF COURsOR
     FETCH NEXT FROM UserIDOfTheUsersThatTheFileIsSharedWith_Cursor 
