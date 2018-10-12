@@ -13,6 +13,11 @@ namespace NewSecurityDemo
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute(
+                           name: "Default",
+                           url: "{controller}/{action}/{id}",
+                           defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
+                       );
 
             #region Notifications
 
@@ -32,11 +37,7 @@ namespace NewSecurityDemo
 
             #endregion
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
-            );
+
 
             #region User Docs Routes
             routes.MapRoute(

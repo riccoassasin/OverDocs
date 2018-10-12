@@ -481,6 +481,10 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="Files_U_SetFileStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FileID" Type="int" Mode="In" />
+          <Parameter Name="FileLookupStatusID" Type="int" Mode="In" />
+        </Function>
         <Function Name="PrivateDocs_R_GetAllPrivateSharedUserFiles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CurrentlyLoggedingUserID" Type="nvarchar" Mode="In" />
         </Function>
@@ -991,6 +995,10 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           </AssociationSet>
           <FunctionImport Name="PublicDocs_R_GetSelectedFileHistory" EntitySet="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" ReturnType="Collection(WebDocsModel.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile)">
           <Parameter Name="FileID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Files_U_SetFileStatus">
+            <Parameter Name="FileID" Mode="In" Type="Int32" />
+            <Parameter Name="FileLookupStatusID" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
@@ -1516,6 +1524,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="PublicDocs_R_GetSelectedFileHistory" FunctionName="WebDocsModel.Store.PublicDocs_R_GetSelectedFileHistory">
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Files_U_SetFileStatus" FunctionName="WebDocsModel.Store.Files_U_SetFileStatus" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

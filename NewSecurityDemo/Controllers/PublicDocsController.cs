@@ -74,6 +74,12 @@ namespace MyOverDocs.Controllers
                 case "DateCreated_desc":
                     AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.DateCreated).ToList();
                     break;
+                case "NameOfFileOwner":
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.NameOfFileOwner).ToList();
+                    break;
+                case "NameOfFileOwner_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.NameOfFileOwner).ToList();
+                    break;
 
                 case "FileID":
                     AllPublicFiles = AllPublicFiles.OrderBy(s => s.FileID).ToList();

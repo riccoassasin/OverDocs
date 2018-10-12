@@ -108,5 +108,18 @@ namespace NewSecurityDemo.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>("PublicDocs_R_GetSelectedFileHistory", mergeOption, fileIDParameter);
         }
+    
+        public virtual int Files_U_SetFileStatus(Nullable<int> fileID, Nullable<int> fileLookupStatusID)
+        {
+            var fileIDParameter = fileID.HasValue ?
+                new ObjectParameter("FileID", fileID) :
+                new ObjectParameter("FileID", typeof(int));
+    
+            var fileLookupStatusIDParameter = fileLookupStatusID.HasValue ?
+                new ObjectParameter("FileLookupStatusID", fileLookupStatusID) :
+                new ObjectParameter("FileLookupStatusID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Files_U_SetFileStatus", fileIDParameter, fileLookupStatusIDParameter);
+        }
     }
 }

@@ -422,13 +422,13 @@
     <Content Include="Views\Notifications\ShowNotifications.cshtml" />
     <Content Include="Views\Notifications\_FileRequestNontification_ConfirmationView.cshtml" />
     <Content Include="Views\PublicDocs\_PublicDoc_SelectedFile_HistoryPartialView.cshtml" />
+    <Content Include="Views\DownloadFile\_DownloadFileConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
     <Folder Include="Models\ModelExtensions\" />
     <Folder Include="Models\MultiModels\UserDocsModels\" />
-    <Folder Include="Views\DownloadFile\" />
     <Folder Include="Views\FileReturn\" />
     <Folder Include="Views\UploadFile\" />
   </ItemGroup>

@@ -1,5 +1,7 @@
 ﻿@model NewSecurityDemo.Models.Notifications.NotificationsModel
 
+@using Common.Enum.DBLookupEnum;
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "ShowNotifications";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,6 +15,9 @@
         @Html.ActionLink("Create New", "Create")
     </p>*@
 
+@{
+    string UserID_OfUserCurrentlyLoggedIn = User.Identity.GetUserId();
+}
 <br />
 
 <div class="panel panel-primary">
@@ -38,55 +43,85 @@
 
                     <table class="table">
                         <tr>
-                            <th>
-                                @Html.Label("Ref#")
+                            <th class="text-nowrap">
+                                @Html.Label("Notification#")
                             </th>
-                            <th>
+                            <th class="text-nowrap">
+                                @Html.Label("File Ref#")
+                            </th>
+                            <th class="text-nowrap">
+                                @Html.Label("Request File")
+                            </th>
+                            <th class="text-nowrap">
                                 @Html.Label("Notification Type")
                             </th>
-                            <th>
+                            <th class="text-nowrap">
                                 @Html.Label("Created")
                             </th>
-                            <th>
+                            <th class="text-nowrap">
                                 @Html.Label("Sender")
                             </th>
-                            
-                            <th>Options</th>
+
+                            <th class="text-nowrap">Options</th>
                         </tr>
+                        @{
+                            if (Model.UserNotifications.Where(a => a.UserHasAcknowledgement == false).Count() > 0)
+                            {
+                                foreach (var item in Model.UserNotifications)
+                                {
+                                    if (!(item.UserHasAcknowledgement))
+                                    {
+                                        <tr>
+                                            <td class="text-nowrap">
+                                                @item.NotificationID
 
-                        @foreach (var item in Model.UserNotifications)
-                        {
+                                            </td>
+                                            <td class="text-nowrap">
+                                                @item.FileID
 
-                            if (!(item.UserHasAcknowledgement))
+                                            </td>
+                                            <td class="text-nowrap">@item.File.FileName @item.File.FileExtension</td>
+                                            <td class="text-nowrap">
+                                                @item.LookupTableNotificationType.NotificationType
+                                            </td>
+                                            <td class="text-nowrap">
+                                                @item.DateCreated
+                                            </td>
+                                            <td class="text-nowrap">
+                                                @item.AspNetUser.FirstName @item.AspNetUser.LastName
+                                            </td>
+                                            <td>
+                                                @{
+                                                    string sFileName = item.File.FileName + "." + item.File.FileExtension;
+                                                    string sPersonNameWhichIsRequestingFile = item.AspNetUser.FirstName + " " + item.AspNetUser.LastName;
+                                                    if (item.NotificationTypeID == (int)NotificationTypes.FileRequest)
+                                                    {
+                                                        @: [<a href="javascript:void(0);" onclick="showProcessRequestNotificationModal(@item.FileID, @item.NotificationID,'@item.UserIDOfNotificationSender','@UserID_OfUserCurrentlyLoggedIn','@sFileName','@sPersonNameWhichIsRequestingFile');">Process Notification</a>]
+                                                    }
+                                                }
+                                                @*@Html.ActionLink("ShowNotifications", "ShowNotifications", new { TabIndex = 0 }) |
+                                                    @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
+                                                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })*@
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                            else
                             {
                                 <tr>
-                                    <td>
-                                        @item.FileID
-
-                                    </td>
-                                    <td>
-                                        @item.LookupTableNotificationType.NotificationType
-                                    </td>
-                                    <td>
-                                        @item.DateCreated
-                                    </td>
-                                    <td>
-                                        @item.AspNetUser.FirstName
-                                    </td>
-
-
-                                    <td>
-                                        @Html.ActionLink("ShowNotifications", "ShowNotifications", new { TabIndex = 0 }) |
-                                        @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                                    <td colspan="9">
+                                        <div class="alert alert-info">
+                                            <strong>Info!</strong> No New Notifications Listed!.<br />
+                                            Will only show notifications users send any notification requests!!
+                                        </div>
                                     </td>
                                 </tr>
+
                             }
 
-
-
-
                         }
+
 
                     </table>
                 </div>
@@ -109,36 +144,52 @@
                             </th>
                             <th></th>
                         </tr>
+                        @{
+                            if (Model.UserNotifications.Where(a => a.UserHasAcknowledgement == true).Count() > 0)
+                            {
+                                foreach (var item in Model.UserNotifications)
+                                {
+                                    if (item.UserHasAcknowledgement)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.FileID
 
-                        @foreach (var item in Model.UserNotifications)
-                        {
-                            if (item.UserHasAcknowledgement)
+                                            </td>
+                                            <td>
+                                                @item.LookupTableNotificationType.NotificationType
+                                            </td>
+                                            <td>
+                                                @item.DateCreated
+                                            </td>
+                                            <td>
+                                                @item.AspNetUser.FirstName
+                                            </td>
+
+                                            <td>
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.NotificationID }) |
+                                                @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
+                                                @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            }
+                            else
                             {
                                 <tr>
-                                    <td>
-                                        @item.FileID
-
-                                    </td>
-                                    <td>
-                                        @item.LookupTableNotificationType.NotificationType
-                                    </td>
-                                    <td>
-                                        @item.DateCreated
-                                    </td>
-                                    <td>
-                                        @item.AspNetUser.FirstName
-                                    </td>
-
-                                    <td>
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.NotificationID }) |
-                                        @Html.ActionLink("Details", "Details", new { id = item.NotificationID }) |
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                                    <td colspan="9">
+                                        <div class="alert alert-info">
+                                            <strong>Info!</strong> No Archive Notifications Listed!.<br />
+                                            Will only show notifications items once new notifications have been processed!!
+                                        </div>
                                     </td>
                                 </tr>
                             }
-
                         }
-                        @Html.ActionLink("ShowNotifications", "ShowNotifications", new { TabIndex = 1 }) |
+
+                        @*@Html.ActionLink("ShowNotifications", "ShowNotifications", new { TabIndex = 1 }) |*@
                     </table>
                 </div>
             </div>
@@ -148,21 +199,31 @@
 
 </div>
 
-<!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+
+<!-- Modal Request Notification -->
+<div id="divProcessFileREquestNotificationModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header ">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Process Request Notification</h4>
             </div>
             <div class="modal-body">
-                <p><div id="partial"></div></p>
+                <p>A Request Notification was recievevied from <span id="requestNotificationSenderName"></span> has been recieved.</p>
+                <p>The request is to gain acces to <span id="requestedFileNameToShareBaseOnTheREquestNotificationRecieved"></span> with file Ref# <span id="requestedNotificationFileID"></span></p>
+                <br />
+                How Would you like to procced?
+                <br />
+                <br />
+
+                <div class="row text-left">
+                    <div class="col-sm-6 text-center btn btn-danger" id="btnDenyFileShareRequest">Deny Request</div>
+                    <div class="col-sm-6 text-center btn btn-success" id="btnAcceptFileShareRequest" onclick="ProcessAcceptedFileShareRequest();">Accept Request</div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -171,6 +232,119 @@
 
     </div>
 </div>
+
+<!-- Modal General REspoonsse Modal -->
+<div id="divResponseDialogForMessages" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <div id="GeneralResponseContentMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--Hidden Fields used to store the values used to process the Request Notification-->
+
+<input type="hidden" id="hidRequestForFileName" name="hidRequestForFileName" />
+<input type="hidden" id="hidRequestForFile_PersonName" name="hidRequestForFile_PersonName" />
+<input type="hidden" id="hidFileID" name="hidFileID" />
+<input type="hidden" id="hidNotificationID" name="hidNotificationID" />
+<input type="hidden" id="hidUserIDOfPersonToShareTheFileWith" name="hidUserIDOfPersonToShareTheFileWith" />
+<input type="hidden" id="hidUserID_OfUserCurrentlyLoggedIn" name="hidUserID_OfUserCurrentlyLoggedIn" />
+
+<!--End of hidden fields-->
+
+@section scripts{
+
+    <script>
+
+        function ProcessDeniedFileShareRequest() {
+              $.ajax({
+                type: "POST",
+                url: '@Url.Action("SendRequestNotification", "Notifications")',
+                data: '{ FileID: "' + FileID + '", NotificationTypeID: "' + NotificationTypeID + '", IDOFPersonLoggedOn: "' + IDOFPersonLoggedOn + '",IDOfTheFileOwner: "' + IDOfTheFileOwner + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+
+
+                    //var s = obj.SuccessMessage;
+                    $('#GeneralResponseContentMessage').html(data);
+                    //debugger;
+                    //$('#ShowFileRequerstNotificationConfirmationModal').modal(options);
+                    $('#divResponseDialogForMessages').modal('show');
+                },
+                error: function (xhr, textStatus, error) {
+
+                    $('#GeneralResponseContentMessage').html(error);
+                    //$('#ShowFileRequerstNotificationConfirmationModal').modal(options);
+                    $('#divResponseDialogForMessages').modal('show');
+                    alert('Unable to send request - error: ' + error);
+
+                }
+            });
+        }
+
+        function ProcessAcceptedFileShareRequest() {
+            $("#divProcessFileREquestNotificationModal").modal("hide");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AcceptFileRequest", "Notifications")',
+                data: '{ FileID: "' + $("#hidFileID").val() + '", NotificationID: "' + $("#hidNotificationID").val() + '", IDOfUserThatRequestedTheFileToBeShared: "' + $("#hidUserIDOfPersonToShareTheFileWith").val() + '",IDOfTheFileOwner: "' + $("#hidUserID_OfUserCurrentlyLoggedIn").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+
+                    //var s = obj.SuccessMessage;
+                    $('#GeneralResponseContentMessage').html(data);
+                    //debugger;
+                    //$('#ShowFileRequerstNotificationConfirmationModal').modal(options);
+                    $('#divResponseDialogForMessages').modal('show');
+                },
+                error: function (xhr, textStatus, error) {
+
+                    $('#GeneralResponseContentMessage').html(error);
+                    //$('#ShowFileRequerstNotificationConfirmationModal').modal(options);
+                    $('#divResponseDialogForMessages').modal('show');
+                    alert('Unable to send request - error: ' + error);
+
+                }
+            });
+        }
+
+        function showProcessRequestNotificationModal(FileID, NotificationID, UserIDOfPersonToShareTheFileWith, UserID_OfUserCurrentlyLoggedIn, FileName, PersonNameWhichIsRequestingFile) {
+
+
+            //debugger;
+            $("#requestNotificationSenderName").html(PersonNameWhichIsRequestingFile);
+            $("#requestedFileNameToShareBaseOnTheREquestNotificationRecieved").html(FileName);
+            $("#requestedNotificationFileID").html(FileID);
+
+            $("#hidFileID").val(FileID);
+            $("#hidNotificationID").val(NotificationID);
+            $("#hidUserIDOfPersonToShareTheFileWith").val(UserIDOfPersonToShareTheFileWith);
+            $("#hidUserID_OfUserCurrentlyLoggedIn").val(UserID_OfUserCurrentlyLoggedIn);
+            $("#hidRequestForFileName").val(FileName);
+            $("#hidRequestForFile_PersonName").val(PersonNameWhichIsRequestingFile);
+            $("#divProcessFileREquestNotificationModal").modal("show");
+
+        }
+    </script>
+
+}
 <script>
     window.onload = function () {
         //script goes here
@@ -181,13 +355,13 @@
 </script>
 <script type="text/javascript">
 
-                //
+                                                                                                                                                                                                                                                            //
 
-                //$('.nav-tabs a').on('shown.bs.tab', function (event) {
-                //    var x = $(event.target).text();         // active tab
-                //    alert(x);
-                //    var y = $(event.relatedTarget).text();  // previous tab
-                //});
+                                                                                                                                                                                                                                                            //$('.nav-tabs a').on('shown.bs.tab', function (event) {
+                                                                                                                                                                                                                                                            //    var x = $(event.target).text();         // active tab
+                                                                                                                                                                                                                                                            //    alert(x);
+                                                                                                                                                                                                                                                            //    var y = $(event.relatedTarget).text();  // previous tab
+                                                                                                                                                                                                                                                            //});
 </script>
 
 
