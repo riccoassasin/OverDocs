@@ -17,6 +17,7 @@ namespace NewSecurityDemo.Models
         public int FileID { get; set; }
         public string UserIDThatDownloadedFIle { get; set; }
         public System.DateTime DateDownloaded { get; set; }
+        public bool HasFileBeenReturned { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual File File { get; set; }

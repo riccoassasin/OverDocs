@@ -208,6 +208,7 @@
     <Compile Include="Controllers\PublicDocsController.cs" />
     <Compile Include="Controllers\UploadFileController.cs" />
     <Compile Include="Controllers\UserDocsController.cs" />
+    <Compile Include="Controllers\UserFileReturnController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -247,7 +248,11 @@
     <Compile Include="Models\FileSharedWithUser.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Files\FileUpload\UserFileUploadAfterDownloadingAndUpdatingModel.cs" />
     <Compile Include="Models\FileUpload\UserFileUploadModel.cs" />
+    <Compile Include="Models\File_R_AllFileDetailsWithoutFioleImage_Result.cs">
+      <DependentUpon>WebDocs.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LookupTableNotificationType.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
@@ -282,6 +287,9 @@
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile.cs">
+      <DependentUpon>WebDocs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\View_ReturnDocs_AllFilesThatHaveBeenDownloaded.cs">
       <DependentUpon>WebDocs.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\View_UserDocs_AllUserCreatedDocs.cs">
@@ -423,10 +431,12 @@
     <Content Include="Views\Notifications\_FileRequestNontification_ConfirmationView.cshtml" />
     <Content Include="Views\PublicDocs\_PublicDoc_SelectedFile_HistoryPartialView.cshtml" />
     <Content Include="Views\DownloadFile\_DownloadFileConfirmation.cshtml" />
+    <Content Include="Views\UserFileReturn\UserFileReturnView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
+    <Folder Include="Models\Files\Download\" />
     <Folder Include="Models\ModelExtensions\" />
     <Folder Include="Models\MultiModels\UserDocsModels\" />
     <Folder Include="Views\FileReturn\" />

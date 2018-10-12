@@ -44,6 +44,7 @@ namespace NewSecurityDemo.Models
         public virtual DbSet<LookupTableNotificationType> LookupTableNotificationTypes { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<UserThatDownloadedFile> UserThatDownloadedFiles { get; set; }
+        public virtual DbSet<View_ReturnDocs_AllFilesThatHaveBeenDownloaded> View_ReturnDocs_AllFilesThatHaveBeenDownloaded { get; set; }
     
         public virtual ObjectResult<View_PrivateDocView_AllSharedPrivateFiles> PrivateDocs_R_GetAllPrivateSharedUserFiles(string currentlyLoggedingUserID)
         {
@@ -120,6 +121,15 @@ namespace NewSecurityDemo.Models
                 new ObjectParameter("FileLookupStatusID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Files_U_SetFileStatus", fileIDParameter, fileLookupStatusIDParameter);
+        }
+    
+        public virtual ObjectResult<File_R_AllFileDetailsWithoutFioleImage_Result> File_R_AllFileDetailsWithoutFioleImage(Nullable<int> fileID)
+        {
+            var fileIDParameter = fileID.HasValue ?
+                new ObjectParameter("FileID", fileID) :
+                new ObjectParameter("FileID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<File_R_AllFileDetailsWithoutFioleImage_Result>("File_R_AllFileDetailsWithoutFioleImage", fileIDParameter);
         }
     }
 }

@@ -151,6 +151,7 @@
           <Property Name="FileID" Type="int" Nullable="false" />
           <Property Name="UserIDThatDownloadedFIle" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="DateDownloaded" Type="datetime" Nullable="false" />
+          <Property Name="HasFileBeenReturned" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'WebDocs.dbo.View_PrivateDocView_AllSharedPrivateFiles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -231,6 +232,28 @@ warning 6002: The table/view 'WebDocs.dbo.View_PublicDocView_AllFilesWithOwnerAn
           <Property Name="FileType" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="ListOfUserIDThatTheFileISsharedWith" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="IdOfUserThatDownloadedTheFile" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'WebDocs.dbo.View_ReturnDocs_AllFilesThatHaveBeenDownloaded' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_ReturnDocs_AllFilesThatHaveBeenDownloaded">
+          <Key>
+            <PropertyRef Name="UserIDThatDownloadedFIle" />
+            <PropertyRef Name="HasFileBeenReturned" />
+          </Key>
+          <Property Name="FileID" Type="int" />
+          <Property Name="ParentFileID" Type="int" />
+          <Property Name="UserIDOfFileOwner" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserIDOfLastUploaded" Type="nvarchar" MaxLength="128" />
+          <Property Name="CurrentVersionNumber" Type="int" />
+          <Property Name="UserIDThatDownloadedFIle" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HasFileBeenReturned" Type="bit" Nullable="false" />
+          <Property Name="FullNameOfFileOwner" Type="nvarchar(max)" />
+          <Property Name="FullNameOfThePersonThatLastUpdatedTheFile" Type="nvarchar(max)" />
+          <Property Name="FullNameOfPersonThatDownloadedTheFile" Type="nvarchar(max)" />
+          <Property Name="FileSize" Type="int" />
+          <Property Name="FileName" Type="varchar" MaxLength="500" />
+          <Property Name="FileExtension" Type="varchar" MaxLength="50" />
+          <Property Name="FullFileName" Type="varchar" MaxLength="551" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -481,6 +504,9 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="File_R_AllFileDetailsWithoutFioleImage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FileID" Type="int" Mode="In" />
+        </Function>
         <Function Name="Files_U_SetFileStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FileID" Type="int" Mode="In" />
           <Parameter Name="FileLookupStatusID" Type="int" Mode="In" />
@@ -556,6 +582,24 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
     [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[ListOfUserIDThatTheFileISsharedWith] AS [ListOfUserIDThatTheFileISsharedWith], 
     [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile].[IdOfUserThatDownloadedTheFile] AS [IdOfUserThatDownloadedTheFile]
     FROM [dbo].[View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile] AS [View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_ReturnDocs_AllFilesThatHaveBeenDownloaded" EntityType="Self.View_ReturnDocs_AllFilesThatHaveBeenDownloaded" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[FileID] AS [FileID], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[ParentFileID] AS [ParentFileID], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[UserIDOfFileOwner] AS [UserIDOfFileOwner], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[UserIDOfLastUploaded] AS [UserIDOfLastUploaded], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[CurrentVersionNumber] AS [CurrentVersionNumber], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[UserIDThatDownloadedFIle] AS [UserIDThatDownloadedFIle], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[HasFileBeenReturned] AS [HasFileBeenReturned], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[FullNameOfFileOwner] AS [FullNameOfFileOwner], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[FullNameOfThePersonThatLastUpdatedTheFile] AS [FullNameOfThePersonThatLastUpdatedTheFile], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[FullNameOfPersonThatDownloadedTheFile] AS [FullNameOfPersonThatDownloadedTheFile], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[FileSize] AS [FileSize], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[FileName] AS [FileName], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[FileExtension] AS [FileExtension], 
+    [View_ReturnDocs_AllFilesThatHaveBeenDownloaded].[FullFileName] AS [FullFileName]
+    FROM [dbo].[View_ReturnDocs_AllFilesThatHaveBeenDownloaded] AS [View_ReturnDocs_AllFilesThatHaveBeenDownloaded]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_UserDocs_AllUserCreatedDocs" EntityType="Self.View_UserDocs_AllUserCreatedDocs" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1000,6 +1044,10 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             <Parameter Name="FileID" Mode="In" Type="Int32" />
             <Parameter Name="FileLookupStatusID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="View_ReturnDocs_AllFilesThatHaveBeenDownloaded" EntityType="WebDocsModel.View_ReturnDocs_AllFilesThatHaveBeenDownloaded" />
+          <FunctionImport Name="File_R_AllFileDetailsWithoutFioleImage" ReturnType="Collection(WebDocsModel.File_R_AllFileDetailsWithoutFioleImage_Result)">
+            <Parameter Name="FileID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
           <Key>
@@ -1232,6 +1280,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Property Name="DateDownloaded" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="WebDocsModel.FK_UserThatDownloadedFile_AspNetUsers" FromRole="UserThatDownloadedFile" ToRole="AspNetUser" />
           <NavigationProperty Name="File" Relationship="WebDocsModel.FK_UserThatDownloadedFile_Files" FromRole="UserThatDownloadedFile" ToRole="File" />
+          <Property Name="HasFileBeenReturned" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_UserThatDownloadedFile_AspNetUsers">
           <End Type="WebDocsModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
@@ -1278,6 +1327,40 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Property Type="String" Name="ListOfUserIDThatTheFileISsharedWith" Nullable="true" MaxLength="1" />
           <Property Type="String" Name="IdOfUserThatDownloadedTheFile" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="ComponentLevel" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="View_ReturnDocs_AllFilesThatHaveBeenDownloaded">
+          <Key>
+            <PropertyRef Name="UserIDThatDownloadedFIle" />
+            <PropertyRef Name="HasFileBeenReturned" />
+          </Key>
+          <Property Name="FileID" Type="Int32" />
+          <Property Name="ParentFileID" Type="Int32" />
+          <Property Name="UserIDOfFileOwner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserIDOfLastUploaded" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentVersionNumber" Type="Int32" />
+          <Property Name="UserIDThatDownloadedFIle" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HasFileBeenReturned" Type="Boolean" Nullable="false" />
+          <Property Name="FullNameOfFileOwner" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FullNameOfThePersonThatLastUpdatedTheFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FullNameOfPersonThatDownloadedTheFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FileSize" Type="Int32" />
+          <Property Name="FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FileExtension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FullFileName" Type="String" MaxLength="551" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="File_R_AllFileDetailsWithoutFioleImage_Result">
+          <Property Type="Int32" Name="FileID" Nullable="false" />
+          <Property Type="Int32" Name="ParentFileID" Nullable="false" />
+          <Property Type="String" Name="UserIDOfFileOwner" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="UserIDOfLastUploaded" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="FileLookupStatusID" Nullable="false" />
+          <Property Type="Int32" Name="FileShareStatusID" Nullable="false" />
+          <Property Type="String" Name="ContentType" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="FileName" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="FileExtension" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="FileSize" Nullable="false" />
+          <Property Type="Int32" Name="CurrentVersionNumber" Nullable="false" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1516,6 +1599,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <EntitySetMapping Name="UserThatDownloadedFiles">
             <EntityTypeMapping TypeName="WebDocsModel.UserThatDownloadedFile">
               <MappingFragment StoreEntitySet="UserThatDownloadedFile">
+                <ScalarProperty Name="HasFileBeenReturned" ColumnName="HasFileBeenReturned" />
                 <ScalarProperty Name="DateDownloaded" ColumnName="DateDownloaded" />
                 <ScalarProperty Name="UserIDThatDownloadedFIle" ColumnName="UserIDThatDownloadedFIle" />
                 <ScalarProperty Name="FileID" ColumnName="FileID" />
@@ -1525,6 +1609,44 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <FunctionImportMapping FunctionImportName="PublicDocs_R_GetSelectedFileHistory" FunctionName="WebDocsModel.Store.PublicDocs_R_GetSelectedFileHistory">
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Files_U_SetFileStatus" FunctionName="WebDocsModel.Store.Files_U_SetFileStatus" />
+          <EntitySetMapping Name="View_ReturnDocs_AllFilesThatHaveBeenDownloaded">
+            <EntityTypeMapping TypeName="WebDocsModel.View_ReturnDocs_AllFilesThatHaveBeenDownloaded">
+              <MappingFragment StoreEntitySet="View_ReturnDocs_AllFilesThatHaveBeenDownloaded">
+                <ScalarProperty Name="FullFileName" ColumnName="FullFileName" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="FullNameOfPersonThatDownloadedTheFile" ColumnName="FullNameOfPersonThatDownloadedTheFile" />
+                <ScalarProperty Name="FullNameOfThePersonThatLastUpdatedTheFile" ColumnName="FullNameOfThePersonThatLastUpdatedTheFile" />
+                <ScalarProperty Name="FullNameOfFileOwner" ColumnName="FullNameOfFileOwner" />
+                <ScalarProperty Name="HasFileBeenReturned" ColumnName="HasFileBeenReturned" />
+                <ScalarProperty Name="UserIDThatDownloadedFIle" ColumnName="UserIDThatDownloadedFIle" />
+                <ScalarProperty Name="CurrentVersionNumber" ColumnName="CurrentVersionNumber" />
+                <ScalarProperty Name="UserIDOfLastUploaded" ColumnName="UserIDOfLastUploaded" />
+                <ScalarProperty Name="UserIDOfFileOwner" ColumnName="UserIDOfFileOwner" />
+                <ScalarProperty Name="ParentFileID" ColumnName="ParentFileID" />
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="File_R_AllFileDetailsWithoutFioleImage" FunctionName="WebDocsModel.Store.File_R_AllFileDetailsWithoutFioleImage">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WebDocsModel.File_R_AllFileDetailsWithoutFioleImage_Result">
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
+                <ScalarProperty Name="ParentFileID" ColumnName="ParentFileID" />
+                <ScalarProperty Name="UserIDOfFileOwner" ColumnName="UserIDOfFileOwner" />
+                <ScalarProperty Name="UserIDOfLastUploaded" ColumnName="UserIDOfLastUploaded" />
+                <ScalarProperty Name="FileLookupStatusID" ColumnName="FileLookupStatusID" />
+                <ScalarProperty Name="FileShareStatusID" ColumnName="FileShareStatusID" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="CurrentVersionNumber" ColumnName="CurrentVersionNumber" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

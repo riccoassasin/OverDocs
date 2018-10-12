@@ -55,7 +55,7 @@ namespace MyOverDocs.Controllers
                 AllPublicFiles = AllPublicFiles.Where(s => s.FullFileName.ToLower().Contains(searchString.ToLower())).ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
             }
 
-            var dd = db.PublicDocs_R_GetMostRecentFileVersion();
+           // var dd = db.PublicDocs_R_GetMostRecentFileVersion();
 
             //foreach (View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile f in AllPublicFiles)
             //{

@@ -13,12 +13,7 @@ namespace NewSecurityDemo
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                           name: "Default",
-                           url: "{controller}/{action}/{id}",
-                           defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
-                       );
-
+          
             #region Notifications
 
 
@@ -52,7 +47,14 @@ namespace NewSecurityDemo
            defaults: new { controller = "UserDocs", action = "UploadUserFile" });
             #endregion
 
+            #region User File Return or Upload
+            routes.MapRoute(
+                          name: "ReturnDocsView",
+                          url: "{controller}/{action}/{id}",
+                          defaults: new { controller = "UserFileReturn", action = "UserFileReturnView", id = UrlParameter.Optional }
+                      );
 
+            #endregion
 
 
             #region User Private Docs
@@ -84,6 +86,13 @@ namespace NewSecurityDemo
             ////url: "{controller}/{action}/{id}",
             ////defaults: new { controller = "PublicDocs", action = "Index", id = UrlParameter.Optional });
             #endregion
+
+            routes.MapRoute(
+                         name: "Default",
+                         url: "{controller}/{action}/{id}",
+                         defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
+                     );
+
 
         }
     }

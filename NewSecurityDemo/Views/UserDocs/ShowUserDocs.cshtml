@@ -53,37 +53,20 @@
                             @Html.Label("Last Modified")
                         </th>
 
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.UserIDOfFileOwner)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UserIDOfLastUploaded)
-                            </th>*@
+
                         <th>
                             @Html.Label("File Status")
 
                         </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileLookupStatusID)
-                            </th>*@
+
                         <th>
                             @Html.Label("Shared Status")
 
                         </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileShareStatusID)
-                            </th>*@
+
                         <th>
                             @Html.Label("File Type")
                         </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FileExtension)
-                            </th>*@
-
-
                         <th>
                             @Html.Label("Version")
 
@@ -131,7 +114,7 @@
                                                                 </tr>
                                                             </table>
                                                             <script type="text/javascript">
-                                                                
+
 
                                                                 function UploadSelectedFile() {
 
@@ -192,23 +175,6 @@
                                                     <div id="UpLoadMessage"></div>
                                                 </div>
                                             </div>
-
-
-
-                                            @*@using (Html.BeginForm("UploadUserFile", "UserDocs", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                                {
-
-
-                                                    <table>
-                                                        <tr>
-                                                            <td>@Html.Label("Select File:")</td>
-                                                            <td> <input type="file" name="file" id="file" /></td>
-                                                        </tr>
-                                                        <tr><td colspan="2"> <input type="submit" value="Upload Image" /></td></tr>
-                                                    </table>
-                                                }*@
-
-
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
