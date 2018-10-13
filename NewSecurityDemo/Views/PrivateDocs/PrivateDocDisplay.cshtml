@@ -151,7 +151,7 @@
                                                 if (item.FileLookupStatusID == (int)Common.Enum.DBLookupEnum.FileViewStatus.FileIsAvailable)
                                                 {
                                                     <a href="#" onclick="showDownloadNotificationModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
-                                                    @:download
+
                                                 }
                                                 else
                                                 {
@@ -194,7 +194,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                
+
                                 @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
@@ -357,3 +357,24 @@
 
 
 }
+
+<!-- Modal Sections File History-->
+<div class="modal fade" id="ShowFileHistoryModal" role="dialog">
+    <div class="modal-dialog modal-lg panel-primary">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">File History for: [<span id="HistoryForFile_FileFullName"></span>]</h4>
+            </div>
+            <div class="modal-body">
+                <div id="ShowFileHistory"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeFileHistory" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

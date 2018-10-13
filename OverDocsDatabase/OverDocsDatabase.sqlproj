@@ -92,5 +92,6 @@
     <Build Include="dbo\Stored Procedures\Files_U_SetFileStatus.sql" />
     <Build Include="dbo\Views\View_ReturnDocs_AllFilesThatHaveBeenDownloaded.sql" />
     <Build Include="dbo\Stored Procedures\File_R_AllFileDetailsWithoutFioleImage.sql" />
+    <Build Include="dbo\Stored Procedures\Files_I_NewFile.sql" />
   </ItemGroup>
 </Project>
