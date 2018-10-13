@@ -103,38 +103,38 @@ namespace NewSecurityDemo.Controllers
 
                         db.FileSharedWithUsers.Add(FSWU);
 
-                        db.SaveChanges();
+                        await db.SaveChangesAsync();
 
                         string FromName = FileOwner.FirstName + " " + FileOwner.LastName;
                         string ToName = UserThatSentRequest.FirstName + " " + UserThatSentRequest.LastName;
 
                         //Email Message To the file owner. Notifying him/her of the that the Private File Was successfull shared  With the person that requested it. 
-                        await Common.Email.EmailHelper.sendMessageAsync(
-                           _ToAddress: FileOwner.Email,
-                           _FromAddress: UserThatSentRequest.Email,
-                           _FromName: FromName,
-                           _ToName: ToName,
-                           _Subject: "Over Docs System - File (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ") has been shared.",
-                           _Message: "Good day " + FromName + ". <br/><br/>A file shared notifiction has been sent to you from the system to notify you that the following file has bee successfully Shared with " + ToName + " .<br/> File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ".<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
-                            _Credentials_UserName: es.UserName,
-                            _Credentials_Password: es.Password,
-                             _SMTP_HOST: es.SmtpHost,
-                             _SMTP_PORT: es.SmtpPort,
-                             _IsSsl: es.SslEnabled);
+                        //await Common.Email.EmailHelper.sendMessageAsync(
+                        //   _ToAddress: FileOwner.Email,
+                        //   _FromAddress: UserThatSentRequest.Email,
+                        //   _FromName: FromName,
+                        //   _ToName: ToName,
+                        //   _Subject: "Over Docs System - File (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ") has been shared.",
+                        //   _Message: "Good day " + FromName + ". <br/><br/>A file shared notifiction has been sent to you from the system to notify you that the following file has bee successfully Shared with " + ToName + " .<br/> File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ".<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
+                        //    _Credentials_UserName: es.UserName,
+                        //    _Credentials_Password: es.Password,
+                        //     _SMTP_HOST: es.SmtpHost,
+                        //     _SMTP_PORT: es.SmtpPort,
+                        //     _IsSsl: es.SslEnabled);
 
-                        //Email Message To the Person that requested the file. To Confirm that the file has been shared out with user and can now download if so desired. 
-                        await Common.Email.EmailHelper.sendMessageAsync(
-                           _ToAddress: UserThatSentRequest.Email,
-                           _FromAddress: FileOwner.Email,
-                           _FromName: ToName,
-                           _ToName: FromName,
-                           _Subject: "Over Docs System - Notification (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ") has been shared!",
-                           _Message: "Good day " + ToName + ". <br/><br/>" + FromName + " has responded to your request to share the following file.<br/> (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ").<br/> The file has been successfully shared with you and is now viewable under you private documents.<br/>The file can now be download if you require it.<br/><br/> Regards Over Docs.",
-                            _Credentials_UserName: es.UserName,
-                            _Credentials_Password: es.Password,
-                             _SMTP_HOST: es.SmtpHost,
-                             _SMTP_PORT: es.SmtpPort,
-                             _IsSsl: es.SslEnabled);
+                        ////Email Message To the Person that requested the file. To Confirm that the file has been shared out with user and can now download if so desired. 
+                        //await Common.Email.EmailHelper.sendMessageAsync(
+                        //   _ToAddress: UserThatSentRequest.Email,
+                        //   _FromAddress: FileOwner.Email,
+                        //   _FromName: ToName,
+                        //   _ToName: FromName,
+                        //   _Subject: "Over Docs System - Notification (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ") has been shared!",
+                        //   _Message: "Good day " + ToName + ". <br/><br/>" + FromName + " has responded to your request to share the following file.<br/> (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ").<br/> The file has been successfully shared with you and is now viewable under you private documents.<br/>The file can now be download if you require it.<br/><br/> Regards Over Docs.",
+                        //    _Credentials_UserName: es.UserName,
+                        //    _Credentials_Password: es.Password,
+                        //     _SMTP_HOST: es.SmtpHost,
+                        //     _SMTP_PORT: es.SmtpPort,
+                        //     _IsSsl: es.SslEnabled);
 
                         rtnSuccessMessage += "Notification has been successfully recorded and Email Notification Sent to the person that request it in forming them that the file is avaiable!";
 
@@ -235,69 +235,69 @@ namespace NewSecurityDemo.Controllers
                         };
                         db.Notifications.Add(n);
 
-                        db.SaveChanges();
+                        await db.SaveChangesAsync();
                         rtnSuccessMessage += "Notification has been successfully recorded and Email Notification Sent to the file owner for approval.";
 
                         //determine if the notification has already been sent?
 
-                        //Email Message To the file owner. Notifying him/her of the that a user wants to gain access to a private file. 
-                        await Common.Email.EmailHelper.sendMessageAsync(
-                           _ToAddress: FileOwner.Email,
-                           _FromAddress: CurrentUser.Email,
-                           _FromName: FromName,
-                           _ToName: ToName,
-                           _Subject: "Over Docs System - Request to share private file (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ")",
-                           _Message: "Good day " + FileOwner.FirstName + " " + FileOwner.LastName + ". <br/><br/>A request notifiction has been sent to you from: " + CurrentUser.FirstName + " " + CurrentUser.LastName + " to please share one of your documents.<br/> REquest for the following file:<br/>File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ".<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
-                            _Credentials_UserName: es.UserName,
-                            _Credentials_Password: es.Password,
-                             _SMTP_HOST: es.SmtpHost,
-                             _SMTP_PORT: es.SmtpPort,
-                             _IsSsl: es.SslEnabled);
+                        ////Email Message To the file owner. Notifying him/her of the that a user wants to gain access to a private file. 
+                        //await Common.Email.EmailHelper.sendMessageAsync(
+                        //   _ToAddress: FileOwner.Email,
+                        //   _FromAddress: CurrentUser.Email,
+                        //   _FromName: FromName,
+                        //   _ToName: ToName,
+                        //   _Subject: "Over Docs System - Request to share private file (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ")",
+                        //   _Message: "Good day " + FileOwner.FirstName + " " + FileOwner.LastName + ". <br/><br/>A request notifiction has been sent to you from: " + CurrentUser.FirstName + " " + CurrentUser.LastName + " to please share one of your documents.<br/> REquest for the following file:<br/>File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ".<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
+                        //    _Credentials_UserName: es.UserName,
+                        //    _Credentials_Password: es.Password,
+                        //     _SMTP_HOST: es.SmtpHost,
+                        //     _SMTP_PORT: es.SmtpPort,
+                        //     _IsSsl: es.SslEnabled);
 
-                        //Email Message To the Current user logged. To Confirm that a notification was sent. 
-                        await Common.Email.EmailHelper.sendMessageAsync(
-                           _ToAddress: CurrentUser.Email,
-                           _FromAddress: FileOwner.Email,
-                           _FromName: ToName,
-                           _ToName: FromName,
-                           _Subject: "Over Docs System - Notification sent to the owner of  (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ")",
-                           _Message: "Good day " + CurrentUser.FirstName + " " + CurrentUser.LastName + ". <br/><br/>A REQUEST notifiction has been sent to the owner: " + FileOwner.FirstName + " " + FileOwner.LastName + ".<br/> For the following file:<br/>File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ".<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
-                            _Credentials_UserName: es.UserName,
-                            _Credentials_Password: es.Password,
-                             _SMTP_HOST: es.SmtpHost,
-                             _SMTP_PORT: es.SmtpPort,
-                             _IsSsl: es.SslEnabled);
+                        ////Email Message To the Current user logged. To Confirm that a notification was sent. 
+                        //await Common.Email.EmailHelper.sendMessageAsync(
+                        //   _ToAddress: CurrentUser.Email,
+                        //   _FromAddress: FileOwner.Email,
+                        //   _FromName: ToName,
+                        //   _ToName: FromName,
+                        //   _Subject: "Over Docs System - Notification sent to the owner of  (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ")",
+                        //   _Message: "Good day " + CurrentUser.FirstName + " " + CurrentUser.LastName + ". <br/><br/>A REQUEST notifiction has been sent to the owner: " + FileOwner.FirstName + " " + FileOwner.LastName + ".<br/> For the following file:<br/>File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ".<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
+                        //    _Credentials_UserName: es.UserName,
+                        //    _Credentials_Password: es.Password,
+                        //     _SMTP_HOST: es.SmtpHost,
+                        //     _SMTP_PORT: es.SmtpPort,
+                        //     _IsSsl: es.SslEnabled);
                         rtnSuccessMessage += "Notification has been successfully recorded and posted to the file owner, as well Email Notification Sent to the file owner for approval.";
                     }
                     else
                     {
-                        //Email Message To the file owner. Notifying him/her of the that a user wants to gain access to a private file. 
-                        await Common.Email.EmailHelper.sendMessageAsync(
-                           _ToAddress: FileOwner.Email,
-                           _FromAddress: CurrentUser.Email,
-                           _FromName: FromName,
-                           _ToName: ToName,
-                           _Subject: "Over Docs System - Reminder - Request to share private file (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ")",
-                           _Message: "Good day " + FileOwner.FirstName + " " + FileOwner.LastName + ". <br/><br/>This is a friendly reminder that a request notifiction has been sent to you from: " + CurrentUser.FirstName + " " + CurrentUser.LastName + " to please share one of your documents.<br/> Request for the following file:<br/>File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + "<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
-                            _Credentials_UserName: es.UserName,
-                            _Credentials_Password: es.Password,
-                             _SMTP_HOST: es.SmtpHost,
-                             _SMTP_PORT: es.SmtpPort,
-                             _IsSsl: es.SslEnabled);
+                        ////Email Message To the file owner. Notifying him/her of the that a user wants to gain access to a private file. 
+                        //await Common.Email.EmailHelper.sendMessageAsync(
+                        //   _ToAddress: FileOwner.Email,
+                        //   _FromAddress: CurrentUser.Email,
+                        //   _FromName: FromName,
+                        //   _ToName: ToName,
+                        //   _Subject: "Over Docs System - Reminder - Request to share private file (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ")",
+                        //   _Message: "Good day " + FileOwner.FirstName + " " + FileOwner.LastName + ". <br/><br/>This is a friendly reminder that a request notifiction has been sent to you from: " + CurrentUser.FirstName + " " + CurrentUser.LastName + " to please share one of your documents.<br/> Request for the following file:<br/>File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + "<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
+                        //    _Credentials_UserName: es.UserName,
+                        //    _Credentials_Password: es.Password,
+                        //     _SMTP_HOST: es.SmtpHost,
+                        //     _SMTP_PORT: es.SmtpPort,
+                        //     _IsSsl: es.SslEnabled);
 
-                        //Email Message To the Current user logged. To Confirm that a notification was sent. 
-                        await Common.Email.EmailHelper.sendMessageAsync(
-                           _ToAddress: CurrentUser.Email,
-                           _FromAddress: FileOwner.Email,
-                           _FromName: ToName,
-                           _ToName: FromName,
-                           _Subject: "Over Docs System - Notification sent to the owner of  (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ")",
-                           _Message: "Good day " + CurrentUser.FirstName + " " + CurrentUser.LastName + ". <br/><br/>A REQUEST notifiction has been re-sent to the owner: " + FileOwner.FirstName + " " + FileOwner.LastName + ", reminding him/her to review your notification.<br/> For the following file:<br/>File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ".<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
-                            _Credentials_UserName: es.UserName,
-                            _Credentials_Password: es.Password,
-                             _SMTP_HOST: es.SmtpHost,
-                             _SMTP_PORT: es.SmtpPort,
-                             _IsSsl: es.SslEnabled);
+                        ////Email Message To the Current user logged. To Confirm that a notification was sent. 
+                        //await Common.Email.EmailHelper.sendMessageAsync(
+                        //   _ToAddress: CurrentUser.Email,
+                        //   _FromAddress: FileOwner.Email,
+                        //   _FromName: ToName,
+                        //   _ToName: FromName,
+                        //   _Subject: "Over Docs System - Notification sent to the owner of  (" + PartialFileObject.FileID + " - " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ")",
+                        //   _Message: "Good day " + CurrentUser.FirstName + " " + CurrentUser.LastName + ". <br/><br/>A REQUEST notifiction has been re-sent to the owner: " + FileOwner.FirstName + " " + FileOwner.LastName + ", reminding him/her to review your notification.<br/> For the following file:<br/>File Name: " + PartialFileObject.FileName + "." + PartialFileObject.FileExtension + ".<br/>File Ref# " + FileID + ".<br/><br/> Regards Over Docs.",
+                        //    _Credentials_UserName: es.UserName,
+                        //    _Credentials_Password: es.Password,
+                        //     _SMTP_HOST: es.SmtpHost,
+                        //     _SMTP_PORT: es.SmtpPort,
+                        //     _IsSsl: es.SslEnabled);
 
                         rtnSuccessMessage += "Notification has been successfully resent to the file owner and Email Notification Sent to the file owner for prompting to process your request.";
                     }

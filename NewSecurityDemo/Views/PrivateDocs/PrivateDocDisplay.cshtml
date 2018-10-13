@@ -1,5 +1,13 @@
 ﻿@model IEnumerable<NewSecurityDemo.Models.View_PrivateDocView_AllSharedPrivateFiles>
-
+@using Common.Formatters;
+@using Microsoft.AspNet.Identity;
+@using OverDocsModels.DecisionModels.PublicDocuments.IsAvaiable;
+@using SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles;
+@using Common.Enum.SystemLogicEnum;
+@using SystemLogic.Interfaces;
+@using OverDocsModels.DecisionModels.PublicDocuments.IsLocked;
+@using SystemLogic.DescisionClasses.PublicViewedFiles.LockedFiles;
+@using Common.Enum.DBLookupEnum;
 @{
     ViewBag.Title = "PrivateDocDisplay";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,6 +17,9 @@
 @*<p>
         @Html.ActionLink("Create New", "Create")
     </p>*@
+@{
+    string UserID_OfUserCurrentlyLoggedIn = User.Identity.GetUserId();
+}
 <br />
 <div class="panel panel-primary">
     <div class="panel-heading"><h4>Repository - Privately Shared Documents</h4></div>
@@ -104,7 +115,8 @@
                                     @Html.DisplayFor(modelItem => item.FileExtension)
                                 </td>*@
                             <td>
-                                @Html.DisplayFor(modelItem => item.FileSize)
+                                @FileSize.ToFileSize(@item.FileSize)
+                                @*@Html.DisplayFor(modelItem => item.FileSize)*@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
@@ -128,9 +140,64 @@
                                 @Html.DisplayFor(modelItem => item.FullFileName)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                <table>
+                                    <tr>
+                                        <td class="text-nowrap"> [<a href="javascript:void(0);" onclick="showHistory(@item.FileID,'@item.FullFileName');" class="showHistory">History</a>]</td>
+                                        <td class="text-nowrap">
+                                            @{
+
+                                                IDecsions Decision;
+
+                                                if (item.FileLookupStatusID == (int)Common.Enum.DBLookupEnum.FileViewStatus.FileIsAvailable)
+                                                {
+                                                    <a href="#" onclick="showDownloadNotificationModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
+                                                    @:download
+                                                }
+                                                else
+                                                {
+                                                    Decision = new PublicViewLockedFile(UserID_OfUserCurrentlyLoggedIn, new PublicDocsLockedDataModel()
+                                                    {
+
+                                                        FileID = item.FileID,
+                                                        FileOwnerID = item.UserIDOfFileOwner,
+                                                        FileStatusID = item.FileLookupStatusID,
+                                                        FileSharedStautusID = item.FileShareStatusID,
+                                                        FileID_FilesSharedWithUser = "",
+                                                        UserIDOfthePersonThatDownloadedTheFile = item.IdOfUserThatDownloadedTheFile
+                                                    });
+                                                    if (Decision != null)
+                                                    {
+                                                        switch (Decision.FinalDecision)
+                                                        {
+                                                            case ControlTypes.Download:
+                                                                <a href="#" onclick="showDownloadNotificationModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
+                                                                break;
+                                                            case ControlTypes.UploadFileNotification:
+                                                                @Html.ActionLink("Notify to Upload", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null)
+                                                                break;
+
+                                                            default:
+                                                                break;
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="alert alert-info">
+                                                            <strong>Info!</strong> - No Links To Display!
+                                                        </div>
+
+                                                    }
+                                                }
+                                            }
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                             </td>
                         </tr>
                     }
@@ -151,17 +218,142 @@
     </div>
 
 </div>
-<table>
-    <tr>
-        <td>
-            <ul class="pagination">
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-            </ul>
-        </td>
-        <td></td>
-    </tr>
-</table>
+
+<div id="Download_Notification_Modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">History For - <span id="CurrentFileHistoryFileName"></span></h4>
+            </div>
+            <div class="modal-body">
+                <p>You Are about to download <u><b><span id="FileNameToReplace"></span></b></u>.</p>
+                <p>NB! A notification will be sent to all users that this file is shared with. </p>
+                <P>Once the file has been downloaded please NOTE, the file will be locked for all users untill the new version of this file is uploaded by you.  </P>
+                <p>
+                    <b>
+                        Click download to proceed <b>
+                            <a href="#" class="btn btn-warning" onclick="DownloadFile()">
+                                Download
+                            </a> Else Click Close to cancel.
+
+
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@using (Html.BeginForm("DownLoadSelectedFile", "DownLoadFile", FormMethod.Post))
+{
+    <input type="hidden" id="FileID" name="FileID" />
+    <input type="hidden" id="UserIDOfPersonThatDownloadedTheFile" name="UserIDOfPersonThatDownloadedTheFile" />
+    <input type="submit" id="btnDownload" value="Download" style="display:none" />
+}
+@using (Html.BeginForm("PrivateDocDisplay", "PrivateDocs", FormMethod.Get))
+{
+    <input type="submit" id="btnRefreshPage" value="" style="display:none" />
+}
+@section scripts {
+
+
+    <script>
+
+        function showHistory(FileID, FileFullName) {
+
+            $("#HistoryForFile_FileFullName").html(FileFullName);
+            var ajaxCallURL = '@Url.Action("PublicDoc_SelectedFile_HistoryPartialView", "PublicDocs")';
+            var options = {
+                "backdrop": "static",
+                keyboard: true
+            };
+            $.ajax({
+                type: "POST",
+                url: ajaxCallURL,
+                contentType: "application/json; charset=utf-8",
+                data: '{FileID: ' + FileID + '}',
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    $('#ShowFileHistory').html(data);
+                    $('#ShowFileHistoryModal').modal(options);
+                    $('#ShowFileHistoryModal').modal('show');
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
+            });
+
+        }
+
+
+        $(function () {
+            $("#closeFileHistory").click(function () {
+                //debugger;
+                $('#ShowFileHistoryModal').modal('hide');
+            });
+        });
+
+        $("#Download_Notification_Modal").on('hidden.bs.modal', function () {
+
+            $("#btnRefreshPage")[0].click();
+        });
+
+
+        function showDownloadNotificationModal(FileID, FileName, UserIDOfPersonThatDownloadedTheFile) {
+
+        $("#FileNameToReplace").html(FileName)
+        $("#FileID").val(FileID);
+        $("#UserIDOfPersonThatDownloadedTheFile").val(UserIDOfPersonThatDownloadedTheFile);
+        $("#Download_Notification_Modal").modal("show");
+    }
+
+    function DownloadFile() {
+
+               $("#btnDownload")[0].click();
+        //$("#Download_Notification_Modal").modal("hide");
+        //$("#btnRefreshPage")[0].click();
+    }
+
+    function sendRequestNotification(FileID, NotificationTypeID, IDOFPersonLoggedOn, IDOfTheFileOwner) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SendRequestNotification", "Notifications")',
+            data: '{ FileID: "' + FileID + '", NotificationTypeID: "' + NotificationTypeID + '", IDOFPersonLoggedOn: "' + IDOFPersonLoggedOn + '",IDOfTheFileOwner: "' + IDOfTheFileOwner + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+
+
+                //var s = obj.SuccessMessage;
+                $('#ShowFileRequerstNotificationConfirmationContent').html(data);
+                //debugger;
+                //$('#ShowFileRequerstNotificationConfirmationModal').modal(options);
+                $('#ShowFileRequerstNotificationConfirmationModal').modal('show');
+            },
+            error: function (xhr, textStatus, error) {
+
+                $('#ShowFileRequerstNotificationConfirmationContent').html(error);
+                //$('#ShowFileRequerstNotificationConfirmationModal').modal(options);
+                $('#ShowFileRequerstNotificationConfirmationModal').modal('show');
+                alert('Unable to send request - error: ' + error);
+
+            }
+        });
+
+        function successFunc(data, status) {
+            alert(data);
+        }
+
+
+    }
+    </script>
+
+
+}
