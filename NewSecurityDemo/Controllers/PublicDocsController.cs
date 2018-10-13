@@ -62,7 +62,7 @@ namespace MyOverDocs.Controllers
             //    f.FileType = FileExtensionHelper.GetFileType(f.FileExtension);
             //}
 
-            switch (sortOrder)
+            switch (sortOrder) //This is all the informatoin that is stored about the file that is uploaded and in the public documents
             {
                 case "FullFileName_desc":
                     AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.FullFileName).ToList();

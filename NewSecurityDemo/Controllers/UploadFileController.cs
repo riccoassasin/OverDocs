@@ -25,7 +25,7 @@ namespace NewSecurityDemo.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost] // Fetches the userfile from the database that the user uloaded and passes it through the controller
         public JsonResult UserFileUpload(int _FileShareStatusID)
         {
             try
