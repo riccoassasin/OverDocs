@@ -171,6 +171,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_PrivateDocView_AllSharedPrivateFi
             <PropertyRef Name="DateCreated" />
             <PropertyRef Name="FullFileName" />
             <PropertyRef Name="FileType" />
+            <PropertyRef Name="IdOfUserThatDownloadedTheFile" />
           </Key>
           <Property Name="FileID" Type="int" Nullable="false" />
           <Property Name="ParentFileID" Type="int" Nullable="false" />
@@ -190,6 +191,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_PrivateDocView_AllSharedPrivateFi
           <Property Name="RefID" Type="nvarchar" MaxLength="128" />
           <Property Name="FullFileName" Type="varchar" MaxLength="551" Nullable="false" />
           <Property Name="FileType" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IdOfUserThatDownloadedTheFile" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'WebDocs.dbo.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -569,7 +571,8 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
     [View_PrivateDocView_AllSharedPrivateFiles].[UserThatLastUpdatedFile] AS [UserThatLastUpdatedFile], 
     [View_PrivateDocView_AllSharedPrivateFiles].[RefID] AS [RefID], 
     [View_PrivateDocView_AllSharedPrivateFiles].[FullFileName] AS [FullFileName], 
-    [View_PrivateDocView_AllSharedPrivateFiles].[FileType] AS [FileType]
+    [View_PrivateDocView_AllSharedPrivateFiles].[FileType] AS [FileType], 
+    [View_PrivateDocView_AllSharedPrivateFiles].[IdOfUserThatDownloadedTheFile] AS [IdOfUserThatDownloadedTheFile]
     FROM [dbo].[View_PrivateDocView_AllSharedPrivateFiles] AS [View_PrivateDocView_AllSharedPrivateFiles]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" EntityType="Self.View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile" store:Type="Views" store:Schema="dbo">
@@ -1091,6 +1094,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
             <PropertyRef Name="DateCreated" />
             <PropertyRef Name="FullFileName" />
             <PropertyRef Name="FileType" />
+            <PropertyRef Name="IdOfUserThatDownloadedTheFile" />
           </Key>
           <Property Name="FileID" Type="Int32" Nullable="false" />
           <Property Name="ParentFileID" Type="Int32" Nullable="false" />
@@ -1110,6 +1114,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <Property Name="RefID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="FullFileName" Type="String" Nullable="false" MaxLength="551" FixedLength="false" Unicode="false" />
           <Property Name="FileType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IdOfUserThatDownloadedTheFile" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="View_UserDocs_AllUserCreatedDocs">
           <Key>
@@ -1526,6 +1531,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           <EntitySetMapping Name="View_PrivateDocView_AllSharedPrivateFiles">
             <EntityTypeMapping TypeName="WebDocsModel.View_PrivateDocView_AllSharedPrivateFiles">
               <MappingFragment StoreEntitySet="View_PrivateDocView_AllSharedPrivateFiles">
+                <ScalarProperty Name="IdOfUserThatDownloadedTheFile" ColumnName="IdOfUserThatDownloadedTheFile" />
                 <ScalarProperty Name="FileType" ColumnName="FileType" />
                 <ScalarProperty Name="FullFileName" ColumnName="FullFileName" />
                 <ScalarProperty Name="RefID" ColumnName="RefID" />

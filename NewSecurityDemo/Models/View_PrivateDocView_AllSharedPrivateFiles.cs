@@ -32,5 +32,6 @@ namespace NewSecurityDemo.Models
         public string RefID { get; set; }
         public string FullFileName { get; set; }
         public string FileType { get; set; }
+        public string IdOfUserThatDownloadedTheFile { get; set; }
     }
 }
