@@ -28,7 +28,6 @@ namespace NewSecurityDemo.Controllers
             ViewBag.CurrentVersionNumberSortParm = sortOrder == "CurrentVersionNumber" ? "CurrentVersionNumber_desc" : "CurrentVersionNumber";
             ViewBag.FileSizeSortParm = sortOrder == "FileSize" ? "FileSize_desc" : "FileSize";
 
-
             if (searchString != null)
             {
                 page = 1;

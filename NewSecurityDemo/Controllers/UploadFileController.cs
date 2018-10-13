@@ -13,6 +13,7 @@ using OverDocsModels;
 using System.Data.Entity.Validation;
 using Microsoft.AspNet.Identity;
 using Common.Enum.DBLookupEnum;
+using System.Data.Entity.Core.Objects;
 
 namespace NewSecurityDemo.Controllers
 {
@@ -115,24 +116,41 @@ namespace NewSecurityDemo.Controllers
 
                             Models.File newfile = new Models.File();
 
-                            Models.File std = new Models.File()
-                            {
-                                ContentType = fileContent.ContentType,
-                                CurrentVersionNumber = OldFile.CurrentVersionNumber + 1,
-                                DateCreated = DateTime.Now,
-                                FileImage = uploadedFile,
-                                FileName = Path.GetFileNameWithoutExtension(fileContent.FileName),
-                                FileSize = fileContent.ContentLength,
-                                ParentFileID = OldFile.FileID, 
-                                UserIDOfFileOwner = OldFile.UserIDOfFileOwner,
-                                UserIDOfLastUploaded = User.Identity.GetUserId(),
-                                FileLookupStatusID = (int)FileViewStatus.FileIsAvailable,
-                                FileShareStatusID = OldFile.FileShareStatusID,
-                                FileExtension = Path.GetExtension(fileContent.FileName).Replace(".", "")
-                            };
-                            db.Files.Add(std);
                             try
                             {
+                                Models.File NewFileObjc = db.Files_I_NewFile(OldFile.FileID,
+                                OldFile.UserIDOfFileOwner,
+                                User.Identity.GetUserId(),
+                                (int)FileViewStatus.FileIsAvailable,
+                                OldFile.FileShareStatusID,
+                                fileContent.ContentType,
+                                Path.GetFileNameWithoutExtension(fileContent.FileName),
+                                Path.GetExtension(fileContent.FileName).Replace(".", ""),
+                                uploadedFile,
+                                fileContent.ContentLength,
+                                OldFile.CurrentVersionNumber + 1).FirstOrDefault<Models.File>();
+
+                                List<FileSharedWithUser> FSWU = (from a in db.FileSharedWithUsers
+                                                                 where a.FileID == OldFileID
+                                                                 select a).ToList<FileSharedWithUser>();
+
+                                List<FileSharedWithUser> NewFSWUList = new List<FileSharedWithUser>();
+                                foreach (FileSharedWithUser CurrentFSWU in FSWU)
+                                {
+                                    NewFSWUList.Add(new FileSharedWithUser()
+                                    {
+                                        UserIDOfSharedDocs = CurrentFSWU.UserIDOfSharedDocs,
+                                        FileID = NewFileObjc.FileID,
+                                        DateShared = DateTime.Now
+                                    });
+                                }
+                                db.FileSharedWithUsers.AddRange(NewFSWUList);
+
+                                UserThatDownloadedFile UTDF = db.UserThatDownloadedFiles.Where(a => a.FileID == OldFileID).FirstOrDefault();
+
+                                UTDF.HasFileBeenReturned = true;
+
+
                                 db.SaveChanges();
                             }
                             catch (DbEntityValidationException dbEx)

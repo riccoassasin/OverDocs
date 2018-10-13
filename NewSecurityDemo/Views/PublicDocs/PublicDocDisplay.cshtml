@@ -158,7 +158,8 @@
                                                         FileOwnerID = item.UserIDOfFileOwner,
                                                         FileStatusID = item.FileLookupStatusID,
                                                         FileSharedStautusID = item.FileShareStatusID,
-                                                        FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
+                                                        FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith,
+                                                        IDOfUserThatLastDownLoadedTheSelectedFile = item.IdOfUserThatDownloadedTheFile
                                                     });
                                                     break;
                                                 case (int)FileViewStatus.FileIsLocked:
@@ -293,10 +294,6 @@
     </div>
 </div>
 <!-- Modal Sections-->
-
-
-
-
 @*<button type="button" class="btn btn-info btn-lg hidden" data-toggle="modal" data-target="#Download_Notification_Modal">Open Modal</button>*@
 
 <div id="Download_Notification_Modal" class="modal fade" role="dialog">
@@ -398,9 +395,9 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                
-               
-                
+
+
+
                 //var s = obj.SuccessMessage;
                 $('#ShowFileRequerstNotificationConfirmationContent').html(data);
                 //debugger;

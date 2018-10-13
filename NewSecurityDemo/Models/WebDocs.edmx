@@ -507,6 +507,19 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
         <Function Name="File_R_AllFileDetailsWithoutFioleImage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FileID" Type="int" Mode="In" />
         </Function>
+        <Function Name="Files_I_NewFile" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ParentFileID" Type="int" Mode="In" />
+          <Parameter Name="UserIDOfFileOwner" Type="nvarchar" Mode="In" />
+          <Parameter Name="UserIDOfLastUploaded" Type="nvarchar" Mode="In" />
+          <Parameter Name="FileLookupStatusID" Type="int" Mode="In" />
+          <Parameter Name="FileShareStatusID" Type="int" Mode="In" />
+          <Parameter Name="ContentType" Type="varchar" Mode="In" />
+          <Parameter Name="FileName" Type="varchar" Mode="In" />
+          <Parameter Name="FileExtension" Type="varchar" Mode="In" />
+          <Parameter Name="FileImage" Type="image" Mode="In" />
+          <Parameter Name="FileSize" Type="int" Mode="In" />
+          <Parameter Name="CurrentVersionNumber" Type="int" Mode="In" />
+        </Function>
         <Function Name="Files_U_SetFileStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FileID" Type="int" Mode="In" />
           <Parameter Name="FileLookupStatusID" Type="int" Mode="In" />
@@ -1046,7 +1059,20 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
           </FunctionImport>
           <EntitySet Name="View_ReturnDocs_AllFilesThatHaveBeenDownloaded" EntityType="WebDocsModel.View_ReturnDocs_AllFilesThatHaveBeenDownloaded" />
           <FunctionImport Name="File_R_AllFileDetailsWithoutFioleImage" ReturnType="Collection(WebDocsModel.File_R_AllFileDetailsWithoutFioleImage_Result)">
-            <Parameter Name="FileID" Mode="In" Type="Int32" />
+          <Parameter Name="FileID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Files_I_NewFile" EntitySet="Files" ReturnType="Collection(WebDocsModel.File)">
+            <Parameter Name="ParentFileID" Mode="In" Type="Int32" />
+            <Parameter Name="UserIDOfFileOwner" Mode="In" Type="String" />
+            <Parameter Name="UserIDOfLastUploaded" Mode="In" Type="String" />
+            <Parameter Name="FileLookupStatusID" Mode="In" Type="Int32" />
+            <Parameter Name="FileShareStatusID" Mode="In" Type="Int32" />
+            <Parameter Name="ContentType" Mode="In" Type="String" />
+            <Parameter Name="FileName" Mode="In" Type="String" />
+            <Parameter Name="FileExtension" Mode="In" Type="String" />
+            <Parameter Name="FileImage" Mode="In" Type="Binary" />
+            <Parameter Name="FileSize" Mode="In" Type="Int32" />
+            <Parameter Name="CurrentVersionNumber" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="View_PrivateDocView_AllSharedPrivateFiles">
@@ -1647,6 +1673,7 @@ warning 6002: The table/view 'WebDocs.dbo.View_UserDocs_AllUserCreatedDocs' does
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Files_I_NewFile" FunctionName="WebDocsModel.Store.Files_I_NewFile" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

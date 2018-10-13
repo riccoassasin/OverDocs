@@ -14,6 +14,7 @@ namespace OverDocsModels.DecisionModels.PublicDocuments.IsAvaiable
         public int FileSharedStautusID { get; set; }
         public String FileID_FilesSharedWithUser { get; set; }
         public int FileStatusID { get; set; }
-        
+        public string IDOfUserThatLastDownLoadedTheSelectedFile { get; set; }
+
     }
 }
