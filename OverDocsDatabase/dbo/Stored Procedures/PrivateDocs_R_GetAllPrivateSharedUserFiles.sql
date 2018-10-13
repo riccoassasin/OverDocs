@@ -35,6 +35,7 @@ SELECT [FileID]
       ,[RefID]
       ,[FullFileName]
 	  , '' AS FileType
+	   ,[IdOfUserThatDownloadedTheFile]
   FROM [WebDocs].[dbo].[View_PrivateDocView_AllSharedPrivateFiles]
    where [RefID] = @CurrentlyLoggedingUserID;
 END
