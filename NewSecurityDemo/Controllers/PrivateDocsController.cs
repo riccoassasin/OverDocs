@@ -18,9 +18,7 @@ namespace NewSecurityDemo.Controllers
         [Authorize]
         public ActionResult PrivateDocDisplay()
         {
-            //IQueryable<View_PrivateDocView_AllSharedPrivateFiles> File_Query = from f in db.View_PrivateDocView_AllSharedPrivateFiles
-            //select f;
-
+           
             var dd = db.PrivateDocs_R_GetAllPrivateSharedUserFiles(User.Identity.GetUserId());
 
             ////Generates a list of all files returned from the database.

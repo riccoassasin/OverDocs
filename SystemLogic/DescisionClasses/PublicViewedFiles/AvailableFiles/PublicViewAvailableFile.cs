@@ -50,25 +50,33 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
         /// </summary>
         protected override void DetermineCorrectButton()
         {
-            if (IS_FILE_PUBLIC)
+
+            if (IS_THE_CURRENT_USER_THATlOGGED_IN_THE_SAME_AS_THE_PERSON_THAT_DOWNLOADED_THE_FILE_LAST)
             {
                 this._FinalDecision = ControlTypes.Download;
             }
             else
             {
-                if (IS_FILE_OWNER_AND_USER_LOGGED_IN_THE_SAME_PERSON)
+                if (IS_FILE_PUBLIC)
                 {
                     this._FinalDecision = ControlTypes.Download;
                 }
                 else
                 {
-                    if (IS_THE_CURRENT_FILE_SHARED_WITH_USER_CURRENTLY_LOGGED_IN)
+                    if (IS_FILE_OWNER_AND_USER_LOGGED_IN_THE_SAME_PERSON)
                     {
                         this._FinalDecision = ControlTypes.Download;
                     }
                     else
                     {
-                        this._FinalDecision = ControlTypes.RequestPermissionNotifications;
+                        if (IS_THE_CURRENT_FILE_SHARED_WITH_USER_CURRENTLY_LOGGED_IN)
+                        {
+                            this._FinalDecision = ControlTypes.Download;
+                        }
+                        else
+                        {
+                            this._FinalDecision = ControlTypes.RequestPermissionNotifications;
+                        }
                     }
                 }
             }
@@ -111,12 +119,21 @@ namespace SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles
                     }
                 }
             }
-            
+
         }
 
         protected override void Determine_IS_THE_CURRENT_USER_LOGGED_IN_THE_SAME_PERSON_THAT_DOWNLOADED_THE_FILE()
         {
-            
+
+        }
+
+        protected override void Determine_IS_THE_CURRENT_USER_THAT_IS_CURRENTLY_LOGGED_IN_THE_SAME_AS_THE_PERSON_THAT_DOWNLOADED_THE_FILE_LAST()
+        {
+            if (((PublicDocsAvailableDataModel)Model).IDOfUserThatLastDownLoadedTheSelectedFile.Equals(this.ID_OfUserCurrentlyLoggedIn))
+            {
+                IS_THE_CURRENT_USER_THATlOGGED_IN_THE_SAME_AS_THE_PERSON_THAT_DOWNLOADED_THE_FILE_LAST = true;
+            }
+
         }
     }
 }

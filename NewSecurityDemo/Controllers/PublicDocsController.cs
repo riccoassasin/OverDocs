@@ -55,12 +55,7 @@ namespace MyOverDocs.Controllers
                 AllPublicFiles = AllPublicFiles.Where(s => s.FullFileName.ToLower().Contains(searchString.ToLower())).ToList<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>();
             }
 
-            var dd = db.PublicDocs_R_GetMostRecentFileVersion();
-
-            //foreach (View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile f in AllPublicFiles)
-            //{
-            //    f.FileType = FileExtensionHelper.GetFileType(f.FileExtension);
-            //}
+           
 
             switch (sortOrder) //This is all the informatoin that is stored about the file that is uploaded and in the public documents
             {
@@ -73,6 +68,12 @@ namespace MyOverDocs.Controllers
                     break;
                 case "DateCreated_desc":
                     AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.DateCreated).ToList();
+                    break;
+                case "NameOfFileOwner":
+                    AllPublicFiles = AllPublicFiles.OrderBy(s => s.NameOfFileOwner).ToList();
+                    break;
+                case "NameOfFileOwner_desc":
+                    AllPublicFiles = AllPublicFiles.OrderByDescending(s => s.NameOfFileOwner).ToList();
                     break;
 
                 case "FileID":

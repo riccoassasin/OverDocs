@@ -44,6 +44,7 @@ namespace NewSecurityDemo.Models
         public virtual DbSet<LookupTableNotificationType> LookupTableNotificationTypes { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<UserThatDownloadedFile> UserThatDownloadedFiles { get; set; }
+        public virtual DbSet<View_ReturnDocs_AllFilesThatHaveBeenDownloaded> View_ReturnDocs_AllFilesThatHaveBeenDownloaded { get; set; }
     
         public virtual ObjectResult<View_PrivateDocView_AllSharedPrivateFiles> PrivateDocs_R_GetAllPrivateSharedUserFiles(string currentlyLoggedingUserID)
         {
@@ -107,6 +108,126 @@ namespace NewSecurityDemo.Models
                 new ObjectParameter("FileID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<View_PublicDocView_AllFilesWithOwnerAndUserThatLastUpdatedFile>("PublicDocs_R_GetSelectedFileHistory", mergeOption, fileIDParameter);
+        }
+    
+        public virtual int Files_U_SetFileStatus(Nullable<int> fileID, Nullable<int> fileLookupStatusID)
+        {
+            var fileIDParameter = fileID.HasValue ?
+                new ObjectParameter("FileID", fileID) :
+                new ObjectParameter("FileID", typeof(int));
+    
+            var fileLookupStatusIDParameter = fileLookupStatusID.HasValue ?
+                new ObjectParameter("FileLookupStatusID", fileLookupStatusID) :
+                new ObjectParameter("FileLookupStatusID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Files_U_SetFileStatus", fileIDParameter, fileLookupStatusIDParameter);
+        }
+    
+        public virtual ObjectResult<File_R_AllFileDetailsWithoutFioleImage_Result> File_R_AllFileDetailsWithoutFioleImage(Nullable<int> fileID)
+        {
+            var fileIDParameter = fileID.HasValue ?
+                new ObjectParameter("FileID", fileID) :
+                new ObjectParameter("FileID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<File_R_AllFileDetailsWithoutFioleImage_Result>("File_R_AllFileDetailsWithoutFioleImage", fileIDParameter);
+        }
+    
+        public virtual ObjectResult<File> Files_I_NewFile(Nullable<int> parentFileID, string userIDOfFileOwner, string userIDOfLastUploaded, Nullable<int> fileLookupStatusID, Nullable<int> fileShareStatusID, string contentType, string fileName, string fileExtension, byte[] fileImage, Nullable<int> fileSize, Nullable<int> currentVersionNumber)
+        {
+            var parentFileIDParameter = parentFileID.HasValue ?
+                new ObjectParameter("ParentFileID", parentFileID) :
+                new ObjectParameter("ParentFileID", typeof(int));
+    
+            var userIDOfFileOwnerParameter = userIDOfFileOwner != null ?
+                new ObjectParameter("UserIDOfFileOwner", userIDOfFileOwner) :
+                new ObjectParameter("UserIDOfFileOwner", typeof(string));
+    
+            var userIDOfLastUploadedParameter = userIDOfLastUploaded != null ?
+                new ObjectParameter("UserIDOfLastUploaded", userIDOfLastUploaded) :
+                new ObjectParameter("UserIDOfLastUploaded", typeof(string));
+    
+            var fileLookupStatusIDParameter = fileLookupStatusID.HasValue ?
+                new ObjectParameter("FileLookupStatusID", fileLookupStatusID) :
+                new ObjectParameter("FileLookupStatusID", typeof(int));
+    
+            var fileShareStatusIDParameter = fileShareStatusID.HasValue ?
+                new ObjectParameter("FileShareStatusID", fileShareStatusID) :
+                new ObjectParameter("FileShareStatusID", typeof(int));
+    
+            var contentTypeParameter = contentType != null ?
+                new ObjectParameter("ContentType", contentType) :
+                new ObjectParameter("ContentType", typeof(string));
+    
+            var fileNameParameter = fileName != null ?
+                new ObjectParameter("FileName", fileName) :
+                new ObjectParameter("FileName", typeof(string));
+    
+            var fileExtensionParameter = fileExtension != null ?
+                new ObjectParameter("FileExtension", fileExtension) :
+                new ObjectParameter("FileExtension", typeof(string));
+    
+            var fileImageParameter = fileImage != null ?
+                new ObjectParameter("FileImage", fileImage) :
+                new ObjectParameter("FileImage", typeof(byte[]));
+    
+            var fileSizeParameter = fileSize.HasValue ?
+                new ObjectParameter("FileSize", fileSize) :
+                new ObjectParameter("FileSize", typeof(int));
+    
+            var currentVersionNumberParameter = currentVersionNumber.HasValue ?
+                new ObjectParameter("CurrentVersionNumber", currentVersionNumber) :
+                new ObjectParameter("CurrentVersionNumber", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<File>("Files_I_NewFile", parentFileIDParameter, userIDOfFileOwnerParameter, userIDOfLastUploadedParameter, fileLookupStatusIDParameter, fileShareStatusIDParameter, contentTypeParameter, fileNameParameter, fileExtensionParameter, fileImageParameter, fileSizeParameter, currentVersionNumberParameter);
+        }
+    
+        public virtual ObjectResult<File> Files_I_NewFile(Nullable<int> parentFileID, string userIDOfFileOwner, string userIDOfLastUploaded, Nullable<int> fileLookupStatusID, Nullable<int> fileShareStatusID, string contentType, string fileName, string fileExtension, byte[] fileImage, Nullable<int> fileSize, Nullable<int> currentVersionNumber, MergeOption mergeOption)
+        {
+            var parentFileIDParameter = parentFileID.HasValue ?
+                new ObjectParameter("ParentFileID", parentFileID) :
+                new ObjectParameter("ParentFileID", typeof(int));
+    
+            var userIDOfFileOwnerParameter = userIDOfFileOwner != null ?
+                new ObjectParameter("UserIDOfFileOwner", userIDOfFileOwner) :
+                new ObjectParameter("UserIDOfFileOwner", typeof(string));
+    
+            var userIDOfLastUploadedParameter = userIDOfLastUploaded != null ?
+                new ObjectParameter("UserIDOfLastUploaded", userIDOfLastUploaded) :
+                new ObjectParameter("UserIDOfLastUploaded", typeof(string));
+    
+            var fileLookupStatusIDParameter = fileLookupStatusID.HasValue ?
+                new ObjectParameter("FileLookupStatusID", fileLookupStatusID) :
+                new ObjectParameter("FileLookupStatusID", typeof(int));
+    
+            var fileShareStatusIDParameter = fileShareStatusID.HasValue ?
+                new ObjectParameter("FileShareStatusID", fileShareStatusID) :
+                new ObjectParameter("FileShareStatusID", typeof(int));
+    
+            var contentTypeParameter = contentType != null ?
+                new ObjectParameter("ContentType", contentType) :
+                new ObjectParameter("ContentType", typeof(string));
+    
+            var fileNameParameter = fileName != null ?
+                new ObjectParameter("FileName", fileName) :
+                new ObjectParameter("FileName", typeof(string));
+    
+            var fileExtensionParameter = fileExtension != null ?
+                new ObjectParameter("FileExtension", fileExtension) :
+                new ObjectParameter("FileExtension", typeof(string));
+    
+            var fileImageParameter = fileImage != null ?
+                new ObjectParameter("FileImage", fileImage) :
+                new ObjectParameter("FileImage", typeof(byte[]));
+    
+            var fileSizeParameter = fileSize.HasValue ?
+                new ObjectParameter("FileSize", fileSize) :
+                new ObjectParameter("FileSize", typeof(int));
+    
+            var currentVersionNumberParameter = currentVersionNumber.HasValue ?
+                new ObjectParameter("CurrentVersionNumber", currentVersionNumber) :
+                new ObjectParameter("CurrentVersionNumber", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<File>("Files_I_NewFile", mergeOption, parentFileIDParameter, userIDOfFileOwnerParameter, userIDOfLastUploadedParameter, fileLookupStatusIDParameter, fileShareStatusIDParameter, contentTypeParameter, fileNameParameter, fileExtensionParameter, fileImageParameter, fileSizeParameter, currentVersionNumberParameter);
         }
     }
 }

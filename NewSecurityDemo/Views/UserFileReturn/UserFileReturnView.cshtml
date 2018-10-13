@@ -1,0 +1,274 @@
+﻿@*@model IEnumerable<NewSecurityDemo.Models.View_ReturnDocs_AllFilesThatHaveBeenDownloaded>*@
+@model PagedList.IPagedList<NewSecurityDemo.Models.View_ReturnDocs_AllFilesThatHaveBeenDownloaded>
+
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
+
+@{
+    ViewBag.Title = "UserFileReturn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+@{
+    string UserID_OfUserCurrentlyLoggedIn = User.Identity.GetUserId();
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-3"><h4>Repository - Return Documents</h4></div>
+
+        </div>
+
+
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table-condensed table-hover table-striped">
+                <tr>
+                    <th class="text-nowrap">
+                        @Html.Label("Ref#")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("Version")
+                    </th>
+
+                    <th class="text-nowrap">
+                        @Html.Label("File Owner")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("Last Update By")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("Downloader")
+                    </th>
+                    <th class="text-nowrap">
+                        @Html.Label("File Size")
+                    </th>
+
+                    <th class="text-nowrap">
+                        @Html.Label("File Name")
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.FileID)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
+                        </td>
+
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.FullNameOfFileOwner)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.FullNameOfThePersonThatLastUpdatedTheFile)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.FullNameOfPersonThatDownloadedTheFile)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.FileSize)
+                        </td>
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.FullFileName)
+                        </td>
+
+                        <td class="text-nowrap">
+                            @*<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#UploadUserFileModal">Upload File</button>*@
+                            <a type="button" value="Upload File New item" class="btn btn-primary" onclick="ShowFileUploadModal(@item.FileID);" />
+                            @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+        <table class="">
+            <tr>
+                <td>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</td>
+                <td>&nbsp;</td>
+                <td>
+                    @Html.PagedListPager(Model, page => Url.Action("PublicDocDisplay", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+@Html.Hidden("hidSelectedFile_OldID")
+
+@section scripts {
+    <script>
+
+        function ShowFileUploadModal(fileID) {
+
+            $("#hidSelectedFile_OldID").val(fileID);
+            $("#UploadUserFileModal").modal("show");
+
+
+        }
+
+        function UploadSelectedFile() {
+
+            var input = $('#Crtl_UploadFile');
+            var files = input.prop("files");
+
+            if (files.length > 0) {
+                if (window.FormData !== undefined) {
+                    var data = new FormData();
+                    for (var x = 0; x < files.length; x++) {
+                        data.append("file" + x, files[x]);
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/UploadFile/ReturnDocsFileUpload?OldFileID=' + $("#hidSelectedFile_OldID").val(),
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        success: function (result) {
+                            $("#UpLoadMessage").hide();
+                            $('#UpLoadMessage').html(result);
+
+                            $("#UpLoadMessage").fadeIn("slow", function () {
+                                // Animation complete.
+
+                                $(this).fadeOut("slow", function () {
+                                    $('#UpLoadMessage').html('');
+                                });
+                            });
+
+                        },
+                        error: function (xhr, status, p3, p4) {
+                            var err = "Error " + " " + status + " " + p3 + " " + p4;
+                            if (xhr.responseText && xhr.responseText[0] == "{")
+                                err = JSON.parse(xhr.responseText).Message;
+                            alert(err);
+                        }
+                    });
+                } else {
+                    alert("This browser doesn't support HTML5 file uploads!");
+                }
+
+                $('#Crtl_UploadFile').val(null);
+            }
+            else {
+                $("#UpLoadMessage").hide();
+                $('#UpLoadMessage').html('Please Select File First!');
+
+                $("#UpLoadMessage").fadeIn("slow", function () {
+                    // Animation complete.
+
+                    $(this).fadeOut("slow", function () {
+                        $('#UpLoadMessage').html('');
+                    });
+                });
+
+            }
+        }
+
+        function Filter() {
+            var value = $('#myInput').val().toLowerCase();
+            $("#ListToFilterListToFilter tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        }
+    </script>
+
+}
+
+<div class="modal fade " id="UploadUserFileModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Upload User File</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Select File To Upload</div>
+                    <div class="panel-body">
+                        <p>You are about to Upload the version of the current file.</p>
+                        <p>NB! A notification will be sent to all users that this file is shared with. </p>
+                        <P>Once the file has been uploaded the new version will be available for all user that this file is possibly shared with.  </P>
+                        <p>
+
+                            Click download to proceed <b>
+                                Upload
+                            </b>
+                            </a> Else Click Close to cancel.
+                        </p>
+
+                        <div class="well well-sm">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input type="file" name="UploadFile" id="Crtl_UploadFile" class="btn" accept=".xls,.xlsx, .doc, .txt,.csv" />
+
+                                </div>
+                                <div class="col-sm-4">
+
+                                    <input type="button" id="SubmitFileToUpload" class="btn btn-warning" onclick="UploadSelectedFile();" value="Upload File" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-2"></div>
+                            <div id="UpLoadMessage" class="row col=sm-8"></div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="Download_Notification_Modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">History For - <span id="CurrentFileHistoryFileName"></span></h4>
+            </div>
+            <div class="modal-body">
+                <p>You are about to Upload the version of the current file.</p>
+                <p>NB! A notification will be sent to all users that this file is shared with. </p>
+                <P>Once the file has been uploaded the new version will be available for all user that this file is possibly shared with.  </P>
+                <p>
+
+                    Click download to proceed <b>
+                        <a href="#" class="btn btn-warning" onclick="UploadSelectedFile()">
+                            Upload
+                        </a> Else Click Close to cancel.
+
+
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

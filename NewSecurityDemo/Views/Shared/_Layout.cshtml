@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
+
 
 </head>
 <body>
@@ -25,8 +25,8 @@
                     <li>@Html.ActionLink("Public Docs", "PublicDocDisplay", "PublicDocs")</li>
                     <li>@Html.ActionLink("Privately Shared Docs", "PrivateDocDisplay", "PrivateDocs")</li>
                     <li>@Html.ActionLink("User Docs", "ShowUserDocs", "UserDocs")</li>
-                    <li>@Html.ActionLink("Return Docs", "ShowUserDocs", "UserDocs")</li>
-                    <li>@Html.ActionLink("Notifications", "ShowNotifications", "Notifications")</li>
+                    <li>@Html.ActionLink("Return Docs", "UserFileReturnView", "UserFileReturn")</li>
+                    <li>@Html.ActionLink("Notifications (1)", "ShowNotifications", "Notifications") </li>
                     <li>@Html.ActionLink("Help", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
@@ -38,7 +38,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Over Docs Project Completed by: Ricco Hammond. </p>
         </footer>
     </div>
 

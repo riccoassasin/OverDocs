@@ -3,6 +3,7 @@ using Common.Files;
 using Microsoft.AspNet.Identity;
 using NewSecurityDemo.Models;
 using OverDocsModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
@@ -18,8 +19,32 @@ namespace NewSecurityDemo.Controllers
         private WebDocsEntities db = new WebDocsEntities();
         // GET: UserDocs
         [Authorize]
-        public ActionResult ShowUserDocs()
+        public ActionResult ShowUserDocs(string sortOrder, string currentFilter, string searchString, int? page)
         {
+
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.FileIDSortParm = sortOrder == "FileID" ? "FileID_desc" : "FileID";
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "FullFileName_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "DateCreated" ? "DateCreated_desc" : "DateCreated";
+            ViewBag.NameOfFileOwnerSortParm = sortOrder == "NameOfFileOwner" ? "NameOfFileOwner_desc" : "NameOfFileOwner";
+            ViewBag.CurrentFileStatusSortParm = sortOrder == "CurrentFileStatus" ? "CurrentFileStatus_desc" : "CurrentFileStatus";
+            ViewBag.CurrentFileShareStatusSortParm = sortOrder == "CurrentFileShareStatus" ? "CurrentFileShareStatus_desc" : "CurrentFileShareStatus";
+            ViewBag.CurrentVersionNumberSortParm = sortOrder == "CurrentVersionNumber" ? "CurrentVersionNumber_desc" : "CurrentVersionNumber";
+            ViewBag.FileSizeSortParm = sortOrder == "FileSize" ? "FileSize_desc" : "FileSize";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+
             ObjectResult<View_UserDocs_AllUserCreatedDocs> dd = db.UserDocs_R_GetAllUserCreatedDocs(User.Identity.GetUserId());
 
             List<View_UserDocs_AllUserCreatedDocs> AllUserFiles = dd.ToList<View_UserDocs_AllUserCreatedDocs>();
@@ -28,21 +53,73 @@ namespace NewSecurityDemo.Controllers
             {
                 f.FileType = FileExtensionHelper.GetFileType(f.FileExtension);
             }
-            EmailSetting ES = db.EmailSettings.FirstOrDefault();
-            //Common.Email.EmailHelper.sendMessageAsync(
-            //    _ToAddress: "Brendanw@mweb.co.za",
-            //    _FromAddress: "Brendanw@mweb.co.za",
-            //    _FromName: "Brednan Wood",
-            //    _ToName: "Ricco",
-            //    _Subject: "Test Message",
-            //    _Message: "This Shows that the System can can send email messages",
-            //     _Credentials_UserName: "Brendanw@mweb.co.za",
-            //     _Credentials_Password: "speedie3",
-            //      _SMTP_HOST: "smtp.mweb.co.za",
-            //      _SMTP_PORT: 25,
-            //      _IsSsl: false);
 
-            return View(AllUserFiles);
+
+
+            switch (sortOrder)
+            {
+                case "FullFileName_desc":
+                    AllUserFiles = AllUserFiles.OrderByDescending(s => s.FullFileName).ToList();
+                    break;
+
+                case "DateCreated":
+                    AllUserFiles = AllUserFiles.OrderBy(s => s.DateCreated).ToList();
+                    break;
+                case "DateCreated_desc":
+                    AllUserFiles = AllUserFiles.OrderByDescending(s => s.DateCreated).ToList();
+                    break;
+
+                //case "NameOfFileOwner":
+                //    AllUserFiles = AllUserFiles.OrderBy(s => s.NameOfFileOwner).ToList();
+                //    break;
+                //case "NameOfFileOwner_desc":
+                //    AllUserFiles = AllUserFiles.OrderByDescending(s => s.NameOfFileOwner).ToList();
+                //    break;
+
+                case "FileID":
+                    AllUserFiles = AllUserFiles.OrderBy(s => s.FileID).ToList();
+                    break;
+                case "FileID_desc":
+                    AllUserFiles = AllUserFiles.OrderByDescending(s => s.FileID).ToList();
+                    break;
+
+
+                case "FileSize":
+                    AllUserFiles = AllUserFiles.OrderBy(s => s.FileSize).ToList();
+                    break;
+                case "FileSize_desc":
+                    AllUserFiles = AllUserFiles.OrderByDescending(s => s.FileSize).ToList();
+                    break;
+
+                //case "CurrentFileStatus":
+                //    AllUserFiles = AllUserFiles.OrderBy(s => s.CurrentFileStatus).ToList();
+                //    break;
+                //case "CurrentFileStatus_desc":
+                //    AllUserFiles = AllUserFiles.OrderByDescending(s => s.CurrentFileStatus).ToList();
+                //    break;
+
+                //case "CurrentFileShareStatus":
+                //    AllUserFiles = AllUserFiles.OrderBy(s => s.CurrentFileShareStatus).ToList();
+                //    break;
+                //case "CurrentFileShareStatus_desc":
+                //    AllUserFiles = AllUserFiles.OrderByDescending(s => s.CurrentFileShareStatus).ToList();
+                //    break;
+
+                case "CurrentVersionNumber":
+                    AllUserFiles = AllUserFiles.OrderBy(s => s.CurrentVersionNumber).ToList();
+                    break;
+                case "CurrentVersionNumber_desc":
+                    AllUserFiles = AllUserFiles.OrderByDescending(s => s.CurrentVersionNumber).ToList();
+                    break;
+                default:  // Name ascending 
+                    AllUserFiles = AllUserFiles.OrderBy(s => s.FullFileName).ToList();
+                    break;
+            };
+
+            //ViewBag.CurrentFilter = "";
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(AllUserFiles.ToPagedList(pageNumber, pageSize));
 
         }
 
@@ -109,22 +186,7 @@ namespace NewSecurityDemo.Controllers
             {
                 ViewBag.Message = "You have not specified a file.";
             }
-            //if (file != null && file.ContentLength > 0)
-            //    try
-            //    {
-            //        string path = Path.Combine(Server.MapPath("~/Images"),
-            //                                   Path.GetFileName(file.FileName));
-            //        file.SaveAs(path);
-            //        ViewBag.Message = "File uploaded successfully";
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        ViewBag.Message = "ERROR:" + ex.Message.ToString();
-            //    }
-            //else
-            //{
-            //    ViewBag.Message = "You have not specified a file.";
-            //}
+            
             return RedirectToAction("ShowUserDocs");
         }
 

@@ -38,6 +38,7 @@
         <EntityTypeShape EntityType="WebDocsModel.UserThatDownloadedFile" Width="2.5" PointX="14.125" PointY="3.75" />
         <AssociationConnector Association="WebDocsModel.FK_UserThatDownloadedFile_AspNetUsers" />
         <AssociationConnector Association="WebDocsModel.FK_UserThatDownloadedFile_Files" />
+        <EntityTypeShape EntityType="WebDocsModel.View_ReturnDocs_AllFilesThatHaveBeenDownloaded" Width="3.625" PointX="14.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

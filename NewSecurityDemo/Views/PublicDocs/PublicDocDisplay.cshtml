@@ -158,7 +158,8 @@
                                                         FileOwnerID = item.UserIDOfFileOwner,
                                                         FileStatusID = item.FileLookupStatusID,
                                                         FileSharedStautusID = item.FileShareStatusID,
-                                                        FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith
+                                                        FileID_FilesSharedWithUser = item.ListOfUserIDThatTheFileISsharedWith,
+                                                        IDOfUserThatLastDownLoadedTheSelectedFile = item.IdOfUserThatDownloadedTheFile
                                                     });
                                                     break;
                                                 case (int)FileViewStatus.FileIsLocked:
@@ -193,7 +194,7 @@
                                                                 switch (Decision.FinalDecision)
                                                                 {
                                                                     case ControlTypes.Download:
-                                                                        <a href="#" onclick="showModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
+                                                                        <a href="#" onclick="showDownloadNotificationModal(@item.FileID,'@item.FullFileName', '@UserID_OfUserCurrentlyLoggedIn' )">Download</a>
                                                                         @*@Html.ActionLink("Download", "DownLoadSelectedFile", "DownLoadFile", new { fileID = item.FileID }, null) ;*@
                                                                         break;
                                                                     case ControlTypes.UploadFileNotification:
@@ -214,7 +215,7 @@
                                                                 <div class="alert alert-info">
                                                                     <strong>Info!</strong> - No Links To Display!
                                                                 </div>
-                                                                
+
                                                             }]
                                                         </div>
                                                     </td>
@@ -251,7 +252,7 @@
 
 </div>
 
-<!-- Modal Sections-->
+<!-- Modal Sections File History-->
 <div class="modal fade" id="ShowFileHistoryModal" role="dialog">
     <div class="modal-dialog modal-lg panel-primary">
 
@@ -271,12 +272,29 @@
 
     </div>
 </div>
+<!-- Modal Sections-->
+<!-- Modal Sections File REquest Notification Confirmation-->
+<div class="modal fade" id="ShowFileRequerstNotificationConfirmationModal" role="dialog">
+    <div class="modal-dialog modal-lg panel-primary">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Request Notification Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <div id="ShowFileRequerstNotificationConfirmationContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeFileRequestNotification" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
 
-
-
-
-<button type="button" class="btn btn-info btn-lg hidden" data-toggle="modal" data-target="#Download_Notification_Modal">Open Modal</button>
+    </div>
+</div>
+<!-- Modal Sections-->
+@*<button type="button" class="btn btn-info btn-lg hidden" data-toggle="modal" data-target="#Download_Notification_Modal">Open Modal</button>*@
 
 <div id="Download_Notification_Modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -349,9 +367,59 @@
         });
 
         $("#Download_Notification_Modal").on('hidden.bs.modal', function () {
-            
+
             $("#btnRefreshPage")[0].click();
         });
+
+
+        function showDownloadNotificationModal(FileID, FileName, UserIDOfPersonThatDownloadedTheFile) {
+
+        $("#FileNameToReplace").html(FileName)
+        $("#FileID").val(FileID);
+        $("#UserIDOfPersonThatDownloadedTheFile").val(UserIDOfPersonThatDownloadedTheFile);
+        $("#Download_Notification_Modal").modal("show");
+    }
+
+    function DownloadFile() {
+
+               $("#btnDownload")[0].click();
+        //$("#Download_Notification_Modal").modal("hide");
+        //$("#btnRefreshPage")[0].click();
+    }
+
+    function sendRequestNotification(FileID, NotificationTypeID, IDOFPersonLoggedOn, IDOfTheFileOwner) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SendRequestNotification", "Notifications")',
+            data: '{ FileID: "' + FileID + '", NotificationTypeID: "' + NotificationTypeID + '", IDOFPersonLoggedOn: "' + IDOFPersonLoggedOn + '",IDOfTheFileOwner: "' + IDOfTheFileOwner + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+
+
+                //var s = obj.SuccessMessage;
+                $('#ShowFileRequerstNotificationConfirmationContent').html(data);
+                //debugger;
+                //$('#ShowFileRequerstNotificationConfirmationModal').modal(options);
+                $('#ShowFileRequerstNotificationConfirmationModal').modal('show');
+            },
+            error: function (xhr, textStatus, error) {
+
+                $('#ShowFileRequerstNotificationConfirmationContent').html(error);
+                //$('#ShowFileRequerstNotificationConfirmationModal').modal(options);
+                $('#ShowFileRequerstNotificationConfirmationModal').modal('show');
+                alert('Unable to send request - error: ' + error);
+
+            }
+        });
+
+        function successFunc(data, status) {
+            alert(data);
+        }
+
+
+    }
     </script>
 }
 
@@ -367,7 +435,7 @@
 }
 <script type="text/javascript">
 
-    function showModal(FileID, FileName, UserIDOfPersonThatDownloadedTheFile) {
+    @*function showDownloadNotificationModal(FileID, FileName, UserIDOfPersonThatDownloadedTheFile) {
 
         $("#FileNameToReplace").html(FileName)
         $("#FileID").val(FileID);
@@ -401,7 +469,7 @@
         }
 
 
-    }
+    }*@
 </script>
 
 

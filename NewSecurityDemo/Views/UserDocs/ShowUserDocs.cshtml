@@ -1,4 +1,16 @@
-﻿@model IEnumerable<NewSecurityDemo.Models.View_UserDocs_AllUserCreatedDocs>
+﻿@*@model IEnumerable<NewSecurityDemo.Models.View_UserDocs_AllUserCreatedDocs>*@
+@model PagedList.IPagedList<NewSecurityDemo.Models.View_UserDocs_AllUserCreatedDocs>
+
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
+
+@using OverDocsModels.DecisionModels.PublicDocuments.IsAvaiable;
+@using SystemLogic.DescisionClasses.PublicViewedFiles.AvailableFiles;
+@using Common.Enum.SystemLogicEnum;
+@using SystemLogic.Interfaces;
+@using OverDocsModels.DecisionModels.PublicDocuments.IsLocked;
+@using SystemLogic.DescisionClasses.PublicViewedFiles.LockedFiles;
+@using Common.Enum.DBLookupEnum;
 
 
 @{
@@ -24,10 +36,24 @@
         height: 60%;*/
     }
 </style>
+
+@{
+    string UserID_OfUserCurrentlyLoggedIn = User.Identity.GetUserId();
+}
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h4>Repository - User Documents</h4>
-        <input class="form-control" id="myInput" type="text" placeholder="Search.."><input class="btn" value="click" onclick="Filter();" />
+        <div class="row">
+            <div class="col-sm-4"><h4>Repository - User Documents</h4></div>
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-4"><input class="form-control" id="myInput" type="text" placeholder="Search.."></div>
+                    <div class="col-sm-2"><input class="btn" value="click" onclick="Filter();" /></div>
+                </div>
+            </div>
+
+        </div>
+
+
     </div>
     <div class="panel-body">
         <div class="table-responsive">
@@ -35,15 +61,14 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.Label("Ref#")
+
+                            @Html.ActionLink("Ref#", "ShowUserDocs", new { sortOrder = ViewBag.FileIDSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
                         <th>
-                            @Html.Label("File Name")
-
+                            @Html.ActionLink("File Name", "ShowUserDocs", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                         </th>
                         <th>
                             @Html.Label("Size")
-
                         </th>
                         <th>
                             @Html.Label("File Owner")
@@ -53,37 +78,20 @@
                             @Html.Label("Last Modified")
                         </th>
 
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.UserIDOfFileOwner)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UserIDOfLastUploaded)
-                            </th>*@
+
                         <th>
                             @Html.Label("File Status")
 
                         </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileLookupStatusID)
-                            </th>*@
+
                         <th>
                             @Html.Label("Shared Status")
 
                         </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileShareStatusID)
-                            </th>*@
+
                         <th>
                             @Html.Label("File Type")
                         </th>
-                        @*<th>
-                                @Html.DisplayNameFor(model => model.FileName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FileExtension)
-                            </th>*@
-
-
                         <th>
                             @Html.Label("Version")
 
@@ -95,7 +103,7 @@
 
                         <th>
                             <!-- Trigger the modal with a button -->
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#UploadUserFileModal">Upload File</button>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#UploadUserFileModal">Upload File</button>
 
                             <!-- Modal -->
                             <div class="modal fade" id="UploadUserFileModal" role="dialog">
@@ -112,9 +120,11 @@
                                                 <div class="panel-body">
                                                     <div class="well well-sm">
                                                         <div class="row text-center">
-                                                            Public:   @Html.RadioButton("radFileShareStatus", "1", true)
-                                                            Private:    @Html.RadioButton("radFileShareStatus", "2")
-                                                            Hidden:   @Html.RadioButton("radFileShareStatus", "6")
+                                                            <div class="col-sm-2">Public:   @Html.RadioButton("radFileShareStatus", "1", true)</div>
+                                                            <div class="col-sm-1"></div>
+                                                            <div class="col-sm-2">Private:    @Html.RadioButton("radFileShareStatus", "2")</div>
+                                                            <div class="col-sm-1"></div>
+                                                            <div class="col-sm-2">Hidden:   @Html.RadioButton("radFileShareStatus", "6")</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -126,12 +136,12 @@
                                                         <div class="row">
                                                             <table>
                                                                 <tr>
-                                                                    <td> <input type="file" name="UploadFile" id="Crtl_UploadFile" class="btn" /></td>
+                                                                    <td> <input type="file" name="UploadFile" id="Crtl_UploadFile" class="btn" accept=".xls,.xlsx, .doc, .txt,.csv" /></td>
                                                                     <td><input type="button" id="SubmitFileToUpload" class="btn btn-default" onclick="UploadSelectedFile();" value="Upload File" /></td>
                                                                 </tr>
                                                             </table>
                                                             <script type="text/javascript">
-                                                                
+
 
                                                                 function UploadSelectedFile() {
 
@@ -192,23 +202,6 @@
                                                     <div id="UpLoadMessage"></div>
                                                 </div>
                                             </div>
-
-
-
-                                            @*@using (Html.BeginForm("UploadUserFile", "UserDocs", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                                {
-
-
-                                                    <table>
-                                                        <tr>
-                                                            <td>@Html.Label("Select File:")</td>
-                                                            <td> <input type="file" name="file" id="file" /></td>
-                                                        </tr>
-                                                        <tr><td colspan="2"> <input type="submit" value="Upload Image" /></td></tr>
-                                                    </table>
-                                                }*@
-
-
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -225,61 +218,42 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.FileID)
+
                             </td>
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.FullFileName)
+
                             </td>
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.FileSize)
                             </td>
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.UserThatLastUpdated)
                             </td>
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.DateCreated)
                             </td>
-
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.UserIDOfFileOwner)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UserIDOfLastUploaded)
-                                </td>*@
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.FileStatus)
                             </td>
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.FileLookupStatusID)
-                                </td>*@
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.FileShareStatus)
                             </td>
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.FileShareStatusID)
-                                </td>*@
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.FileType)
                             </td>
-                            @*<td>
-                                    @Html.DisplayFor(modelItem => item.FileName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FileExtension)
-                                </td>*@
-
-
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.CurrentVersionNumber)
                             </td>
-
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.DisplayFor(modelItem => item.UserThatLastUpdated)
                             </td>
-                            <td>
+                            <td class="text-nowrap">
                                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Details", "Details", new
+                                { /* id=item.PrimaryKey */ }) |
                                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                             </td>
                         </tr>
@@ -290,29 +264,17 @@
     </div>
     <div class="panel-footer">
 
-
-        <ul class="pager">
-            <li class="previous"><a href="#">Previous</a></li>
-            <li class="next"><a href="#">Next</a></li>
-        </ul>
-
+        <table class="">
+            <tr>
+                <td>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</td>
+                <td>&nbsp;</td>
+                <td>
+                    @Html.PagedListPager(Model, page => Url.Action("PublicDocDisplay", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                </td>
+            </tr>
+        </table>
 
     </div>
 
 </div>
-
-<table>
-    <tr>
-        <td>
-            <ul class="pagination">
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-            </ul>
-        </td>
-        <td></td>
-    </tr>
-</table>
 
